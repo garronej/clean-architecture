@@ -1,10 +1,10 @@
 {
-    "name": "#{REPO_NAME}#",
+    "name": "beyond-redux-toolkit",
     "version": "0.0.0",
-    "description": "#{DESC}#",
+    "description": "Utilities for a perfectly typed redux experience",
     "repository": {
         "type": "git",
-        "url": "git://github.com/#{USER_OR_ORG}#/#{REPO_NAME}#.git"
+        "url": "git://github.com/garronej/beyond-redux-toolkit.git"
     },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -30,7 +30,7 @@
             "pre-commit": "lint-staged -v"
         }
     },
-    "author": "u/#{USER_OR_ORG}#",
+    "author": "u/garronej",
     "license": "MIT",
     "files": [
         "src/",
@@ -40,7 +40,7 @@
         "!dist/tsconfig.tsbuildinfo"
     ],
     "keywords": [],
-    "homepage": "https://github.com/#{USER_OR_ORG}#/#{REPO_NAME}#",
+    "homepage": "https://github.com/garronej/beyond-redux-toolkit",
     "devDependencies": {
         "@types/node": "^16.4.9",
         "typescript": "^4.3.5",
