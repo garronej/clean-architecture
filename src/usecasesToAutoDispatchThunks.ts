@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-lone-blocks */
 import "minimal-polyfills/Object.fromEntries";
 import type { Param0 } from "tsafe";
@@ -123,5 +124,13 @@ export function usecasesToAutoDispatchThunks<
         >;
     };
 } {
-    return null as any;
+    return {
+        "getAutoDispatchThunks": dispatch =>
+            Object.fromEntries(
+                usecases.map(({ name, thunks }) => [
+                    `${name}${wordId}`,
+                    thunksToAutoDispatchThunks({ thunks, dispatch }),
+                ]),
+            ) as any,
+    };
 }
