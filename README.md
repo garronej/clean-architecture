@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/80216211-00ef5280-863e-11ea-81de-59f3a3d4b8e4.png">  
 </p>
 <p align="center">
-    <i>Utilities for a perfectly typed redux experience</i>
+    <i>Clean archi with Redux, great types inference</i>
     <br>
     <br>
     <img src="https://github.com/garronej/beyond-redux-toolkit/workflows/ci/badge.svg?branch=main">
@@ -19,16 +19,5 @@
 # Install / Import
 
 ```bash
-$ npm install --save beyond-redux-toolkit
-```
-
-```typescript
-import { myFunction, myObject } from "update_ts_ci";
-```
-
-Specific imports:
-
-```typescript
-import { myFunction } from "beyond-redux-toolkit/myFunction";
-import { myObject } from "beyond-redux-toolkit/myObject";
+$ yarn add beyond-redux-toolkit
 ```

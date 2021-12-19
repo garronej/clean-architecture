@@ -6,12 +6,12 @@ import { Reflect } from "tsafe/Reflect";
 import type {
     ThunkToAutoDispatchThunk,
     ThunksToAutoDispatchThunks,
-} from "./usecasesToAutoDispatchThunks";
+} from "../../usecasesToAutoDispatchThunks";
 import {
     thunkToAutoDispatchThunk,
     thunksToAutoDispatchThunks,
     usecasesToAutoDispatchThunks,
-} from "./usecasesToAutoDispatchThunks";
+} from "../../usecasesToAutoDispatchThunks";
 import type { AnyAction } from "@reduxjs/toolkit";
 
 {

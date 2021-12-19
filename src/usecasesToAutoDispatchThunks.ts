@@ -2,8 +2,7 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { Param0 } from "tsafe";
 import { objectKeys } from "tsafe/objectKeys";
-import type { ThunkAction } from "@reduxjs/toolkit";
-import type { AnyAction } from "@reduxjs/toolkit";
+import type { ThunkAction, AnyAction } from "@reduxjs/toolkit";
 
 export type ThunkToAutoDispatchThunk<Thunk extends (params: any) => ThunkAction<any, any, any, any>> = (
     params: Param0<Thunk>,
@@ -33,8 +32,6 @@ export type ThunksToAutoDispatchThunks<
     Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, AnyAction>>,
 > = { [Key in keyof Thunks]: ThunkToAutoDispatchThunk<Thunks[Key]> };
 
-//<ReturnType>(thunkAction: ThunkAction<ReturnType, State, ExtraThunkArg, BasicAction>): ReturnType;
-
 export function thunksToAutoDispatchThunks<
     Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, any>>,
 >(params: {
@@ -63,7 +60,10 @@ export function thunksToAutoDispatchThunks<
 }): ThunksToAutoDispatchThunks<Thunks> {
     const { dispatch, thunks } = params;
     return Object.fromEntries(
-        objectKeys(thunks).map(name => [name, (params: any) => dispatch(thunks[name](params))]),
+        objectKeys(thunks).map(name => [
+            name,
+            thunkToAutoDispatchThunk({ "thunk": thunks[name], dispatch }),
+        ]),
     ) as any;
 }
 

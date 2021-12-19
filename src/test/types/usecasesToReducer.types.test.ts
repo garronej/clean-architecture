@@ -1,4 +1,4 @@
-import { usecasesToReducer } from "./usecasesToReducer";
+import { usecasesToReducer } from "../../usecasesToReducer";
 import type { Reducer } from "@reduxjs/toolkit";
 import { Reflect } from "tsafe/Reflect";
 import { assert } from "tsafe/assert";

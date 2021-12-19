@@ -1,4 +1,4 @@
-import { usecasesToSelectors, usecasesToAutoDispatchThunks } from "./beyond-redux-toolkit";
+import { usecasesToSelectors, usecasesToAutoDispatchThunks } from "../../../..";
 import { createStore, usecases } from "./setup";
 export type { Dispatch, State } from "./setup";
 

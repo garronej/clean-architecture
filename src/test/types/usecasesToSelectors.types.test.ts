@@ -1,7 +1,7 @@
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import { Equals } from "tsafe";
-import { wrapSelectorsReturnValue, usecasesToSelectors } from "./usecasesToSelectors";
+import { wrapSelectorsReturnValue, usecasesToSelectors } from "../../usecasesToSelectors";
 
 {
     const selectors = {
