@@ -8,6 +8,7 @@ export type ThunkToAutoDispatchThunk<Thunk extends (params: any) => ThunkAction<
     params: Param0<Thunk>,
 ) => ReturnType<Thunk> extends ThunkAction<infer R, any, any, any> ? R : never;
 
+/** NOTE: Always returns the same ref for a given dispatch, no need to useMemo */
 export function thunkToAutoDispatchThunk<
     Thunk extends (params: any) => ThunkAction<any, any, any, AnyAction>,
 >(params: {
