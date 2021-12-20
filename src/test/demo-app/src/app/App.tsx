@@ -1,19 +1,21 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { selectors, useThunks, useSelector } from "app/libApi";
 
 export const App = memo(() => {
-    const counter = useSelector(state => state.usecase1.counter);
-    const { isReady } = useSelector(selectors.usecase1.isReady);
-    const { isReadyBig } = useSelector(selectors.usecase1.isReadyBig);
+    const counter = useSelector(state => state.usecase2.counter2);
+    const { isReady } = useSelector(selectors.usecase2.isReady);
+    const { isReadyBig } = useSelector(selectors.usecase2.isReadyBig);
     const { usecase1Thunks, usecase2Thunks } = useThunks();
 
-    usecase1Thunks.thunk1({ "pX": "" }).then(v => {
-        /*...*/
-    });
+    useEffect(() => {
+        usecase1Thunks.thunk1({ "pX": "" }).then(v => {
+            /*...*/
+        });
+    }, [usecase1Thunks]);
 
     return (
-        <div onClick={() => usecase2Thunks.thunkX({ "pX": "xxx" })}>
+        <button onClick={() => usecase2Thunks.thunkX({ "pX": "ok" })}>
             Hello World {counter} {isReady} {isReadyBig}
-        </div>
+        </button>
     );
 });

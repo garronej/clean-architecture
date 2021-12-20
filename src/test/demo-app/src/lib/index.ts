@@ -1,4 +1,4 @@
-import { usecasesToSelectors, usecasesToAutoDispatchThunks } from "../../../..";
+import { usecasesToSelectors, usecasesToAutoDispatchThunks } from "clean-redux";
 import { createStore, usecases } from "./setup";
 export type { Dispatch, State } from "./setup";
 

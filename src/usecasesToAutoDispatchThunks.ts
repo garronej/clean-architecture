@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-lone-blocks */
 import "minimal-polyfills/Object.fromEntries";
+import { Polyfill as WeakMap } from "minimal-polyfills/WeakMap";
 import type { Param0 } from "tsafe";
 import { objectKeys } from "tsafe/objectKeys";
 import type { ThunkAction, AnyAction } from "@reduxjs/toolkit";
@@ -124,13 +123,27 @@ export function usecasesToAutoDispatchThunks<
         >;
     };
 } {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const autoDispatchThunksByDispatch = new WeakMap<Function, any>();
+
     return {
-        "getAutoDispatchThunks": dispatch =>
-            Object.fromEntries(
+        "getAutoDispatchThunks": dispatch => {
+            let autoDispatchThunks = autoDispatchThunksByDispatch.get(dispatch);
+
+            if (autoDispatchThunks !== undefined) {
+                return autoDispatchThunks;
+            }
+
+            autoDispatchThunks = Object.fromEntries(
                 usecases.map(({ name, thunks }) => [
                     `${name}${wordId}`,
                     thunksToAutoDispatchThunks({ thunks, dispatch }),
                 ]),
-            ) as any,
+            ) as any;
+
+            autoDispatchThunksByDispatch.set(dispatch, autoDispatchThunks);
+
+            return autoDispatchThunks;
+        },
     };
 }

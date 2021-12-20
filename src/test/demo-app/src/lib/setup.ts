@@ -10,7 +10,7 @@ import type { Port1Config } from "./secondaryAdapters/createPort1";
 import * as usecase1 from "./usecases/usecase1";
 import * as usecase2 from "./usecases/usecase2";
 import * as usecase3 from "./usecases/usecase2";
-import { usecasesToReducer } from "../../../..";
+import { usecasesToReducer } from "clean-redux";
 import type { ReturnType } from "tsafe";
 
 export const usecases = [usecase1, usecase2, usecase3];

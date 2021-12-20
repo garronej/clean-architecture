@@ -10,7 +10,7 @@ export async function createPort2(params: Port2Config): Promise<Port2> {
 
     return {
         "port2Method1": async ({ port2Method2Param1 }) => {
-            await new Promise(resolve => setTimeout(resolve, 200));
+            await new Promise(resolve => setTimeout(resolve, 50));
 
             return `${port2Config1}${port2Method2Param1}`.length;
         },

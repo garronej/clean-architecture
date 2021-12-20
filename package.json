@@ -1,7 +1,7 @@
 {
-    "name": "beyond-redux-toolkit",
+    "name": "clean-redux",
     "version": "0.0.0",
-    "description": "Utilities for a perfectly typed redux experience",
+    "description": "Toolkit for implementing clean architecture using Redux",
     "repository": {
         "type": "git",
         "url": "git://github.com/garronej/beyond-redux-toolkit.git"
@@ -15,7 +15,9 @@
         "lint": "npm run lint:check -- --fix",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "npm run _format -- --write",
-        "format:check": "npm run _format -- --list-different"
+        "format:check": "npm run _format -- --list-different",
+        "yarn_link": "ts-node src/bin/yarn_link.ts",
+        "start-demo-app": "yarn yarn_link && cd src/test/demo-app && yarn start"
     },
     "lint-staged": {
         "*.{ts,tsx}": [
@@ -55,7 +57,8 @@
         "lint-staged": "^11.1.1",
         "prettier": "^2.3.2",
         "typescript": "^4.3.5",
-        "@reduxjs/toolkit": "^1.7.1"
+        "@reduxjs/toolkit": "^1.7.1",
+        "ts-node": "^10.4.0"
     },
     "dependencies": {
         "minimal-polyfills": "^2.2.1",
