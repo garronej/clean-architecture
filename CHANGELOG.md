@@ -1,3 +1,7 @@
+### **0.2.5** (2021-12-20)  
+  
+- Rename UseCase -> Usecase and useCases -> usecases    
+  
 ### **0.2.4** (2021-12-20)  
   
 - Fix usecasesToPureFonctions    
