@@ -1,3 +1,7 @@
+### **0.2.4** (2021-12-20)  
+  
+- Fix usecasesToPureFonctions    
+  
 ### **0.2.3** (2021-12-20)  
   
 - fix previous commit  
