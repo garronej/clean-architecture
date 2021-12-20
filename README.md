@@ -49,7 +49,7 @@ they worth more than a thousand word.
 
 <p align="center">
   <a href="https://github.com/InseeFrLab/onyxia-web">
-  <i>Onyxia: A data science-oriented container launcher.<i>
+  <i>Onyxia: A data science-oriented container launcher.</i>
     <img src="https://user-images.githubusercontent.com/6702424/139264787-37efc793-1d55-4fa4-a4a9-782af8357cff.png">
   </a>
 </p>
