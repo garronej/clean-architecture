@@ -1,3 +1,9 @@
+### **0.2.3** (2021-12-20)  
+  
+- fix previous commit  
+- Remove .yarn_home  
+- Add missing index    
+  
 ## **0.2.0** (2021-12-20)  
   
 - Add annotation  
