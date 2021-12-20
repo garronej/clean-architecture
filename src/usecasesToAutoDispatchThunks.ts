@@ -123,7 +123,6 @@ export function usecasesToAutoDispatchThunks<
         >;
     };
 } {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     const autoDispatchThunksByDispatch = new WeakMap<Function, any>();
 
     return {
