@@ -1,6 +1,6 @@
 {
     "name": "clean-redux",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "Toolkit for implementing clean architecture using Redux",
     "repository": {
         "type": "git",
@@ -9,7 +9,6 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "test": "echo DODO",
         "build": "tsc",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "npm run _format -- --write",
