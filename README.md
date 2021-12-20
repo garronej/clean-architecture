@@ -30,6 +30,13 @@ The provided utilities internally leverage [TypeScript's template literal types]
 Implementing the approach exposed here enables large-scale app to remain maintainable for years even in the context
 of frequent developer turnover.
 
+This is the kind of experience you get from the UI side when used with React.
+
+https://user-images.githubusercontent.com/6702424/146718518-41cddbe9-bcf6-4b19-bc8e-25efe9085004.mp4
+
+Note that there is no need to explicitly call `dispatch` and the result of the selector are automatically
+wrapped into object so they can be destructured with the correct name.
+
 # Install / Import
 
 ```bash
