@@ -4,12 +4,12 @@ import { exclude } from "tsafe/exclude";
 export function usecasesToPureFunctions<
     UseCase extends {
         name: string;
-        pure?: Record<string, any>;
+        pure?: unknown;
     },
 >(
     useCases: readonly UseCase[],
 ): {
-    [Key in Extract<UseCase, { selectors: any }>["name"]]: NonNullable<
+    [Key in Extract<UseCase, { pure: any }>["name"]]: NonNullable<
         Extract<UseCase, { name: Key }>["pure"]
     >;
 } {

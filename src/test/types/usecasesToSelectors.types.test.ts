@@ -37,8 +37,6 @@ import { wrapSelectorsReturnValue, usecasesToSelectors } from "../../usecasesToS
 
     const got = usecasesToSelectors(useCases);
 
-    assert<Equals<{ bar: string }, Record<"bar", string>>>();
-
     type Expected = {
         myFirstSlice: {
             readonly foo: (state: any) => { foo: string };
