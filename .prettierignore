@@ -3,3 +3,5 @@
 /.eslintrc.js
 /docs/
 /CHANGELOG.md
+/.yarn_home/
+/src/test/demo-app/

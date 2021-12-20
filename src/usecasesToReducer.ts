@@ -4,11 +4,9 @@ import type { Reducer } from "@reduxjs/toolkit";
 /** see .types.test.ts file */
 export function usecasesToReducer<UseCase extends { name: string; reducer: Reducer | null }>(
     useCases: readonly UseCase[],
-): RemoveNullProperties<
-    {
-        [Key in UseCase["name"]]: Extract<UseCase, { name: Key }>["reducer"];
-    }
-> {
+): RemoveNullProperties<{
+    [Key in UseCase["name"]]: Extract<UseCase, { name: Key }>["reducer"];
+}> {
     return Object.fromEntries(
         useCases.map(({ name, reducer }) => [name, reducer]).filter(([, reducer]) => reducer !== null),
     ) as any;
