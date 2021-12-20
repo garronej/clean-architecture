@@ -12,7 +12,7 @@ import { assert } from "tsafe/assert";
         _brandPure2: unknown;
     };
 
-    const useCases = [
+    const usecases = [
         {
             "name": "myFirstSlice",
             "pure": Reflect<Pure1>(),
@@ -24,7 +24,7 @@ import { assert } from "tsafe/assert";
         { "name": "myThirdSlice" },
     ] as const;
 
-    const got = usecasesToPureFunctions(useCases);
+    const got = usecasesToPureFunctions(usecases);
 
     const expected = Reflect<{
         myFirstSlice: Pure1;

@@ -4,13 +4,13 @@ import { Reflect } from "tsafe/Reflect";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 
-const useCases = [
+const usecases = [
     { "name": "myFirstSlice", "reducer": Reflect<Reducer<{ foo: string }>>() },
     { "name": "mySecondSlice", "reducer": Reflect<Reducer<{ bar: string }>>() },
     { "name": "myThirdSlice", "reducer": null },
 ] as const;
 
-const reducer = usecasesToReducer(useCases);
+const reducer = usecasesToReducer(usecases);
 
 type ExpectedReducer = {
     myFirstSlice: Reducer<{ foo: string }>;

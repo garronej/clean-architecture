@@ -2,19 +2,19 @@ import "minimal-polyfills/Object.fromEntries";
 import { exclude } from "tsafe/exclude";
 
 export function usecasesToPureFunctions<
-    UseCase extends {
+    Usecase extends {
         name: string;
         pure?: unknown;
     },
 >(
-    useCases: readonly UseCase[],
+    usecases: readonly Usecase[],
 ): {
-    [Key in Extract<UseCase, { pure: any }>["name"]]: NonNullable<
-        Extract<UseCase, { name: Key }>["pure"]
+    [Key in Extract<Usecase, { pure: any }>["name"]]: NonNullable<
+        Extract<Usecase, { name: Key }>["pure"]
     >;
 } {
     return Object.fromEntries(
-        useCases
+        usecases
             .map(({ name, pure }) => (pure === undefined ? undefined : ([name, pure] as const)))
             .filter(exclude(undefined))
             .map(([name, pure]) => [name, pure]),

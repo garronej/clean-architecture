@@ -2,13 +2,13 @@ import "minimal-polyfills/Object.fromEntries";
 import type { Reducer } from "@reduxjs/toolkit";
 
 /** see .types.test.ts file */
-export function usecasesToReducer<UseCase extends { name: string; reducer: Reducer | null }>(
-    useCases: readonly UseCase[],
+export function usecasesToReducer<Usecase extends { name: string; reducer: Reducer | null }>(
+    usecases: readonly Usecase[],
 ): RemoveNullProperties<{
-    [Key in UseCase["name"]]: Extract<UseCase, { name: Key }>["reducer"];
+    [Key in Usecase["name"]]: Extract<Usecase, { name: Key }>["reducer"];
 }> {
     return Object.fromEntries(
-        useCases.map(({ name, reducer }) => [name, reducer]).filter(([, reducer]) => reducer !== null),
+        usecases.map(({ name, reducer }) => [name, reducer]).filter(([, reducer]) => reducer !== null),
     ) as any;
 }
 

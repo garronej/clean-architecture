@@ -25,19 +25,19 @@ export function wrapSelectorsReturnValue<
 
 /** See .types.test.ts */
 export function usecasesToSelectors<
-    UseCase extends {
+    Usecase extends {
         name: string;
         selectors?: { [Name in string]: (state: any) => unknown };
     },
 >(
-    useCases: readonly UseCase[],
+    usecases: readonly Usecase[],
 ): {
-    [Key in Extract<UseCase, { selectors: any }>["name"]]: WrapSelectorsReturnValue<
-        NonNullable<Extract<UseCase, { name: Key }>["selectors"]>
+    [Key in Extract<Usecase, { selectors: any }>["name"]]: WrapSelectorsReturnValue<
+        NonNullable<Extract<Usecase, { name: Key }>["selectors"]>
     >;
 } {
     return Object.fromEntries(
-        useCases
+        usecases
             .map(({ name, selectors }) =>
                 selectors === undefined ? undefined : ([name, selectors] as const),
             )
