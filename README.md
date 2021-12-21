@@ -45,8 +45,7 @@ $ yarn add @reduxjs/toolkit clean-redux
 
 # Documentation
 
-To see how the tool is actually meant to be used refer to the
-canonical clean architecture setup located in [`src/test/demo-app`](https://github.com/garronej/clean-redux/tree/main/src/test/demo-app).
+Canonical Clean Architecture setup: [`src/test/demo-app`](https://github.com/garronej/clean-redux/tree/main/src/test/demo-app).
 
 To understand what the functions exposed by `clean-redux` do in detail, please refer to
 [the compile time unit tests](https://github.com/garronej/clean-redux/tree/main/src/test/types)
