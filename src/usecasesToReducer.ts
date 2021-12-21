@@ -1,7 +1,6 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { Reducer } from "@reduxjs/toolkit";
 
-/** see .types.test.ts file */
 export function usecasesToReducer<Usecase extends { name: string; reducer: Reducer | null }>(
     usecases: readonly Usecase[],
 ): RemoveNullProperties<{

@@ -9,7 +9,6 @@ type WrapSelectorsReturnValue<Selectors extends { [Name in string]: (state: any)
     ) => Record<Name, ReturnType<Selectors[Name]>>;
 };
 
-/** See .types.test.ts */
 export function wrapSelectorsReturnValue<
     Selectors extends { [Name in string]: (state: any) => unknown },
 >(selectors: Selectors): WrapSelectorsReturnValue<Selectors> {
@@ -23,7 +22,6 @@ export function wrapSelectorsReturnValue<
     ) as any;
 }
 
-/** See .types.test.ts */
 export function usecasesToSelectors<
     Usecase extends {
         name: string;
