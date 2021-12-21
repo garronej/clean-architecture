@@ -12,7 +12,7 @@ export type Usecase1State = {
 
 export const name = "usecase1";
 
-const { reducer, actions } = createSlice({
+export const { reducer, actions } = createSlice({
     name,
     "initialState": id<Usecase1State>({
         "counter": 0,
@@ -29,8 +29,6 @@ const { reducer, actions } = createSlice({
         },
     },
 });
-
-export { reducer };
 
 export const thunks = {
     "thunk1":
@@ -50,7 +48,16 @@ export const thunks = {
         (params: { pY: string }): ThunkAction<Promise<number>> =>
         async (...args) => {
             const { pY } = params;
-            const [dispatch, getState] = args;
+            const [dispatch, getState, { evtAction }] = args;
+
+            if( getState().usecase2.isDoingSomething2 ){
+
+                await evtAction.waitFor(e=> 
+                    e.sliceName === "usecase2" && 
+                    e.actionName === "thunkXCompleted"
+                );
+
+            }
 
             await dispatch(thunks.thunk1({ "pX": pY }));
 

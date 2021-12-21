@@ -41,16 +41,17 @@
         "@reduxjs/toolkit": "^1.7.1"
     },
     "devDependencies": {
+        "@reduxjs/toolkit": "^1.7.1",
         "@types/node": "^16.4.9",
         "@types/react-redux": "^7.1.20",
         "husky": "^4.3.8",
         "lint-staged": "^11.1.1",
         "prettier": "^2.3.2",
-        "typescript": "^4.3.5",
-        "@reduxjs/toolkit": "^1.7.1",
-        "ts-node": "^10.4.0"
+        "ts-node": "^10.4.0",
+        "typescript": "^4.3.5"
     },
     "dependencies": {
+        "evt": "2.0.0-beta.38",
         "minimal-polyfills": "^2.2.1",
         "tsafe": "^0.9.0"
     }

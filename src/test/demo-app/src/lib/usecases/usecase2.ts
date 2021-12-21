@@ -12,7 +12,7 @@ export type Usecase2State = {
 
 export const name = "usecase2";
 
-const { reducer, actions } = createSlice({
+export const { reducer, actions } = createSlice({
     name,
     "initialState": id<Usecase2State>({
         "counter2": -1,
@@ -29,8 +29,6 @@ const { reducer, actions } = createSlice({
         },
     },
 });
-
-export { reducer };
 
 export const thunks = {
     "thunkX":
