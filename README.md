@@ -4,9 +4,9 @@
 <p align="center">
     <i>📐 Toolkit for implementing <b>clean architecture</b> using <b>Redux</b> 📐</i>
     <br/>
-    <i>Focuses on achieving great type inference</i>
+    <i>🔩 Focuses on achieving great type inference 🔩</i>
     <br/>
-    <i>Easy to navigate, easy to maintain</i>
+    <i>🎯 Easy to navigate, easy to maintain 🎯</i>
     <br>
     <br>
     <img src="https://github.com/garronej/beyond-redux-toolkit/workflows/ci/badge.svg?branch=main">
