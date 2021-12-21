@@ -1,3 +1,9 @@
+### **0.3.1** (2021-12-21)  
+  
+- Update demo-setup readme  
+- add missing files (changeog ignore)  
+- Rename app -> ui and lib -> core    
+  
 ## **0.3.0** (2021-12-21)  
   
 - Implement middleware for dispatch events    
