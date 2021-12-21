@@ -1,3 +1,7 @@
+## **0.3.0** (2021-12-21)  
+  
+- Implement middleware for dispatch events    
+  
 ### **0.2.5** (2021-12-20)  
   
 - Rename UseCase -> Usecase and useCases -> usecases    
