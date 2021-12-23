@@ -18,13 +18,13 @@
 This repo aims to be a guide on how to implement Clean Architecture using [`@reduxjs/toolkit`](https://redux-toolkit.js.org).  
 The NPM library `clean-redux` is a set of utils that you will need to achieve perfect type inference.
 
--   [Benefit](#benefit)
+-   [Benefits](#benefits)
 -   [Install / Import](#install--import)
 -   [Documentation](#documentation)
 -   [A production example](#a-production-example)
 -   [Start the demo app](#start-the-demo-app)
 
-# Benefit
+# Benefits
 
 The provided utilities internally leverage [TypeScript's template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html), it makes the developer experience truly next level.
 Implementing the approach exposed here enables large-scale app to remain maintainable for years even in the context
