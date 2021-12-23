@@ -9,10 +9,18 @@
     <i>🎯 Easy to navigate, easy to maintain 🎯</i>
     <br>
     <br>
-    <img src="https://github.com/garronej/beyond-redux-toolkit/workflows/ci/badge.svg?branch=main">
-    <img src="https://img.shields.io/bundlephobia/minzip/beyond-redux-toolkit">
-    <img src="https://img.shields.io/npm/dw/beyond-redux-toolkit">
-    <img src="https://img.shields.io/npm/l/beyond-redux-toolkit">
+    <a href="https://github.com/garronej/clean-redux/actions">
+      <img src="https://github.com/garronej/clean-redux/workflows/ci/badge.svg?branch=main">
+    </a>
+    <a href="https://bundlephobia.com/package/clean-redux">
+      <img src="https://img.shields.io/bundlephobia/minzip/clean-redux">
+    </a>
+    <a href="https://www.npmjs.com/package/clean-redux">
+      <img src="https://img.shields.io/npm/dw/clean-redux">
+    </a>
+    <a href="https://github.com/garronej/clean-redux/blob/main/LICENSE">
+      <img src="https://img.shields.io/npm/l/clean-redux">
+    </a>
 </p>
 
 This repo aims to be a guide on how to implement Clean Architecture using [`@reduxjs/toolkit`](https://redux-toolkit.js.org).  
