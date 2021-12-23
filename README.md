@@ -34,16 +34,15 @@ The NPM library `clean-redux` is a set of utils that you will need to achieve pe
 
 # Benefits
 
-The provided utilities internally leverage [TypeScript's template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html), it makes the developer experience truly next level.
 Implementing the approach exposed here enables large-scale app to remain maintainable for years even in the context
 of frequent developer turnover.
-
-This is the kind of experience you get from the UI side when used with React.
+The provided utilities internally leverage [TypeScript's template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) witch makes the developer experience truly next level.
 
 https://user-images.githubusercontent.com/6702424/146718518-41cddbe9-bcf6-4b19-bc8e-25efe9085004.mp4
 
 Note that there is no need to explicitly call `dispatch` and the result of the selector are automatically
 wrapped into object so they can be destructured with the correct name.
+Note also that in the examples we use React but `clean-redux` is UI framework agnostic.
 
 # Install / Import
 
