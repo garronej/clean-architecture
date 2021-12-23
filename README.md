@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/6702424/80216211-00ef5280-863e-11ea-81de-59f3a3d4b8e4.png">  
+    <img src="https://user-images.githubusercontent.com/6702424/147236719-6733bf4d-947b-47bf-a81f-b186fe78ad14.png">  
 </p>
 <p align="center">
     <i>📐 Toolkit for implementing <b>clean architecture</b> using <b>Redux</b> 📐</i>
