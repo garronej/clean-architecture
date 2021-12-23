@@ -30,7 +30,7 @@ The NPM library `clean-redux` is a set of utils that you will need to achieve pe
 -   [Install / Import](#install--import)
 -   [Documentation](#documentation)
 -   [A production example](#a-production-example)
--   [Start the demo app](#start-the-demo-app)
+-   [Starting the demo app](#starting-the-demo-app)
 
 # Benefits
 
@@ -68,7 +68,7 @@ they worth more than a thousand word.
   </a>
 </p>
 
-# Start the demo app
+# Starting the demo app
 
 ```bash
 git clone https://github.com/garronej/clean-redux
