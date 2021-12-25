@@ -134,7 +134,10 @@ export function createMiddlewareEvtActionFactory<
         const actionTypes = new Set(
             usecases
                 .map(usecase =>
-                    typeGuard<Extract<typeof usecase, { actions: unknown }>>(usecase, true)
+                    typeGuard<Extract<typeof usecase, { actions: unknown }>>(
+                        usecase,
+                        "reducer" in usecase && usecase.reducer !== null,
+                    )
                         ? usecase
                         : undefined,
                 )
