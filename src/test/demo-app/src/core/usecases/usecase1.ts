@@ -54,7 +54,8 @@ export const thunks = {
 
                 await evtAction.waitFor(e=> 
                     e.sliceName === "usecase2" && 
-                    e.actionName === "thunkXCompleted"
+                    e.actionName === "thunkXCompleted" &&
+                    e.payload.delta !== 666
                 );
 
             }

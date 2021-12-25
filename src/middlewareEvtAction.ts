@@ -1,60 +1,47 @@
 import type { NonPostableEvt } from "evt";
-import type { Middleware } from "@reduxjs/toolkit";
+import type {
+    Middleware,
+    ActionCreator,
+    ActionCreatorWithPayload,
+    ActionCreatorWithoutPayload,
+} from "@reduxjs/toolkit";
 import { Evt } from "evt";
 import { exclude } from "tsafe/exclude";
 import { typeGuard } from "tsafe/typeGuard";
 import { symToStr } from "tsafe/symToStr";
 
+type CaseReducerToEvent<T extends Record<string, ActionCreator<any>>> = RecordToUnion<{
+    [K in keyof T]: { actionName: K } & (T[K] extends ActionCreatorWithoutPayload<any>
+        ? {}
+        : {
+              payload: T[K] extends ActionCreatorWithPayload<infer U> ? U : never;
+          });
+}>;
+
+type RecordToUnion<O> = O[keyof O];
+
+type UsecaseToEvent<
+    Usecase extends { name: string } & (
+        | { actions: Record<string, ActionCreator<any>> }
+        | { reducer: null }
+    ),
+> = RecordToUnion<{
+    [Key in Extract<Usecase, { actions: unknown }>["name"]]: Usecase extends Extract<
+        Usecase,
+        { name: Key; actions: unknown }
+    >
+        ? { sliceName: Key } & CaseReducerToEvent<Usecase["actions"]>
+        : never;
+}>;
+
 export function createMiddlewareEvtActionFactory<
-    Usecase extends { name: string } & ({ actions: Record<string, unknown> } | { reducer: null }),
+    Usecase extends { name: string } & (
+        | { actions: Record<string, ActionCreator<any>> }
+        | { reducer: null }
+    ),
 >(usecases: readonly Usecase[]) {
-    /*
-	type UsecaseToEventData<
-		Usecase extends { name: string } & ({ actions: Record<string, unknown> } | { reducer: null }),
-	> = RecordToEventData<{
-		[Key in Extract<Usecase, { actions: unknown }>["name"]]: Usecase extends Extract<
-			Usecase,
-			{ name: Key; actions: unknown }
-		>
-			? keyof Usecase["actions"]
-			: never;
-	}>;
-
-	type RecordToEventData<O> = {
-		[P in keyof O]: { sliceName: P; actionName: O[P] };
-	}[keyof O];
-	*/
-
     function createMiddlewareEvtAction(): {
-        evtAction: NonPostableEvt<
-            {
-                [P in keyof {
-                    [Key in Extract<Usecase, { actions: unknown }>["name"]]: Usecase extends Extract<
-                        Usecase,
-                        { name: Key; actions: unknown }
-                    >
-                        ? keyof Usecase["actions"]
-                        : never;
-                }]: {
-                    sliceName: P;
-                    actionName: {
-                        [Key in Extract<Usecase, { actions: unknown }>["name"]]: Usecase extends Extract<
-                            Usecase,
-                            { name: Key; actions: unknown }
-                        >
-                            ? keyof Usecase["actions"]
-                            : never;
-                    }[P];
-                };
-            }[keyof {
-                [Key in Extract<Usecase, { actions: unknown }>["name"]]: Usecase extends Extract<
-                    Usecase,
-                    { name: Key; actions: unknown }
-                >
-                    ? keyof Usecase["actions"]
-                    : never;
-            }]
-        >;
+        evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
         middlewareEvtAction: Middleware;
     } {
         const actionTypes = new Set(
@@ -78,10 +65,12 @@ export function createMiddlewareEvtActionFactory<
 
         const middlewareEvtAction: Middleware = () => next => (action: { type: string }) => {
             if (!actionTypes.has(action.type)) {
-                console.warn([
-                    `Unknown action type ${action.type}.`,
-                    `${symToStr({ middlewareEvtAction })} is misconfigured`,
-                ]);
+                console.warn(
+                    [
+                        `Unknown action type ${action.type}.`,
+                        `${symToStr({ middlewareEvtAction })} is misconfigured`,
+                    ].join(" "),
+                );
                 return next(action);
             }
 
