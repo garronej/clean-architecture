@@ -1,3 +1,10 @@
+### **0.3.4** (2021-12-25)  
+  
+- Fix runtime bug in middlewareEvtAction  
+- Update README video (cangelog ignore)  
+- Expand evtAction type for better experience in vscode type preview  
+- evt action gives payload    
+  
 ### **0.3.3** (2021-12-23)  
   
   
