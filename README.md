@@ -38,7 +38,7 @@ Implementing the approach exposed here enables large-scale app to remain maintai
 of frequent developer turnover.
 The provided utilities internally leverage [TypeScript's template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) witch makes the developer experience truly next level.
 
-https://user-images.githubusercontent.com/6702424/147242636-f1483e42-be24-4276-8fb0-9611414d6c86.mp4
+https://user-images.githubusercontent.com/6702424/147380975-433fadf2-681f-4d3d-948d-72343cbf4c46.mov
 
 Note that there is no need to explicitly call `dispatch` and the result of the selector are automatically
 wrapped into object so they can be destructured with the correct name.

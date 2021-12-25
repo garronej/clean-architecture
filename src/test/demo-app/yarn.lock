@@ -2634,9 +2634,6 @@ clean-css@^5.2.2:
 
 "clean-redux@file:../../../dist":
   version "0.0.0"
-  dependencies:
-    minimal-polyfills "^2.2.1"
-    tsafe "^0.9.0"
 
 clean-stack@^2.0.0:
   version "2.2.0"
@@ -5628,11 +5625,6 @@ mini-css-extract-plugin@^2.4.5:
   integrity sha512-oEIhRucyn1JbT/1tU2BhnwO6ft1jjH1iCX9Gc59WFMg0n5773rQU0oyQ0zzeYFFuBfONaRbQJyGoPtuNseMxjA==
   dependencies:
     schema-utils "^4.0.0"
-
-minimal-polyfills@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.1.tgz#7249d7ece666d3b4e1ec1c1b8f949eb9d44e2308"
-  integrity sha512-WLmHQrsZob4rVYf8yHapZPNJZ3sspGa/sN8abuSD59b0FifDEE7HMfLUi24z7mPZqTpBXy4Svp+iGvAmclCmXg==
 
 minimalistic-assert@^1.0.0:
   version "1.0.1"
