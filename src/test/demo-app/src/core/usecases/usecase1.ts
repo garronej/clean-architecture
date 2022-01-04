@@ -10,10 +10,8 @@ export type Usecase1State = {
     isDoingSomething: boolean;
 };
 
-export const name = "usecase1";
-
-export const { reducer, actions } = createSlice({
-    name,
+export const { reducer, actions, name } = createSlice({
+    "name": "usecase1",
     "initialState": id<Usecase1State>({
         "counter": 0,
         "isDoingSomething": false,
