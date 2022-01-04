@@ -56,7 +56,7 @@ Canonical Clean Architecture setup: [`src/test/demo-app`](https://github.com/gar
 
 To understand what the functions exposed by `clean-redux` do in detail, please refer to
 [the compile time unit tests](https://github.com/garronej/clean-redux/tree/main/src/test/types)
-they worth more than a thousand word.
+they worth more than a thousand words.
 
 # A production example
 
