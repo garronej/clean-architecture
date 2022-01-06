@@ -9,7 +9,7 @@ import { createPort1 } from "./secondaryAdapters/createPort1";
 import type { Port1Config } from "./secondaryAdapters/createPort1";
 import * as usecase1 from "./usecases/usecase1";
 import * as usecase2 from "./usecases/usecase2";
-import * as usecase3 from "./usecases/usecase2";
+import * as usecase3 from "./usecases/usecase3";
 import { usecasesToReducer, createMiddlewareEvtActionFactory } from "clean-redux";
 import type { ReturnType } from "tsafe";
 
@@ -54,7 +54,7 @@ export async function createStore(params: CreateStoreParams) {
         ] as const
     });
 
-    await store.dispatch(usecase3.privateThunks.initialize());
+    await store.dispatch(usecase2.privateThunks.initialize());
 
     return store;
 }
