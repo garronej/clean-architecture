@@ -35,7 +35,13 @@
         "!dist/test/",
         "!dist/tsconfig.tsbuildinfo"
     ],
-    "keywords": [],
+    "keywords": [
+        "clean-architecture",
+        "hexagonal",
+        "redux",
+        "typescript",
+        "react"
+    ],
     "homepage": "https://github.com/garronej/clean-redux",
     "peerDependencies": {
         "@reduxjs/toolkit": "^1.7.1"
