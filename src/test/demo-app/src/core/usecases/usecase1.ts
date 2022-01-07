@@ -4,6 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { State } from "../setup";
 import { id } from "tsafe/id";
 import { createSelector } from "@reduxjs/toolkit";
+import { createUsecase } from "clean-redux";
 
 export type Usecase1State = {
     counter: number;
@@ -27,6 +28,7 @@ export const { reducer, actions, name } = createSlice({
         },
     },
 });
+
 
 export const thunks = {
     "thunk1":
@@ -66,6 +68,7 @@ export const thunks = {
         },
 };
 
+
 export const selectors = (() => {
     const isBig = (state: State) => {
         const { counter } = state.usecase1;
@@ -84,3 +87,8 @@ export const selectors = (() => {
         isReadyBig,
     };
 })();
+
+export const { usecase1Usecase_index } = createUsecase.index({ name, thunks, selectors });
+export const { usecase1Usecase_setup } = createUsecase.setup({ name, actions, reducer });
+
+

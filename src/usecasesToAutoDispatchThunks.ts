@@ -70,12 +70,12 @@ export function thunksToAutoDispatchThunks<
 
 const wordId = "Thunks";
 
-export function usecasesToAutoDispatchThunks<
-    Usecase extends {
-        name: string;
-        thunks: Record<string, (params: any) => ThunkAction<any, any, any, any>>;
-    },
->(
+export type UsecaseLike = {
+    name: string;
+    thunks: Record<string, (params: any) => ThunkAction<any, any, any, any>>;
+};
+
+export function usecasesToAutoDispatchThunks<Usecase extends UsecaseLike>(
     usecases: readonly Usecase[],
 ): {
     getAutoDispatchThunks: (

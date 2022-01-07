@@ -7,20 +7,13 @@ import { createPort2 } from "./secondaryAdapters/createProt2";
 import type { Port2Config } from "./secondaryAdapters/createProt2";
 import { createPort1 } from "./secondaryAdapters/createPort1";
 import type { Port1Config } from "./secondaryAdapters/createPort1";
-import * as usecase1 from "./usecases/usecase1";
-import * as usecase2 from "./usecases/usecase2";
-import * as usecase3 from "./usecases/usecase3";
-import { usecasesToReducer, createMiddlewareEvtActionFactory } from "clean-redux";
 import type { ReturnType } from "tsafe";
-
-export const usecases = [usecase1, usecase2, usecase3];
+import { reducer, createMiddlewareEvtAction } from "./usecases";
 
 export type CreateStoreParams = {
     port1Config: Port1Config;
     port2Config: Port2Config;
 };
-
-const { createMiddlewareEvtAction } = createMiddlewareEvtActionFactory(usecases);
 
 export type ThunksExtraArgument = {
     createStoreParams: CreateStoreParams;
@@ -38,7 +31,7 @@ export async function createStore(params: CreateStoreParams) {
     const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction();
 
     const store = configureStore({
-        "reducer": usecasesToReducer(usecases),
+        reducer,
         "middleware": getDefaultMiddleware => [
             ...getDefaultMiddleware({
                 "thunk": {
@@ -54,7 +47,7 @@ export async function createStore(params: CreateStoreParams) {
         ] as const
     });
 
-    await store.dispatch(usecase2.privateThunks.initialize());
+    //await store.dispatch(usecase2.privateThunks.initialize());
 
     return store;
 }

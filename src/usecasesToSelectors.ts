@@ -22,12 +22,12 @@ export function wrapSelectorsReturnValue<
     ) as any;
 }
 
-export function usecasesToSelectors<
-    Usecase extends {
-        name: string;
-        selectors?: { [Name in string]: (state: any) => unknown };
-    },
->(
+export type UsecaseLike = {
+    name: string;
+    selectors?: { [Name in string]: (state: any) => unknown };
+};
+
+export function usecasesToSelectors<Usecase extends UsecaseLike>(
     usecases: readonly Usecase[],
 ): {
     [Key in Extract<Usecase, { selectors: any }>["name"]]: WrapSelectorsReturnValue<

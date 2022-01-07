@@ -1,8 +1,8 @@
 import type { ThunkAction } from "../setup";
+import { createUsecase } from "clean-redux";
 
-export const name = "usecase3";
+export const name = "usecase3" as const;
 
-export const reducer = null;
 
 export const thunks = {
     "thunkZ":
@@ -14,3 +14,7 @@ export const thunks = {
             return pZ + getState().usecase1.counter;
         },
 };
+
+
+export const { usecase3Usecase_index } = createUsecase.index({ name, thunks });
+export const { usecase3Usecase_setup } = createUsecase.setup({ name, "reducer": null });

@@ -1,12 +1,12 @@
 import "minimal-polyfills/Object.fromEntries";
 import { exclude } from "tsafe/exclude";
 
-export function usecasesToPureFunctions<
-    Usecase extends {
-        name: string;
-        pure?: unknown;
-    },
->(
+export type UsecaseLike = {
+    name: string;
+    pure?: unknown;
+};
+
+export function usecasesToPureFunctions<Usecase extends UsecaseLike>(
     usecases: readonly Usecase[],
 ): {
     [Key in Extract<Usecase, { pure: any }>["name"]]: NonNullable<

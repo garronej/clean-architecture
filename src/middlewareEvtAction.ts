@@ -36,12 +36,14 @@ type UsecaseToEvent<
 }>;
 */
 
-export function createMiddlewareEvtActionFactory<
-    Usecase extends { name: string } & (
-        | { actions: Record<string, ActionCreator<any>> }
-        | { reducer: null }
-    ),
->(usecases: readonly Usecase[]) {
+export type UsecaseLike = { name: string } & (
+    | { actions: Record<string, ActionCreator<any>> }
+    | { reducer: null }
+);
+
+export function createMiddlewareEvtActionFactory<Usecase extends UsecaseLike>(
+    usecases: readonly Usecase[],
+) {
     function createMiddlewareEvtAction(): {
         /** NOTE: We use an expended version of the type so that,
          * when the cursor hovers evtAction we get an explicit type instead of
