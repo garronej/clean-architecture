@@ -151,28 +151,40 @@ export function createMiddlewareEvtActionFactory<
         const evtAction = Evt.create<{
             sliceName: string;
             actionName: string;
+            lifecycleStage?: string;
             payload: any;
         }>();
 
         const middlewareEvtAction: Middleware =
             () => next => (action: { type: string; payload: any }) => {
-                if (!actionTypes.has(action.type)) {
+                if (
+                    !actionTypes.has(action.type) &&
+                    !["pending", "rejected", "fulfilled"].find(lifecycleStage =>
+                        action.type.endsWith(`/${lifecycleStage}`),
+                    )
+                ) {
                     console.warn(
                         [
                             `Unknown action type ${action.type}.`,
                             `${symToStr({ middlewareEvtAction })} is misconfigured`,
                         ].join(" "),
                     );
+
                     return next(action);
                 }
 
-                const [sliceName, ...rest] = action.type.split("/");
+                const [sliceName, actionName, ...lifecycleStage] = action.type.split("/");
 
                 const out = next(action);
 
                 evtAction.post({
-                    "sliceName": sliceName,
-                    "actionName": rest.join("/"),
+                    sliceName,
+                    actionName,
+                    ...(lifecycleStage.length === 0
+                        ? {}
+                        : {
+                              "lifecycleStage": lifecycleStage.join("/"),
+                          }),
                     "payload": action.payload,
                 });
 
