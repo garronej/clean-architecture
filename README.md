@@ -28,6 +28,7 @@ The NPM library `clean-redux` is a set of utils that you will need to achieve pe
 
 -   [Benefits](#benefits)
 -   [Install / Import](#install--import)
+-   [Opinionated restrictions](#opinionated-restrictions)
 -   [Documentation](#documentation)
 -   [A production example](#a-production-example)
 -   [Starting the demo app](#starting-the-demo-app)
@@ -49,6 +50,21 @@ Note also that in the examples we use React but `clean-redux` is UI framework ag
 ```bash
 $ yarn add @reduxjs/toolkit clean-redux
 ```
+
+# Opinionated restrictions
+
+Because the role of a framework is to remove degrees of liberty that result in the developer writing
+better code this is what you **can't** do if you chose to use this toolkit:
+
+-   In this model the UI isn't allowed to dispatch action directly, the UI dispatch thunks (synchronous or asynchronous)
+    that internally dispatches actions. This approach forces you to keep your reducers plain and simple and to think
+    of your thunks as the API exposed to the UI.
+-   I advise against using `createAsyncThunk()`. It's preferable to decide what
+    actions get dispatched when a thunk start, when it fails and when it completes
+    on a case-by-case basis, pending, rejected and fulfilled is a one-size-fits-**not**-all
+    patterns.
+    If you do choose to use it anyway, clean-redux will comply but you will loose some degree
+    of type safety.
 
 # Documentation
 
