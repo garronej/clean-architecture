@@ -15,9 +15,11 @@
     <a href="https://bundlephobia.com/package/clean-redux">
       <img src="https://img.shields.io/bundlephobia/minzip/clean-redux">
     </a>
+    <!--
     <a href="https://www.npmjs.com/package/clean-redux">
       <img src="https://img.shields.io/npm/dw/clean-redux">
     </a>
+    -->
     <a href="https://github.com/garronej/clean-redux/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/clean-redux">
     </a>
@@ -68,7 +70,9 @@ better code this is what you **can't** do if you chose to use this toolkit:
 
 # Documentation
 
-Canonical Clean Architecture setup: [`src/test/demo-app`](https://github.com/garronej/clean-redux/tree/main/src/test/demo-app).
+Canonical Clean Architecture setup: [`src/test/demo-app`](https://github.com/garronej/clean-redux/tree/main/src/test/demo-app).  
+You can also refer to [@leosuncin/redux-clean-example](https://github.com/leosuncin/redux-clean-example) that feature [the
+classic counter example](https://user-images.githubusercontent.com/6702424/148482441-41f411e4-d466-4e0c-a898-c8e536bbcd14.png).
 
 To understand what the functions exposed by `clean-redux` do in detail, please refer to
 [the compile time unit tests](https://github.com/garronej/clean-redux/tree/main/src/test/types)
