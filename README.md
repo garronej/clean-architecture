@@ -55,10 +55,9 @@ $ yarn add @reduxjs/toolkit clean-redux
 
 # Opinionated restrictions
 
-Because the role of a framework is to remove degrees of liberty that result in the developer writing
-better code this is what you **can't** do if you chose to use this toolkit:
+Because a [programing paradigm work by removing a freedom of some kind](https://youtu.be/wyABTfR9UTU?t=109), this is what you **can't** do if you chose to use this toolkit:
 
--   In this model the UI isn't allowed to dispatch action directly, the UI dispatch thunks (synchronous or asynchronous)
+-   The UI isn't allowed to dispatch action directly, the UI dispatch thunks (synchronous or asynchronous)
     that internally dispatches actions. This approach forces you to keep your reducers plain and simple and to think
     of your thunks as the API exposed to the UI.
 -   I advise against using `createAsyncThunk()`. It's preferable to decide what
