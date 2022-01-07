@@ -7,11 +7,10 @@ import { createPort2 } from "./secondaryAdapters/createProt2";
 import type { Port2Config } from "./secondaryAdapters/createProt2";
 import { createPort1 } from "./secondaryAdapters/createPort1";
 import type { Port1Config } from "./secondaryAdapters/createPort1";
+import { usecasesToReducer, createMiddlewareEvtActionFactory } from "clean-redux";
 import * as usecase1 from "./usecases/usecase1";
 import * as usecase2 from "./usecases/usecase2";
 import * as usecase3 from "./usecases/usecase3";
-import { usecasesToReducer, createMiddlewareEvtActionFactory } from "clean-redux";
-import type { ReturnType } from "tsafe";
 
 export const usecases = [usecase1, usecase2, usecase3];
 
@@ -20,12 +19,14 @@ export type CreateStoreParams = {
     port2Config: Port2Config;
 };
 
+//Delete this line if you're not going to use evtAction middleware...
 const { createMiddlewareEvtAction } = createMiddlewareEvtActionFactory(usecases);
 
 export type ThunksExtraArgument = {
     createStoreParams: CreateStoreParams;
     port1: Port1;
     port2: Port2;
+    //...and this line
     evtAction: ReturnType<typeof createMiddlewareEvtAction>["evtAction"];
 };
 
@@ -35,6 +36,7 @@ export async function createStore(params: CreateStoreParams) {
         createPort2(params.port2Config),
     ]);
 
+    //...also this line
     const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction();
 
     const store = configureStore({
@@ -50,6 +52,7 @@ export async function createStore(params: CreateStoreParams) {
                     }),
                 },
             }),
+            //...and finally this line
             middlewareEvtAction
         ] as const
     });
@@ -59,7 +62,7 @@ export async function createStore(params: CreateStoreParams) {
     return store;
 }
 
-type Store = ReturnType<typeof createStore>;
+type Store = Awaited<ReturnType<typeof createStore>>;
 
 export type Dispatch = Store["dispatch"];
 
