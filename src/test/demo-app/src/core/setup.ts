@@ -7,7 +7,9 @@ import { createPort2 } from "./secondaryAdapters/createProt2";
 import type { Port2Config } from "./secondaryAdapters/createProt2";
 import { createPort1 } from "./secondaryAdapters/createPort1";
 import type { Port1Config } from "./secondaryAdapters/createPort1";
-import { usecasesToReducer, createMiddlewareEvtActionFactory } from "clean-redux";
+import { usecasesToReducer } from "clean-redux";
+//Delete this line if you're not going to use evtAction middleware...
+import { createMiddlewareEvtActionFactory } from "clean-redux/middlewareEvtAction";
 import * as usecase1 from "./usecases/usecase1";
 import * as usecase2 from "./usecases/usecase2";
 import * as usecase3 from "./usecases/usecase3";
@@ -19,7 +21,7 @@ export type CreateStoreParams = {
     port2Config: Port2Config;
 };
 
-//Delete this line if you're not going to use evtAction middleware...
+//...and this line
 const { createMiddlewareEvtAction } = createMiddlewareEvtActionFactory(usecases);
 
 export type ThunksExtraArgument = {
