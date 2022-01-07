@@ -1,3 +1,16 @@
+# **1.0.0** (2022-01-07)  
+  
+- Add extra example  
+- provide evtAction with runtime compatibility with createAsyncThunk  
+- Document opignionated restrictions  
+- Exclude evtAction from index  
+- update deps of demo app  
+- Add keywords in package.json  
+- Loosen the required evt version  
+- Point out the line to delete to disable evtAction  
+- Fix setup error  
+- Deconstruct name from createSlice return type    
+  
 ### **0.3.4** (2021-12-25)  
   
 - Fix runtime bug in middlewareEvtAction  
