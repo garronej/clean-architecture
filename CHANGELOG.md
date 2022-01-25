@@ -1,3 +1,12 @@
+### **1.0.1** (2022-01-25)  
+  
+- Warn about renaming  
+- Rename clean-redux to redux-clean-architecture  
+- Rename toolkit into utilities  
+- Remove clean-redux in banner  
+- Better bullet points in benefits  
+- Rephrase and link video source    
+  
 # **1.0.0** (2022-01-07)  
   
 - Add extra example  
