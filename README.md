@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/6702424/147236719-6733bf4d-947b-47bf-a81f-b186fe78ad14.png">  
+    <img src="https://user-images.githubusercontent.com/6702424/151054088-b21c1cd6-912a-4dcf-b54d-af74e8632620.png">  
 </p>
 <p align="center">
     <i>📐 Toolkit for implementing <b>clean architecture</b> using <b>Redux</b> 📐</i>
@@ -23,12 +23,12 @@
 This repo aims to be a guide on how to implement Clean Architecture using [`@reduxjs/toolkit`](https://redux-toolkit.js.org).  
 The NPM library `clean-redux` is a set of type-level utilities that you will need to achieve perfect type inference.
 
--   [Benefits](#benefits)
--   [Install / Import](#install--import)
--   [Documentation](#documentation)
--   [A production example](#a-production-example)
--   [Opinionated restrictions](#opinionated-restrictions)
--   [Starting the demo app](#starting-the-demo-app)
+- [Benefits](#benefits)
+- [Install / Import](#install--import)
+- [Documentation](#documentation)
+- [A production example](#a-production-example)
+- [Opinionated restrictions](#opinionated-restrictions)
+- [Starting the demo app](#starting-the-demo-app)
 
 # Benefits
 
