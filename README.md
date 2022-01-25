@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/151054088-b21c1cd6-912a-4dcf-b54d-af74e8632620.png">  
 </p>
 <p align="center">
-    <i>📐 Toolkit for implementing <b>clean architecture</b> using <b>Redux</b> 📐</i>
+    <i>📐 Utilities for implementing <b>clean architecture</b> using <b>Redux</b> 📐</i>
     <br/>
     <i>🔩 Focuses on achieving great type inference 🔩</i>
     <br/>
