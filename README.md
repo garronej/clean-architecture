@@ -27,7 +27,7 @@ The NPM library `redux-clean-architecture` is a set of type-level utilities that
 -   [Install / Import](#install--import)
 -   [Examples setups](#examples-setups)
     -   [Canonical setup](#canonical-setup)
-    -   [TODO List](#todo-list)
+    -   [Todos List app](#todos-list-app)
     -   [Enterprise grade app](#enterprise-grade-app)
 -   [Opinionated restrictions](#opinionated-restrictions)
 -   [Starting the demo app](#starting-the-demo-app)
@@ -56,7 +56,7 @@ $ yarn add @reduxjs/toolkit redux-clean-architecture
 
 A canonical setup can be found here: [👉 `src/test/demo-app`👈 ](https://github.com/garronej/redux-clean-architecture/tree/main/src/test/demo-app).
 
-## TODO List
+## Todos List app
 
 A todo list example can be found [👉**here**👈](https://github.com/garronej/redux-clean-example).  
 Credit goes to [@leosuncin](https://github.com/leosuncin).
