@@ -110,6 +110,6 @@ execYarnLink({ "cwd": pathJoin(tssReactDirPath, "dist") });
 testAppNames.forEach(testAppName =>
     execYarnLink({
         "cwd": getTestAppPath(testAppName),
-        "targetModuleName": "clean-redux",
+        "targetModuleName": "redux-clean-architecture",
     }),
 );

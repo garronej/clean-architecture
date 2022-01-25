@@ -24,8 +24,8 @@ E.g. `import { ... } from "core";`.
     that internally make uses of a library like [`axios`](https://axios-http.com) to make the HTTP requests to your REST API.
 -   The `src/core/usecases` directory should contains the method and states that will be needed to give the App an user interface.
 -   The `middlewareEvtAction` is optional. It provides an [`Evt`](https://evt.land) that posts every time an action is dispatched.
-    It allows, for example, [to wait for an other operation to complete before starting a new one](https://github.com/garronej/clean-redux/blob/1702d15b6ea395f2816734fe73a20fa4551ec679/src/test/demo-app/src/core/usecases/usecase1.ts#L51-L60).
+    It allows, for example, [to wait for an other operation to complete before starting a new one](https://github.com/garronej/redux-clean-architecture/blob/1702d15b6ea395f2816734fe73a20fa4551ec679/src/test/demo-app/src/core/usecases/usecase1.ts#L51-L60).
     Find a documented usecase [here](https://docs.onyxia.dev/architecture#how-to-deal-with-project-switching).
 
 Happy hacking!  
-Do not hesitate to [start a discussion](https://github.com/garronej/clean-redux/discussions)!.
+Do not hesitate to [start a discussion](https://github.com/garronej/redux-clean-architecture/discussions)!.

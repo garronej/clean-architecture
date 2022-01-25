@@ -7,9 +7,14 @@ import { createPort2 } from "./secondaryAdapters/createProt2";
 import type { Port2Config } from "./secondaryAdapters/createProt2";
 import { createPort1 } from "./secondaryAdapters/createPort1";
 import type { Port1Config } from "./secondaryAdapters/createPort1";
-import { usecasesToReducer } from "clean-redux";
+import { usecasesToReducer } from "redux-clean-architecture";
 //Delete this line if you're not going to use evtAction middleware...
-import { createMiddlewareEvtActionFactory } from "clean-redux/middlewareEvtAction";
+import { createMiddlewareEvtActionFactory } from "redux-clean-architecture/middlewareEvtAction";
+/*Naming suggestion: 
+ * if you have usecases/explorer.ts
+ * import it like:
+ * import * as explorerUsecase from "./usecases/explorer";
+ */
 import * as usecase1 from "./usecases/usecase1";
 import * as usecase2 from "./usecases/usecase2";
 import * as usecase3 from "./usecases/usecase3";

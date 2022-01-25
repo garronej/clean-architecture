@@ -9,26 +9,26 @@
     <i>🎯 Easy to navigate, easy to maintain 🎯</i>
     <br>
     <br>
-    <a href="https://github.com/garronej/clean-redux/actions">
-      <img src="https://github.com/garronej/clean-redux/workflows/ci/badge.svg?branch=main">
+    <a href="https://github.com/garronej/redux-clean-architecture/actions">
+      <img src="https://github.com/garronej/redux-clean-architecture/workflows/ci/badge.svg?branch=main">
     </a>
-    <a href="https://bundlephobia.com/package/clean-redux">
-      <img src="https://img.shields.io/bundlephobia/minzip/clean-redux">
+    <a href="https://bundlephobia.com/package/redux-clean-architecture">
+      <img src="https://img.shields.io/bundlephobia/minzip/redux-clean-architecture">
     </a>
-    <a href="https://github.com/garronej/clean-redux/blob/main/LICENSE">
-      <img src="https://img.shields.io/npm/l/clean-redux">
+    <a href="https://github.com/garronej/redux-clean-architecture/blob/main/LICENSE">
+      <img src="https://img.shields.io/npm/l/redux-clean-architecture">
     </a>
 </p>
 
 This repo aims to be a guide on how to implement Clean Architecture using [`@reduxjs/toolkit`](https://redux-toolkit.js.org).  
-The NPM library `clean-redux` is a set of type-level utilities that you will need to achieve perfect type inference.
+The NPM library `redux-clean-architecture` is a set of type-level utilities that you will need to achieve perfect type inference.
 
-- [Benefits](#benefits)
-- [Install / Import](#install--import)
-- [Documentation](#documentation)
-- [A production example](#a-production-example)
-- [Opinionated restrictions](#opinionated-restrictions)
-- [Starting the demo app](#starting-the-demo-app)
+-   [Benefits](#benefits)
+-   [Install / Import](#install--import)
+-   [Documentation](#documentation)
+-   [A production example](#a-production-example)
+-   [Opinionated restrictions](#opinionated-restrictions)
+-   [Starting the demo app](#starting-the-demo-app)
 
 # Benefits
 
@@ -45,17 +45,17 @@ https://user-images.githubusercontent.com/6702424/147381177-346293ec-8562-4aa4-a
 # Install / Import
 
 ```bash
-$ yarn add @reduxjs/toolkit clean-redux
+$ yarn add @reduxjs/toolkit redux-clean-architecture
 ```
 
 # Documentation
 
-Canonical Clean Architecture setup: [`src/test/demo-app`](https://github.com/garronej/clean-redux/tree/main/src/test/demo-app).  
+Canonical Clean Architecture setup: [`src/test/demo-app`](https://github.com/garronej/redux-clean-architecture/tree/main/src/test/demo-app).  
 You can also refer to [@leosuncin/redux-clean-example](https://github.com/leosuncin/redux-clean-example) that feature [the
 classic counter example](https://user-images.githubusercontent.com/6702424/148482441-41f411e4-d466-4e0c-a898-c8e536bbcd14.png).
 
-To understand what the functions exposed by `clean-redux` do in detail, please refer to
-[the compile time unit tests](https://github.com/garronej/clean-redux/tree/main/src/test/types)
+To understand what the functions exposed by `redux-clean-architecture` do in detail, please refer to
+[the compile time unit tests](https://github.com/garronej/redux-clean-architecture/tree/main/src/test/types)
 they worth more than a thousand words.
 
 # A production example
@@ -78,14 +78,14 @@ Because a [programing paradigm work by removing a freedom of some kind](https://
     actions get dispatched when a thunk start, when it fails and when it completes
     on a case-by-case basis, pending, rejected and fulfilled is a one-size-fits-**not**-all
     patterns.
-    If you do choose to use it anyway, clean-redux will comply but you will loose some degree
+    If you do choose to use it anyway, redux-clean-architecture will comply but you will loose some degree
     of type safety.
 
 # Starting the demo app
 
 ```bash
-git clone https://github.com/garronej/clean-redux
-cd clean-redux
+git clone https://github.com/garronej/redux-clean-architecture
+cd redux-clean-architecture
 yarn
 yarn build
 yarn start-demo-app
