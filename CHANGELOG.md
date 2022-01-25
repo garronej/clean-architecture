@@ -1,3 +1,7 @@
+### **1.0.2** (2022-01-25)  
+  
+- Publish with new name    
+  
 # **1.0.0** (2022-01-07)  
   
 - Add extra example  
