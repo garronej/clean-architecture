@@ -25,8 +25,10 @@ The NPM library `redux-clean-architecture` is a set of type-level utilities that
 
 -   [Benefits](#benefits)
 -   [Install / Import](#install--import)
--   [Documentation](#documentation)
--   [A production example](#a-production-example)
+-   [Examples setups](#examples-setups)
+    -   [Canonical setup](#canonical-setup)
+    -   [TODO List](#todo-list)
+    -   [Enterprise grade app](#enterprise-grade-app)
 -   [Opinionated restrictions](#opinionated-restrictions)
 -   [Starting the demo app](#starting-the-demo-app)
 
@@ -48,17 +50,24 @@ https://user-images.githubusercontent.com/6702424/147381177-346293ec-8562-4aa4-a
 $ yarn add @reduxjs/toolkit redux-clean-architecture
 ```
 
-# Documentation
+# Examples setups
 
-Canonical Clean Architecture setup: [`src/test/demo-app`](https://github.com/garronej/redux-clean-architecture/tree/main/src/test/demo-app).  
-You can also refer to [@leosuncin/redux-clean-example](https://github.com/leosuncin/redux-clean-example) that feature [the
-classic counter example](https://user-images.githubusercontent.com/6702424/148482441-41f411e4-d466-4e0c-a898-c8e536bbcd14.png).
+## Canonical setup
 
-To understand what the functions exposed by `redux-clean-architecture` do in detail, please refer to
-[the compile time unit tests](https://github.com/garronej/redux-clean-architecture/tree/main/src/test/types)
-they worth more than a thousand words.
+A canonical setup can be found here: [👉 `src/test/demo-app`👈 ](https://github.com/garronej/redux-clean-architecture/tree/main/src/test/demo-app).
 
-# A production example
+## TODO List
+
+A todo list example can be found [👉**here**👈](https://github.com/garronej/redux-clean-example).  
+Credit goes to [@leosuncin](https://github.com/leosuncin).
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/6702424/151073421-4ec19603-b87c-4e68-a338-7baa7dea0be2.png">  
+</p>
+
+## Enterprise grade app
+
+You can consult the source code of [onyxia-web](https://github.com/InseeFrLab/onyxia-web) to see how `redux-clean-architecture` is used in a real world complex application.
 
 <p align="center">
   <a href="https://github.com/InseeFrLab/onyxia-web">
