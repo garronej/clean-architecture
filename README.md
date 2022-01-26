@@ -76,20 +76,6 @@ You can consult the source code of [onyxia-web](https://github.com/InseeFrLab/on
   </a>
 </p>
 
-# Opinionated restrictions
-
-Because a [programing paradigm work by removing a freedom of some kind](https://youtu.be/wyABTfR9UTU?t=109), this is what you **can't** do if you chose to use this toolkit:
-
--   The UI isn't allowed to dispatch action directly, the UI dispatch thunks (synchronous or asynchronous)
-    that internally dispatches actions. This approach forces you to keep your reducers plain and simple and to think
-    of your thunks as the API exposed to the UI.
--   I advise against using `createAsyncThunk()`. It's preferable to decide what
-    actions get dispatched when a thunk start, when it fails and when it completes
-    on a case-by-case basis, pending, rejected and fulfilled is a one-size-fits-**not**-all
-    patterns.
-    If you do choose to use it anyway, redux-clean-architecture will comply but you will loose some degree
-    of type safety.
-
 # Starting the demo app
 
 ```bash
