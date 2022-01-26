@@ -58,7 +58,7 @@ A canonical setup can be found here: [👉 `src/test/demo-app`👈 ](https://git
 
 ## Todos List app
 
-A todo list example can be found [👉**here**👈](https://github.com/garronej/redux-clean-example).  
+A todo list example can be found [👉**here**👈](https://github.com/leosuncin/redux-clean-example).  
 Credit goes to [@leosuncin](https://github.com/leosuncin).
 
 <p align="center">
