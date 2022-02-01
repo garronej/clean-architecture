@@ -38,7 +38,9 @@ export function createAsyncThunkFactory<
                 Returned,
                 Omit<AsyncThunkConfig, "rejectValue"> & {
                     rejectValue: unknown extends SpecificAsyncThunkConfig["rejectValue"]
-                        ? AsyncThunkConfig["rejectValue"]
+                        ? unknown extends AsyncThunkConfig["rejectValue"]
+                            ? Error
+                            : AsyncThunkConfig["rejectValue"]
                         : SpecificAsyncThunkConfig["rejectValue"];
                 } & {
                     serializedErrorType: unknown extends SpecificAsyncThunkConfig["serializedErrorType"]
