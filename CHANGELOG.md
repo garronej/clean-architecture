@@ -1,3 +1,7 @@
+## **1.2.0** (2022-02-01)  
+  
+- Internally set Error to be the default reject value for asyncThunk    
+  
 ## **1.1.0** (2022-02-01)  
   
 - Feat createAsyncThunksFactory  
