@@ -1,3 +1,7 @@
+### **1.2.2** (2022-02-01)  
+  
+- Fix bug in createAsyncThunks    
+  
 ### **1.2.1** (2022-02-01)  
   
 - Fix createAsyncThunk, return type and arg where inverted    
