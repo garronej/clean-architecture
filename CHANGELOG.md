@@ -1,3 +1,8 @@
+## **1.1.0** (2022-02-01)  
+  
+- Feat createAsyncThunksFactory  
+- Remove opignonated warnings    
+  
 ### **1.0.3** (2022-01-25)  
   
 - Update readme    
