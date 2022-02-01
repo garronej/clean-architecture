@@ -34,8 +34,8 @@ export function createAsyncThunkFactory<
             //NOTE: Here it's an eslint error that can be ignored.
             typePrefix: `${string}/${ThunkName}`,
             payloadCreator: AsyncThunkPayloadCreator<
-                ThunkArg,
                 Returned,
+                ThunkArg,
                 Omit<AsyncThunkConfig, "rejectValue"> & {
                     rejectValue: unknown extends SpecificAsyncThunkConfig["rejectValue"]
                         ? unknown extends AsyncThunkConfig["rejectValue"]
