@@ -30,37 +30,38 @@ export function createAsyncThunkFactory<
             rejectedMeta?: unknown;
         } = {},
     >() {
+        type ThunkApiConfig = Omit<
+            AsyncThunkConfig,
+            "rejectValue" | "serializedErrorType" | "pendingMeta" | "fulfilledMeta" | "rejectedMeta"
+        > & {
+            rejectValue: unknown extends SpecificAsyncThunkConfig["rejectValue"]
+                ? unknown extends AsyncThunkConfig["rejectValue"]
+                    ? Error
+                    : AsyncThunkConfig["rejectValue"]
+                : SpecificAsyncThunkConfig["rejectValue"];
+        } & {
+            serializedErrorType: unknown extends SpecificAsyncThunkConfig["serializedErrorType"]
+                ? AsyncThunkConfig["serializedErrorType"]
+                : SpecificAsyncThunkConfig["serializedErrorType"];
+        } & {
+            pendingMeta: unknown extends SpecificAsyncThunkConfig["pendingMeta"]
+                ? AsyncThunkConfig["pendingMeta"]
+                : SpecificAsyncThunkConfig["pendingMeta"];
+        } & {
+            fulfilledMeta: unknown extends SpecificAsyncThunkConfig["fulfilledMeta"]
+                ? AsyncThunkConfig["fulfilledMeta"]
+                : SpecificAsyncThunkConfig["fulfilledMeta"];
+        } & {
+            rejectedMeta: unknown extends SpecificAsyncThunkConfig["rejectedMeta"]
+                ? AsyncThunkConfig["rejectedMeta"]
+                : SpecificAsyncThunkConfig["rejectedMeta"];
+        };
+
         return function <ThunkName extends string, ThunkArg, Returned>(
             //NOTE: Here it's an eslint error that can be ignored.
             typePrefix: `${string}/${ThunkName}`,
-            payloadCreator: AsyncThunkPayloadCreator<
-                Returned,
-                ThunkArg,
-                Omit<AsyncThunkConfig, "rejectValue"> & {
-                    rejectValue: unknown extends SpecificAsyncThunkConfig["rejectValue"]
-                        ? unknown extends AsyncThunkConfig["rejectValue"]
-                            ? Error
-                            : AsyncThunkConfig["rejectValue"]
-                        : SpecificAsyncThunkConfig["rejectValue"];
-                } & {
-                    serializedErrorType: unknown extends SpecificAsyncThunkConfig["serializedErrorType"]
-                        ? AsyncThunkConfig["serializedErrorType"]
-                        : SpecificAsyncThunkConfig["serializedErrorType"];
-                } & {
-                    pendingMeta: unknown extends SpecificAsyncThunkConfig["pendingMeta"]
-                        ? AsyncThunkConfig["pendingMeta"]
-                        : SpecificAsyncThunkConfig["pendingMeta"];
-                } & {
-                    fulfilledMeta: unknown extends SpecificAsyncThunkConfig["fulfilledMeta"]
-                        ? AsyncThunkConfig["fulfilledMeta"]
-                        : SpecificAsyncThunkConfig["fulfilledMeta"];
-                } & {
-                    rejectedMeta: unknown extends SpecificAsyncThunkConfig["rejectedMeta"]
-                        ? AsyncThunkConfig["rejectedMeta"]
-                        : SpecificAsyncThunkConfig["rejectedMeta"];
-                }
-            >,
-        ): Record<ThunkName, AsyncThunk<Returned, ThunkArg, AsyncThunkConfig>> {
+            payloadCreator: AsyncThunkPayloadCreator<Returned, ThunkArg, ThunkApiConfig>,
+        ): Record<ThunkName, AsyncThunk<Returned, ThunkArg, ThunkApiConfig>> {
             const thunkName = typePrefix.split("/").reverse()[0];
 
             return { [thunkName]: createAsyncThunk_base(typePrefix, payloadCreator) } as any;
