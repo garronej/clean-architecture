@@ -1,10 +1,10 @@
 import { render } from "react-dom";
-import { LibProvider } from "./coreApi/LibProvider";
+import { CoreProvider } from "./coreApi/CoreProvider";
 import { App } from "./App";
 
 render(
-    <LibProvider>
+    <CoreProvider>
         <App />
-    </LibProvider>,
+    </CoreProvider>,
     document.getElementById("root"),
 );

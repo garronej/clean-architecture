@@ -16,7 +16,7 @@ const prStore = createStore({
     },
 });
 
-export function LibProvider(props: { children: ReactNode }) {
+export function CoreProvider(props: { children: ReactNode }) {
     const { children } = props;
 
     const [store, setStore] = useState<Awaited<typeof prStore> | undefined>(undefined);
