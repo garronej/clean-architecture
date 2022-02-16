@@ -21,7 +21,7 @@
 </p>
 
 This repo aims to be a guide on how to implement Clean Architecture using [`@reduxjs/toolkit`](https://redux-toolkit.js.org).  
-The NPM library `redux-clean-architecture` is a set of type-level utilities that you will need to achieve perfect type inference.
+The NPM library `redux-clean-architecture` is a set of type-level utilities that helps achieve perfect type inference.
 
 -   [Benefits](#benefits)
 -   [Install / Import](#install--import)
