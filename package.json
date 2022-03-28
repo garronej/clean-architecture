@@ -47,7 +47,7 @@
         "@reduxjs/toolkit": "^1.7.1"
     },
     "devDependencies": {
-        "@reduxjs/toolkit": "^1.7.1",
+        "@reduxjs/toolkit": "^1.8.0",
         "@types/node": "^16.4.9",
         "@types/react-redux": "^7.1.20",
         "husky": "^4.3.8",

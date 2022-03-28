@@ -48,8 +48,8 @@ export async function createStore(params: CreateStoreParams) {
 
     const store = configureStore({
         "reducer": usecasesToReducer(usecases),
-        "middleware": getDefaultMiddleware => [
-            ...getDefaultMiddleware({
+        "middleware": getDefaultMiddleware => 
+            getDefaultMiddleware({
                 "thunk": {
                     "extraArgument": id<ThunksExtraArgument>({
                         "createStoreParams": params,
@@ -58,10 +58,9 @@ export async function createStore(params: CreateStoreParams) {
                         evtAction
                     }),
                 },
-            }),
+            })
             //...and finally this line
-            middlewareEvtAction
-        ] as const
+            .concat(middlewareEvtAction),
     });
 
     await store.dispatch(usecase2.privateThunks.initialize());
