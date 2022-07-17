@@ -1,3 +1,10 @@
+### **1.2.3** (2022-07-17)  
+  
+- Update evt  
+- Work with @reduxjs/toolkit v1.8  
+- Update README.md  
+- Rename LibProvider -> CoreProvider    
+  
 ### **1.2.2** (2022-02-01)  
   
 - Fix bug in createAsyncThunks    
