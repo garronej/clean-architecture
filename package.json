@@ -58,7 +58,7 @@
     },
     "dependencies": {
         "minimal-polyfills": "^2.2.1",
-        "tsafe": "^0.9.0",
-        "evt": "*"
+        "tsafe": "^0.10.0",
+        "evt": "^2.2.0"
     }
 }

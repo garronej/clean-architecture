@@ -342,13 +342,14 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-evt@*:
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-1.10.2.tgz#6e898fac83f69a29e7f0f1116d2366c4570c1646"
-  integrity sha512-XCDyUOHzmugP8Qf4N7mvMw/4ribDf9OIZRl61+ZhoXXP9sUBlDAb29g5k7txonpBJsKlPi3F1hue7uSVX3/IAQ==
+evt@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.2.0.tgz#3f4cd36042ae951d4de4b11391cc9a1983a63f7d"
+  integrity sha512-osz8IYRfeNVva7KRdHx/ruJJo3e4OowMzL+E1Dw8xBjGNrJsK74hDvWErH9hGhnYQxu9rBDPTq8JXydvgu17kg==
   dependencies:
-    minimal-polyfills "^2.1.5"
+    minimal-polyfills "^2.2.1"
     run-exclusive "^2.2.14"
+    tsafe "^0.10.0"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -883,10 +884,10 @@ ts-node@^10.4.0:
     make-error "^1.1.1"
     yn "3.1.1"
 
-tsafe@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.9.0.tgz#8394e5fdf81e690c97e2b8be4180a079a4a19bfb"
-  integrity sha512-wmbu8pI/xmW69b13HoS8WbTcSlRTDjIut9ACblBjVZVTk0vsMRXdoh1k1jMu5EzKNohBavKHhqNOOsccSR7XCA==
+tsafe@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.10.0.tgz#c4fba365a49467ea6167e8c9482ddb94ee51b795"
+  integrity sha512-CFfa1uJKfU0DDRbuB8bf2mfXjkOqiTsrltexzMMLxq5gjd1LttFECNGsO8dYUALJDbShb6+f3CwAppW/wf9BrA==
 
 tslib@^2.1.0:
   version "2.3.1"
