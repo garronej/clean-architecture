@@ -1,22 +1,20 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ],
-  "rangeStrategy": "bump",
-  "ignorePaths": [".github/**"],
-  "bumpVersion": "patch",
-  "packageRules": [
-    {
-      "packagePatterns": ["*"],
-      "excludePackagePatterns": ["minimal-polyfills", "tsafe", "evt"],
-      "enabled": false
-    },
-    {
-      "packagePatterns": ["minimal-polyfills", "tsafe", "evt"],
-      "groupName": "homegrown",
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
-    }
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:base"],
+    "rangeStrategy": "bump",
+    "ignorePaths": [".github/**"],
+    "bumpVersion": "patch",
+    "packageRules": [
+        {
+            "packagePatterns": ["*"],
+            "excludePackagePatterns": ["minimal-polyfills", "tsafe", "evt"],
+            "enabled": false
+        },
+        {
+            "packagePatterns": ["minimal-polyfills", "tsafe", "evt"],
+            "groupName": "homegrown",
+            "matchUpdateTypes": ["minor", "patch"],
+            "automerge": true
+        }
+    ]
 }
