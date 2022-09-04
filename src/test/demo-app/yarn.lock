@@ -3850,13 +3850,14 @@ events@^3.2.0:
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
 
-evt@*:
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-1.10.2.tgz#6e898fac83f69a29e7f0f1116d2366c4570c1646"
-  integrity sha512-XCDyUOHzmugP8Qf4N7mvMw/4ribDf9OIZRl61+ZhoXXP9sUBlDAb29g5k7txonpBJsKlPi3F1hue7uSVX3/IAQ==
+evt@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.1.tgz#68beca2f7bd7eb755fdda5b263a80b934100e046"
+  integrity sha512-eo7sZcfDbiVWD5Aw6STkIEMmchYLdeGnJB6tVaM9AXZc7pViin3PmQhb6fgFIFHfl0re9zSEHtSjyu70Y7dRJg==
   dependencies:
-    minimal-polyfills "^2.1.5"
-    run-exclusive "^2.2.14"
+    minimal-polyfills "^2.2.2"
+    run-exclusive "^2.2.16"
+    tsafe "^1.0.1"
 
 execa@^5.0.0:
   version "5.1.1"
@@ -5674,10 +5675,15 @@ mini-css-extract-plugin@^2.4.5:
   dependencies:
     schema-utils "^4.0.0"
 
-minimal-polyfills@^2.1.5, minimal-polyfills@^2.2.1:
+minimal-polyfills@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.1.tgz#7249d7ece666d3b4e1ec1c1b8f949eb9d44e2308"
   integrity sha512-WLmHQrsZob4rVYf8yHapZPNJZ3sspGa/sN8abuSD59b0FifDEE7HMfLUi24z7mPZqTpBXy4Svp+iGvAmclCmXg==
+
+minimal-polyfills@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/minimal-polyfills/-/minimal-polyfills-2.2.2.tgz#6b06a004acce420eb91cf94698f5e6e7f2518378"
+  integrity sha512-eEOUq/LH/DbLWihrxUP050Wi7H/N/I2dQT98Ep6SqOpmIbk4sXOI4wqalve66QoZa+6oljbZWU6I6T4dehQGmw==
 
 minimalistic-assert@^1.0.0:
   version "1.0.1"
@@ -6979,11 +6985,11 @@ recursive-readdir@^2.2.2:
     minimatch "3.0.4"
 
 "redux-clean-architecture@file:../../../dist":
-  version "1.2.2"
+  version "1.2.11"
   dependencies:
-    evt "*"
-    minimal-polyfills "^2.2.1"
-    tsafe "^0.9.0"
+    evt "^2.4.1"
+    minimal-polyfills "^2.2.2"
+    tsafe "^1.0.1"
 
 redux-thunk@^2.4.1:
   version "2.4.1"
@@ -7183,12 +7189,12 @@ rollup@^2.43.1:
   optionalDependencies:
     fsevents "~2.3.2"
 
-run-exclusive@^2.2.14:
-  version "2.2.14"
-  resolved "https://registry.yarnpkg.com/run-exclusive/-/run-exclusive-2.2.14.tgz#4f41dc7843e091f10991f8708fce87b09022a0ce"
-  integrity sha512-NHaQfB3zPJFx7p4M06AcmoK8xz/h8YDMCdy3jxfyoC9VqIbl1U+DiVjUuAYZBRMwvj5qkQnOUGfsmyUC4k46dg==
+run-exclusive@^2.2.16:
+  version "2.2.16"
+  resolved "https://registry.yarnpkg.com/run-exclusive/-/run-exclusive-2.2.16.tgz#8fa30a23037760af296c47872a5f6b38f25accf0"
+  integrity sha512-cdYv2LDvaBCRnrqXrwDFs1SgzGTx0EIsiEReTpsprEDR6hRUVlSyjoMYu+rez4S1gpz6YbOQxcmYFMXJQknVnQ==
   dependencies:
-    minimal-polyfills "^2.1.5"
+    minimal-polyfills "^2.2.1"
 
 run-parallel@^1.1.9:
   version "1.2.0"
@@ -7910,10 +7916,10 @@ tryer@^1.0.1:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
-tsafe@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-0.9.0.tgz#8394e5fdf81e690c97e2b8be4180a079a4a19bfb"
-  integrity sha512-wmbu8pI/xmW69b13HoS8WbTcSlRTDjIut9ACblBjVZVTk0vsMRXdoh1k1jMu5EzKNohBavKHhqNOOsccSR7XCA==
+tsafe@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.0.1.tgz#c8c4eb2d75d1478418a4941307c5dd667fd76d23"
+  integrity sha512-FgJ1a4rE7YbmW5QIzpsfFl4tsAp0x74FH2bVE6qODb2U8jSrwTr5/ckIazeylme5zXndVbtgKm4BZdqmoGhiPw==
 
 tsconfig-paths@^3.12.0:
   version "3.12.0"
@@ -7991,10 +7997,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.5.4:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
-  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
+typescript@4.8.2:
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.2.tgz#e3b33d5ccfb5914e4eeab6699cf208adee3fd790"
+  integrity sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==
 
 unbox-primitive@^1.0.1:
   version "1.0.1"

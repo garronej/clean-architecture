@@ -63,7 +63,7 @@ export async function createStore(params: CreateStoreParams) {
             .concat(middlewareEvtAction),
     });
 
-    await store.dispatch(usecase2.privateThunks.initialize());
+    //await store.dispatch(usecase2.privateThunks.initialize());
 
     return store;
 }
