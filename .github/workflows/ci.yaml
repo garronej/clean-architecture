@@ -13,41 +13,30 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !github.event.created && github.repository != 'garronej/ts-ci' }}
     steps:
-    - uses: actions/checkout@v2.3.4
-    - uses: actions/setup-node@v2.1.3
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
     - uses: bahmutov/npm-install@v1
-    - name: If this step fails run 'npm run lint' and 'npm run format' then commit again.
+    - name: If this step fails run 'yarn lint' and 'yarn format' then commit again.
       run: |
-        PACKAGE_MANAGER=npm
-        if [ -f "./yarn.lock" ]; then
-            PACKAGE_MANAGER=yarn
-        fi
-        $PACKAGE_MANAGER run format:check
+        yarn lint:check
+        yarn format:check
   test:
     runs-on: ${{ matrix.os }}
     needs: test_lint
     strategy:
       matrix:
-        node: [ '15', '14' ]
+        node: [ '14', '15' ,'16', '17' ]
         os: [ windows-latest, ubuntu-latest ]
     name: Test with Node v${{ matrix.node }} on ${{ matrix.os }}
     steps:
-    - name: Tell if project is using npm or yarn
-      id: step1
-      uses: garronej/ts-ci@v1.1.4
-      with: 
-        action_name: tell_if_project_uses_npm_or_yarn
-    - uses: actions/checkout@v2.3.4
-    - uses: actions/setup-node@v2.1.3
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node }}
     - uses: bahmutov/npm-install@v1
-    - if: steps.step1.outputs.npm_or_yarn == 'yarn'
-      run: |
-        yarn build
-    - if: steps.step1.outputs.npm_or_yarn == 'npm'
-      run: |
-        npm run build
+    - run: yarn build
+    #- run: yarn test
+
   check_if_version_upgraded:
     name: Check if version upgrade
     # We run this only if it's a push on the default branch or if it's a PR from a 
@@ -62,9 +51,9 @@ jobs:
       from_version: ${{ steps.step1.outputs.from_version }}
       to_version: ${{ steps.step1.outputs.to_version }}
       is_upgraded_version: ${{ steps.step1.outputs.is_upgraded_version }}
-      is_release_beta: ${{steps.step1.outputs.is_release_beta }}
+      is_pre_release: ${{steps.step1.outputs.is_pre_release }}
     steps:
-    - uses: garronej/ts-ci@v1.1.4
+    - uses: garronej/ts-ci@v2.1.0
       id: step1
       with: 
         action_name: is_package_json_version_upgraded
@@ -72,13 +61,13 @@ jobs:
 
   create_github_release:
     runs-on: ubuntu-latest
-    # We create a release only if the version have been upgraded and we are on a default branch
-    # PR on the default branch can release beta but not real release
+    # We create a release only if the version have been upgraded and we are on the main branch
+    # or if we are on a branch of the repo that has an PR open on main.
     if: |
       needs.check_if_version_upgraded.outputs.is_upgraded_version == 'true' &&
       (
         github.event_name == 'push' ||
-        needs.check_if_version_upgraded.outputs.is_release_beta == 'true'
+        needs.check_if_version_upgraded.outputs.is_pre_release == 'true'
       )
     needs: 
       - check_if_version_upgraded
@@ -90,7 +79,7 @@ jobs:
         target_commitish: ${{ github.head_ref || github.ref }}
         generate_release_notes: true
         draft: false
-        prerelease: ${{ needs.check_if_version_upgraded.outputs.is_release_beta == 'true' }}
+        prerelease: ${{ needs.check_if_version_upgraded.outputs.is_pre_release == 'true' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
@@ -100,23 +89,20 @@ jobs:
       - create_github_release
       - check_if_version_upgraded
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v3
       with:
         ref: ${{ github.ref }}
-    - uses: actions/setup-node@v2.1.3
+    - uses: actions/setup-node@v3
       with:
-        node-version: '15'
         registry-url: https://registry.npmjs.org/
     - uses: bahmutov/npm-install@v1
-    - run: |
-        PACKAGE_MANAGER=npm
-        if [ -f "./yarn.lock" ]; then
-            PACKAGE_MANAGER=yarn
-        fi
-        $PACKAGE_MANAGER run build
-    - run: npx -y -p denoify@0.6.5 denoify_enable_short_npm_import_path
+    - run: yarn build
+    - run: npx -y -p denoify@1.3.0 enable_short_npm_import_path
       env:
         DRY_RUN: "0"
+    - uses: garronej/ts-ci@v2.1.0
+      with: 
+        action_name: remove_dark_mode_specific_images_from_readme
     - name: Publishing on NPM
       run: |
         if [ "$(npm show . version)" = "$VERSION" ]; then
@@ -128,11 +114,11 @@ jobs:
           false
         fi
         EXTRA_ARGS=""
-        if [ "$IS_BETA" = "true" ]; then
-            EXTRA_ARGS="--tag beta"
+        if [ "$IS_PRE_RELEASE" = "true" ]; then
+            EXTRA_ARGS="--tag next"
         fi
         npm publish $EXTRA_ARGS
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         VERSION: ${{ needs.check_if_version_upgraded.outputs.to_version }}
-        IS_BETA: ${{ needs.check_if_version_upgraded.outputs.is_release_beta }}
+        IS_PRE_RELEASE: ${{ needs.check_if_version_upgraded.outputs.is_pre_release }}
