@@ -3,15 +3,8 @@ import type { ThunkAction } from "@reduxjs/toolkit";
 import { Equals } from "tsafe";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
-import type {
-    ThunkToAutoDispatchThunk,
-    ThunksToAutoDispatchThunks,
-} from "../../usecasesToAutoDispatchThunks";
-import {
-    thunkToAutoDispatchThunk,
-    thunksToAutoDispatchThunks,
-    usecasesToAutoDispatchThunks,
-} from "../../usecasesToAutoDispatchThunks";
+import type { ThunkToFunction, ThunksToFunctions } from "../../usecasesToFunctions";
+import { thunkToFunction, thunksToFunctions, usecasesToFunctions } from "../../usecasesToFunctions";
 import type { AnyAction } from "@reduxjs/toolkit";
 
 {
@@ -25,7 +18,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
     type Thunk = (params: Params) => ThunkAction<R, any, any, any>;
 
-    type Got = ThunkToAutoDispatchThunk<Thunk>;
+    type Got = ThunkToFunction<Thunk>;
 
     type Expected = (params: Params) => R;
 
@@ -54,7 +47,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
     //const dispatch = Reflect<(thunkAction: ThunkAction<any, State, ExtraThunkArg, AnyAction>)=>any>();
     const dispatch = Reflect<<R>(thunkAction: ThunkAction<R, State, ExtraThunkArg, AnyAction>) => R>();
 
-    const got = thunkToAutoDispatchThunk({
+    const got = thunkToFunction({
         dispatch,
         thunk,
     });
@@ -94,7 +87,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
         mySecondThunk: (params: Params2) => ThunkAction<RtnType2, State, ExtraThunkArg, AnyAction>;
     };
 
-    type Got = ThunksToAutoDispatchThunks<Thunks>;
+    type Got = ThunksToFunctions<Thunks>;
 
     type Expected = {
         myFirstThunk: (params: Params1) => RtnType1;
@@ -139,7 +132,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
             <RtnType>(thunkAction: ThunkAction<RtnType, State, ExtraThunkArg, AnyAction>) => RtnType
         >();
 
-    const got = thunksToAutoDispatchThunks({
+    const got = thunksToFunctions({
         dispatch,
         thunks,
     });
@@ -209,16 +202,16 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
     const dispatch = Reflect<<R>(thunkAction: ThunkAction<R, any, any, any>) => R>();
 
-    const { getAutoDispatchThunks } = usecasesToAutoDispatchThunks(usecases);
+    const { getMemoizedCoreFunctions } = usecasesToFunctions(usecases);
 
-    const got = getAutoDispatchThunks(dispatch);
+    const got = getMemoizedCoreFunctions({ dispatch });
 
     const expected = Reflect<{
-        firstSliceThunks: {
+        firstSlice: {
             firstMethod: (params: Params1) => RtnType1;
             secondMethod: (params: Params2) => RtnType2;
         };
-        secondSliceThunks: {
+        secondSlice: {
             thirdMethod: (params: Params3) => RtnType3;
         };
     }>();

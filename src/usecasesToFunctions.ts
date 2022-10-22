@@ -4,12 +4,11 @@ import type { Param0 } from "tsafe";
 import { objectKeys } from "tsafe/objectKeys";
 import type { ThunkAction, AnyAction } from "@reduxjs/toolkit";
 
-export type ThunkToAutoDispatchThunk<Thunk extends (params: any) => ThunkAction<any, any, any, any>> = (
+export type ThunkToFunction<Thunk extends (params: any) => ThunkAction<any, any, any, any>> = (
     params: Param0<Thunk>,
 ) => ReturnType<Thunk> extends ThunkAction<infer R, any, any, any> ? R : never;
 
-/** NOTE: Always returns the same ref for a given dispatch, no need to useMemo */
-export function thunkToAutoDispatchThunk<
+export function thunkToFunction<
     Thunk extends (params: any) => ThunkAction<any, any, any, AnyAction>,
 >(params: {
     thunk: Thunk;
@@ -23,17 +22,17 @@ export function thunkToAutoDispatchThunk<
             AnyAction
         >,
     ) => ReturnType<Thunk> extends ThunkAction<infer RtnType, any, any, AnyAction> ? RtnType : never;
-}): ThunkToAutoDispatchThunk<Thunk> {
+}): ThunkToFunction<Thunk> {
     const { dispatch, thunk } = params;
 
     return (params: Param0<Thunk>) => dispatch(thunk(params)) as any;
 }
 
-export type ThunksToAutoDispatchThunks<
+export type ThunksToFunctions<
     Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, AnyAction>>,
-> = { [Key in keyof Thunks]: ThunkToAutoDispatchThunk<Thunks[Key]> };
+> = { [Key in keyof Thunks]: ThunkToFunction<Thunks[Key]> };
 
-export function thunksToAutoDispatchThunks<
+export function thunksToFunctions<
     Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, any>>,
 >(params: {
     thunks: Thunks;
@@ -58,19 +57,14 @@ export function thunksToAutoDispatchThunks<
     ) => ReturnType<Thunks[keyof Thunks]> extends ThunkAction<infer RtnType, any, any, AnyAction>
         ? RtnType
         : never;
-}): ThunksToAutoDispatchThunks<Thunks> {
+}): ThunksToFunctions<Thunks> {
     const { dispatch, thunks } = params;
     return Object.fromEntries(
-        objectKeys(thunks).map(name => [
-            name,
-            thunkToAutoDispatchThunk({ "thunk": thunks[name], dispatch }),
-        ]),
+        objectKeys(thunks).map(name => [name, thunkToFunction({ "thunk": thunks[name], dispatch })]),
     ) as any;
 }
 
-const wordId = "Thunks";
-
-export function usecasesToAutoDispatchThunks<
+export function usecasesToFunctions<
     Usecase extends {
         name: string;
         thunks: Record<string, (params: any) => ThunkAction<any, any, any, any>>;
@@ -78,7 +72,7 @@ export function usecasesToAutoDispatchThunks<
 >(
     usecases: readonly Usecase[],
 ): {
-    getAutoDispatchThunks: (
+    getMemoizedCoreFunctions: (core: {
         dispatch: (
             thunkAction: ThunkAction<
                 ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
@@ -114,36 +108,31 @@ export function usecasesToAutoDispatchThunks<
             AnyAction
         >
             ? RtnType
-            : never,
-    ) => {
-        [Key in `${Usecase["name"]}${typeof wordId}`]: ThunksToAutoDispatchThunks<
-            Extract<
-                Usecase,
-                { name: Key extends `${infer Name}${typeof wordId}` ? Name : never }
-            >["thunks"]
-        >;
+            : never;
+    }) => {
+        [Key in Usecase["name"]]: ThunksToFunctions<Extract<Usecase, { name: Key }>["thunks"]>;
     };
 } {
-    const autoDispatchThunksByDispatch = new WeakMap<Function, any>();
+    const functionsBtDispatch = new WeakMap<Record<string, unknown>, any>();
 
     return {
-        "getAutoDispatchThunks": dispatch => {
-            let autoDispatchThunks = autoDispatchThunksByDispatch.get(dispatch);
+        "getMemoizedCoreFunctions": core => {
+            let functions = functionsBtDispatch.get(core);
 
-            if (autoDispatchThunks !== undefined) {
-                return autoDispatchThunks;
+            if (functions !== undefined) {
+                return functions;
             }
 
-            autoDispatchThunks = Object.fromEntries(
+            functions = Object.fromEntries(
                 usecases.map(({ name, thunks }) => [
-                    `${name}${wordId}`,
-                    thunksToAutoDispatchThunks({ thunks, dispatch }),
+                    name,
+                    thunksToFunctions({ thunks, "dispatch": core.dispatch }),
                 ]),
             ) as any;
 
-            autoDispatchThunksByDispatch.set(dispatch, autoDispatchThunks);
+            functionsBtDispatch.set(core, functions);
 
-            return autoDispatchThunks;
+            return functions;
         },
     };
 }

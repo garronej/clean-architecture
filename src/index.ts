@@ -1,4 +1,4 @@
 export { usecasesToSelectors } from "./usecasesToSelectors";
 export { usecasesToReducer } from "./usecasesToReducer";
-export { usecasesToAutoDispatchThunks } from "./usecasesToAutoDispatchThunks";
+export { usecasesToFunctions } from "./usecasesToFunctions";
 export { usecasesToPureFunctions } from "./usecasesToPureFunctions";
