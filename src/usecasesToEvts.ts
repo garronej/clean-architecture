@@ -10,7 +10,8 @@ type CoreLike = {
     thunksExtraArgument: {
         evtAction: NonPostableEvt<any>;
     };
-    getState: () => Record<string, unknown>;
+    //getState: () => Record<string, unknown>;
+    getState: () => any;
 };
 
 export type GenericCreateEvt<Core extends CoreLike> = (params: {

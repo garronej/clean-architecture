@@ -1,13 +1,14 @@
-import type { Action, ThunkAction as GenericThunkAction } from "@reduxjs/toolkit";
+import type { Action, ThunkAction as ReduxGenericThunkAction } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
-import { id } from "tsafe/id";
+import type { ReturnType } from "tsafe";
 import type { Port1 } from "./ports/Port1";
 import type { Port2 } from "./ports/Port2";
-import { createPort2 } from "./secondaryAdapters/createProt2";
-import type { Port2Config } from "./secondaryAdapters/createProt2";
-import { createPort1 } from "./secondaryAdapters/createPort1";
-import type { Port1Config } from "./secondaryAdapters/createPort1";
+import { createPort2 } from "./adapters/createProt2";
+import type { Port2Config } from "./adapters/createProt2";
+import { createPort1 } from "./adapters/createPort1";
+import type { Port1Config } from "./adapters/createPort1";
 import { usecasesToReducer } from "redux-clean-architecture";
+import type { GenericCreateEvt, GenericThunks } from "redux-clean-architecture";
 //Delete this line if you're not going to use evtAction middleware...
 import { createMiddlewareEvtActionFactory } from "redux-clean-architecture/middlewareEvtAction";
 /*Naming suggestion: 
@@ -37,7 +38,7 @@ export type ThunksExtraArgument = {
     evtAction: ReturnType<typeof createMiddlewareEvtAction>["evtAction"];
 };
 
-export async function createStore(params: CreateStoreParams) {
+export async function createCore(params: CreateStoreParams) {
     const [port1, port2] = await Promise.all([
         createPort1(params.port1Config),
         createPort2(params.port2Config),
@@ -46,37 +47,50 @@ export async function createStore(params: CreateStoreParams) {
     //...also this line
     const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction();
 
-    const store = configureStore({
+    const  thunksExtraArgument: ThunksExtraArgument = {
+        "createStoreParams": params,
+        port1,
+        port2,
+        evtAction
+    };
+
+    const { getState, dispatch, subscribe } = configureStore({
         "reducer": usecasesToReducer(usecases),
-        "middleware": getDefaultMiddleware => 
+        "middleware": getDefaultMiddleware =>
             getDefaultMiddleware({
-                "thunk": {
-                    "extraArgument": id<ThunksExtraArgument>({
-                        "createStoreParams": params,
-                        port1,
-                        port2,
-                        evtAction
-                    }),
-                },
+                "thunk": { "extraArgument": thunksExtraArgument },
             })
-            //...and finally this line
-            .concat(middlewareEvtAction),
+                //...and finally this line
+                .concat(middlewareEvtAction),
     });
 
     //await store.dispatch(usecase2.privateThunks.initialize());
 
-    return store;
+    const core = { 
+        getState, 
+        dispatch, 
+        subscribe,
+        thunksExtraArgument 
+    };
+
+    return core;
+
 }
 
-type Store = Awaited<ReturnType<typeof createStore>>;
 
-export type Dispatch = Store["dispatch"];
+export type Core = ReturnType<typeof createCore>;
 
-export type State = ReturnType<Store["getState"]>;
+export type State = ReturnType<Core["getState"]>;
 
-export type ThunkAction<RtnType = Promise<void>> = GenericThunkAction<
+/** @deprecated: Use Thunks as soon as we cas use 'satisfy' from TS 4.9 */
+export type ThunkAction<RtnType = Promise<void>> = ReduxGenericThunkAction<
     RtnType,
     State,
     ThunksExtraArgument,
     Action<string>
 >;
+
+export type Thunks = GenericThunks<Core>;
+
+
+export type CreateEvt = GenericCreateEvt<Core>;

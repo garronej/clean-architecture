@@ -2,7 +2,7 @@ import "minimal-polyfills/Object.fromEntries";
 import { Polyfill as WeakMap } from "minimal-polyfills/WeakMap";
 import type { Param0 } from "tsafe";
 import { objectKeys } from "tsafe/objectKeys";
-import type { ThunkAction, AnyAction } from "@reduxjs/toolkit";
+import type { ThunkAction, AnyAction, Action } from "@reduxjs/toolkit";
 
 export type ThunkToFunction<Thunk extends (params: any) => ThunkAction<any, any, any, any>> = (
     params: Param0<Thunk>,
@@ -136,3 +136,15 @@ export function usecasesToFunctions<
         },
     };
 }
+
+type CoreLike = {
+    getState: () => any;
+    thunksExtraArgument: Record<string, unknown>;
+};
+
+export type GenericThunks<Core extends CoreLike> = Record<
+    string,
+    (
+        params: any,
+    ) => ThunkAction<any, ReturnType<Core["getState"]>, Core["thunksExtraArgument"], Action<string>>
+>;

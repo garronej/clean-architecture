@@ -1,12 +1,22 @@
-import { Provider as StoreProvider } from "react-redux";
-import { createStore } from "core";
-import { useState, useEffect } from "react";
+import { createCore } from "core";
+import type { Core } from "core";
+import { useState, useEffect, createContext, useContext } from "react";
 import type { ReactNode } from "react";
+import { assert } from "tsafe/assert";
 
 //How you instantiate the store will vary from project to project.
 //This is just a mere suggestion so you get the idea.
 
-const prStore = createStore({
+
+const coreContext = createContext<Core | undefined>(undefined);
+
+export function useCore(){
+    const core = useContext(coreContext);
+    assert(core !== undefined, "Not wrapped within CoreProvider");
+    return core;
+}
+
+const prCore = createCore({
     "port1Config": {
         "port1Config1": "foo",
     },
@@ -19,16 +29,20 @@ const prStore = createStore({
 export function CoreProvider(props: { children: ReactNode }) {
     const { children } = props;
 
-    const [store, setStore] = useState<Awaited<typeof prStore> | undefined>(undefined);
+    const [core, setCore] = useState<Core | undefined>(undefined);
 
     useEffect(() => {
-        prStore.then(setStore);
+        prCore.then(setCore);
     }, []);
 
-    if (store === undefined) {
+    if (core === undefined) {
         //Suggestion: display a splash screen
         return null;
     }
 
-    return <StoreProvider store={store}>{children}</StoreProvider>;
+    return (
+        <coreContext.Provider value={core}>
+            {children}
+        </coreContext.Provider>
+    );
 }

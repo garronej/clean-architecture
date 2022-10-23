@@ -1,9 +1,11 @@
-import type { ThunkAction } from "../setup";
+/* eslint-disable */
+import type { ThunkAction, CreateEvt } from "../setup";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { State } from "../setup";
 import { id } from "tsafe/id";
 import { createSelector } from "@reduxjs/toolkit";
+import type { Param0 } from "tsafe";
 
 export type Usecase2State = {
     counter2: number;
@@ -29,6 +31,8 @@ export const { reducer, actions } = createSlice({
         },
     },
 });
+
+
 
 export const thunks = {
     "thunkX":
@@ -61,11 +65,11 @@ export const thunks = {
 export const privateThunks = {
     "initialize":
         (): ThunkAction =>
-        async (...args) => {
-            const [dispatch] = args;
+            async (...args) => {
+                const [dispatch] = args;
 
-            dispatch(actions.thunkXCompleted({ "delta": 1 }));
-        },
+                dispatch(actions.thunkXCompleted({ "delta": 1 }));
+            },
 };
 
 export const selectors = (() => {
@@ -86,3 +90,13 @@ export const selectors = (() => {
         isReadyBig,
     };
 })();
+
+
+export const createEvt = ({ evtAction }: Param0<CreateEvt>) => {
+
+    return evtAction
+        .pipe(action => action.sliceName === "usecase2" ? [action] : null)
+        .pipe(action => action.actionName === "thunkXCompleted" ? [action] : null);
+
+};
+

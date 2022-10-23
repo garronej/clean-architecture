@@ -10,7 +10,7 @@ export type Usecase1State = {
     isDoingSomething: boolean;
 };
 
-export const name= "usecase1";
+export const name = "usecase1";
 
 export const { reducer, actions } = createSlice({
     name,
@@ -33,39 +33,43 @@ export const { reducer, actions } = createSlice({
 export const thunks = {
     "thunk1":
         (params: { pX: string }): ThunkAction =>
-        async (...args) => {
-            const { pX } = params;
-            const [dispatch, , thunkExtraArgument] = args;
-            const { port2 } = thunkExtraArgument;
+            async (...args) => {
+                const { pX } = params;
+                const [dispatch, getState , thunkExtraArgument] = args;
+                const { port2 } = thunkExtraArgument;
 
-            dispatch(actions.thunk1Started());
+                if( getState().usecase1.isDoingSomething ){
+                    return;
+                }
 
-            const r = await port2.port2Method1({ "port2Method2Param1": pX });
+                dispatch(actions.thunk1Started());
 
-            dispatch(actions.thunk1Completed({ "delta": r }));
-        },
+                const r = await port2.port2Method1({ "port2Method2Param1": pX });
+
+                dispatch(actions.thunk1Completed({ "delta": r }));
+            },
     "thunk2":
         (params: { pY: string }): ThunkAction<Promise<number>> =>
-        async (...args) => {
-            const { pY } = params;
-            const [dispatch, getState, { evtAction }] = args;
+            async (...args) => {
+                const { pY } = params;
+                const [dispatch, getState, { evtAction }] = args;
 
-            if( getState().usecase2.isDoingSomething2 ){
+                if (getState().usecase2.isDoingSomething2) {
 
-                await evtAction.waitFor(e=> 
-                    e.sliceName === "usecase2" && 
-                    e.actionName === "thunkXCompleted" &&
-                    e.payload.delta !== 666
-                );
+                    await evtAction.waitFor(e =>
+                        e.sliceName === "usecase2" &&
+                        e.actionName === "thunkXCompleted" &&
+                        e.payload.delta !== 666
+                    );
 
-            }
+                }
 
-            await dispatch(thunks.thunk1({ "pX": pY }));
+                await dispatch(thunks.thunk1({ "pX": pY }));
 
-            const { counter } = getState().usecase1;
+                const { counter } = getState().usecase1;
 
-            return counter + 42;
-        },
+                return counter + 42;
+            },
 };
 
 export const selectors = (() => {
@@ -86,3 +90,8 @@ export const selectors = (() => {
         isReadyBig,
     };
 })();
+
+
+
+
+
