@@ -4,3 +4,4 @@ export { usecasesToFunctions } from "./usecasesToFunctions";
 export type { GenericThunks } from "./usecasesToFunctions";
 export { usecasesToEvts } from "./usecasesToEvts";
 export type { GenericCreateEvt } from "./usecasesToEvts";
+export { createObjectThatThrowsIfAccessed } from "./createObjectThatThrowsIfAccessed";

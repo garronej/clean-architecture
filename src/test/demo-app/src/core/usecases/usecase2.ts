@@ -1,4 +1,3 @@
-/* eslint-disable */
 import type { ThunkAction, CreateEvt } from "../setup";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
