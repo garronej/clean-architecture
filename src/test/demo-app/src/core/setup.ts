@@ -1,7 +1,6 @@
 import type { Action, ThunkAction as ReduxGenericThunkAction } from "@reduxjs/toolkit";
 import type { NonPostableEvt } from "evt";
 import { UsecaseToEvent } from "redux-clean-architecture/middlewareEvtAction";
-import type { ReturnType } from "tsafe";
 import type { Port1 } from "./ports/Port1";
 import type { Port2 } from "./ports/Port2";
 import { createPort2 } from "./adapters/createProt2";
@@ -55,7 +54,7 @@ export async function createCore(params: CoreParams) {
 
 }
 
-type Core = ReturnType<typeof createCore>;
+type Core = Awaited<ReturnType<typeof createCore>>;
 
 export type State = ReturnType<Core["getState"]>;
 
