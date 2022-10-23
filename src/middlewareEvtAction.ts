@@ -15,7 +15,6 @@ export type UsecaseLike = { name: string } & (
     | { reducer: null; actions?: undefined }
 );
 
-/*
 type RecordToUnion<O> = O[keyof O];
 
 type CaseReducerToEvent<T extends Record<string, ActionCreator<any>>> = RecordToUnion<{
@@ -26,9 +25,7 @@ type CaseReducerToEvent<T extends Record<string, ActionCreator<any>>> = RecordTo
           });
 }>;
 
-type UsecaseToEvent<
-    Usecase extends UsecaseLike
-> = RecordToUnion<{
+export type UsecaseToEvent<Usecase extends UsecaseLike> = RecordToUnion<{
     [Key in Extract<Usecase, { actions: unknown }>["name"]]: Usecase extends Extract<
         Usecase,
         { name: Key; actions: unknown }
@@ -36,16 +33,8 @@ type UsecaseToEvent<
         ? { sliceName: Key } & CaseReducerToEvent<Usecase["actions"]>
         : never;
 }>;
-*/
 
-/** NOTE: We use an expended version of the type so that,
- * when the cursor hovers evtAction we get an explicit type instead of
- * a composition of union:
- * This: https://user-images.githubusercontent.com/6702424/147380322-bf2fa468-0a1c-4961-a7d8-16eaa14b6c4e.png
- * Instead of this: https://user-images.githubusercontent.com/6702424/147380353-9956a98a-9f9c-4811-a8b4-16cd1e4e76ca.png
- * Don't try, however, to edit the expanded version. Start from the factorized
- * form by commenting this implementation and using the above.
- */
+/* NOTE: Do not remove! See ./createCore.ts
 export type UsecaseToEvent<Usecase extends UsecaseLike> = {
     [Key in Extract<Usecase, { actions: unknown }>["name"]]: Usecase extends Extract<
         Usecase,
@@ -113,6 +102,7 @@ export type UsecaseToEvent<Usecase extends UsecaseLike> = {
           }]
         : never;
 }];
+*/
 
 export function createMiddlewareEvtAction<Usecase extends UsecaseLike>(
     usecases: readonly Usecase[]
