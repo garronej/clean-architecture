@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/6702424/151054088-b21c1cd6-912a-4dcf-b54d-af74e8632620.png">  
 </p>
 <p align="center">
-    <i>📐 Utilities for implementing <b>clean architecture</b> using <b>Redux</b> 📐</i>
+    <i>📐 A clean architecture framework for React 📐</i>
     <br/>
     <i>🔩 Focuses on achieving great type inference 🔩</i>
     <br/>
@@ -20,9 +20,6 @@
     </a>
 </p>
 
-This repo aims to be a guide on how to implement Clean Architecture using [`@reduxjs/toolkit`](https://redux-toolkit.js.org).  
-The NPM library `redux-clean-architecture` is a set of type-level utilities that helps achieve perfect type inference.
-
 -   [Benefits](#benefits)
 -   [Install / Import](#install--import)
 -   [Examples setups](#examples-setups)
@@ -34,15 +31,16 @@ The NPM library `redux-clean-architecture` is a set of type-level utilities that
 
 # Benefits
 
--   Clears guideline about how to organize your code in accordance with the clean architecture principles.
--   No need to explicitly call `dispatch()` on the UI side.
--   Strict isolation between the UI and the core. Port your web app to React Native or switch to another
+-   Clean architecture without [OOP](https://www.youtube.com/watch?v=QM1iUe6IofM).
+-   No need to explicitly call `dispatch()` on the UI side.  
+    As a matter of fact, React being used
+    under the hood is an implementation detail that can be ignored by the dev working ont the UI.
+-   Strict isolation between the Core and the UI. Port your web app to React Native or switch to another
     UI framework without having to re-write a single line of the core logic.
--   Stop wondering about how things should be named. Thanks to the use of
-    [TypeScript's template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
+-   Names things once, it propagate through all the codebase via [TypeScript's template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html). No more hard to maintain stuttering.  
     Name things once then let intellisense guide you.
-
-https://user-images.githubusercontent.com/6702424/147381177-346293ec-8562-4aa4-ac62-45a5404d7ccc.mov
+-   The core can tell the UI to do thing imperatively. Like "Play a sound now" which is something that
+    is impossible to do cleanly with just states. (`isSoundShouldBePlayedNow: boolean` ?)
 
 # Install / Import
 
@@ -55,15 +53,6 @@ $ yarn add @reduxjs/toolkit redux-clean-architecture
 ## Canonical setup
 
 A canonical setup can be found here: [👉 `src/test/demo-app`👈 ](https://github.com/garronej/redux-clean-architecture/tree/main/src/test/demo-app).
-
-## Todos List app
-
-A todo list example can be found [👉**here**👈](https://github.com/leosuncin/redux-clean-example).  
-Credit goes to [@leosuncin](https://github.com/leosuncin).
-
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/6702424/151073421-4ec19603-b87c-4e68-a338-7baa7dea0be2.png">  
-</p>
 
 ## Enterprise grade app
 
