@@ -2,7 +2,7 @@ import { Reflect } from "tsafe/Reflect";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import type { NonPostableEvt } from "evt";
-import { createMiddlewareEvtActionFactory } from "../../middlewareEvtAction";
+import { createMiddlewareEvtAction } from "../../middlewareEvtAction";
 import type { UnpackEvt } from "evt";
 import type {
     Middleware,
@@ -32,9 +32,7 @@ const usecases = Reflect<
     )[]
 >();
 
-const { createMiddlewareEvtAction } = createMiddlewareEvtActionFactory(usecases);
-
-const got = createMiddlewareEvtAction();
+const got = createMiddlewareEvtAction(usecases);
 
 const expected = Reflect<{
     evtAction: NonPostableEvt<
