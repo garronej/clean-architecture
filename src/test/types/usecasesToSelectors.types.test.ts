@@ -6,7 +6,7 @@ import { wrapSelectorsReturnValue, usecasesToSelectors } from "../../usecasesToS
 {
     const selectors = {
         "foo": Reflect<(state: any) => string>(),
-        "bar": Reflect<(state: any) => number>(),
+        "bar": Reflect<(state: any) => number>()
     };
 
     const got = wrapSelectorsReturnValue(selectors);
@@ -25,14 +25,14 @@ import { wrapSelectorsReturnValue, usecasesToSelectors } from "../../usecasesToS
             "name": "myFirstSlice",
             "selectors": {
                 "foo": Reflect<(state: any) => string>(),
-                "bar": Reflect<(state: any) => number>(),
-            },
+                "bar": Reflect<(state: any) => number>()
+            }
         },
         {
             "name": "mySecondSlice",
-            "selectors": { "baz": Reflect<(state: any) => boolean>() },
+            "selectors": { "baz": Reflect<(state: any) => boolean>() }
         },
-        { "name": "myThirdSlice" },
+        { "name": "myThirdSlice" }
     ] as const;
 
     const got = usecasesToSelectors(usecases);

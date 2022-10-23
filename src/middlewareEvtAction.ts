@@ -3,7 +3,7 @@ import type {
     Middleware,
     ActionCreator,
     ActionCreatorWithPayload,
-    ActionCreatorWithoutPayload,
+    ActionCreatorWithoutPayload
 } from "@reduxjs/toolkit";
 import { Evt } from "evt";
 import { exclude } from "tsafe/exclude";
@@ -115,7 +115,7 @@ export type UsecaseToEvent<Usecase extends UsecaseLike> = {
 }];
 
 export function createMiddlewareEvtAction<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[],
+    usecases: readonly Usecase[]
 ): {
     evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
     middlewareEvtAction: Middleware;
@@ -125,14 +125,14 @@ export function createMiddlewareEvtAction<Usecase extends UsecaseLike>(
             .map(usecase =>
                 typeGuard<Extract<typeof usecase, { actions: unknown }>>(
                     usecase,
-                    "reducer" in usecase && usecase.reducer !== null,
+                    "reducer" in usecase && usecase.reducer !== null
                 )
                     ? usecase
-                    : undefined,
+                    : undefined
             )
             .filter(exclude(undefined))
             .map(({ name, actions }) => Object.keys(actions).map(actionName => `${name}/${actionName}`))
-            .reduce((prev, curr) => [...prev, ...curr], []),
+            .reduce((prev, curr) => [...prev, ...curr], [])
     );
 
     const evtAction = Evt.create<{
@@ -146,14 +146,14 @@ export function createMiddlewareEvtAction<Usecase extends UsecaseLike>(
         if (
             !actionTypes.has(action.type) &&
             !["pending", "rejected", "fulfilled"].find(lifecycleStage =>
-                action.type.endsWith(`/${lifecycleStage}`),
+                action.type.endsWith(`/${lifecycleStage}`)
             )
         ) {
             console.warn(
                 [
                     `Unknown action type ${action.type}.`,
-                    `${symToStr({ middlewareEvtAction })} is misconfigured`,
-                ].join(" "),
+                    `${symToStr({ middlewareEvtAction })} is misconfigured`
+                ].join(" ")
             );
 
             return next(action);
@@ -169,9 +169,9 @@ export function createMiddlewareEvtAction<Usecase extends UsecaseLike>(
             ...(lifecycleStage.length === 0
                 ? {}
                 : {
-                      "lifecycleStage": lifecycleStage.join("/"),
+                      "lifecycleStage": lifecycleStage.join("/")
                   }),
-            "payload": action.payload,
+            "payload": action.payload
         });
 
         return out;

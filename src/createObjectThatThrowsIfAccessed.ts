@@ -12,5 +12,5 @@ function isPropertyAccessedByReduxOrStorybook(prop: string | number | symbol) {
 }
 
 export const { createObjectThatThrowsIfAccessed } = createObjectThatThrowsIfAccessedFactory({
-    "isPropertyWhitelisted": isPropertyAccessedByReduxOrStorybook,
+    "isPropertyWhitelisted": isPropertyAccessedByReduxOrStorybook
 });

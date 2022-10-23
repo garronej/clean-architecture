@@ -4,7 +4,7 @@ import type {
     MiddlewareArray,
     ThunkMiddleware,
     AnyAction,
-    ReducersMapObject,
+    ReducersMapObject
 } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 import { usecasesToReducer } from "./usecasesToReducer";
@@ -17,7 +17,7 @@ export type UsecaseLike = UsecaseLike_reducer & UsecaseLike_evt;
 
 export type GenericCore<
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
-    Usecase extends UsecaseLike,
+    Usecase extends UsecaseLike
 > = {
     reducer: UsecasesToReducer<Usecase>;
     middleware: MiddlewareArray<
@@ -28,7 +28,7 @@ export type GenericCore<
                 ThunksExtraArgumentWithoutEvtAction & {
                     evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
                 }
-            >,
+            >
         ]
     >;
 } extends ConfigureStoreOptions<infer S, infer A, infer M>
@@ -41,7 +41,7 @@ export type GenericCore<
 
 export function createCoreFromUsecases<
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
-    Usecase extends UsecaseLike,
+    Usecase extends UsecaseLike
 >(params: {
     thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction;
     usecases: readonly Usecase[];
@@ -52,21 +52,21 @@ export function createCoreFromUsecases<
 
     const thunksExtraArgument = {
         ...thunksExtraArgumentWithoutEvtAction,
-        evtAction,
+        evtAction
     };
 
     const { getState, dispatch } = configureStore({
         "reducer": usecasesToReducer(usecases) as any,
         "middleware": getDefaultMiddleware =>
             getDefaultMiddleware({
-                "thunk": { "extraArgument": thunksExtraArgument },
-            }).concat(middlewareEvtAction),
+                "thunk": { "extraArgument": thunksExtraArgument }
+            }).concat(middlewareEvtAction)
     });
 
     const core = {
         getState,
         dispatch,
-        thunksExtraArgument,
+        thunksExtraArgument
     };
 
     return core as any;

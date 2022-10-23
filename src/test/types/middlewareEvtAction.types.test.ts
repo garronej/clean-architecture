@@ -7,7 +7,7 @@ import type { UnpackEvt } from "evt";
 import type {
     Middleware,
     ActionCreatorWithPayload,
-    ActionCreatorWithoutPayload,
+    ActionCreatorWithoutPayload
 } from "@reduxjs/toolkit";
 
 const usecases = Reflect<

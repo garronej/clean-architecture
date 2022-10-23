@@ -7,7 +7,7 @@ import type { Equals } from "tsafe";
 const usecases = [
     { "name": "myFirstSlice", "reducer": Reflect<Reducer<{ foo: string }>>() },
     { "name": "mySecondSlice", "reducer": Reflect<Reducer<{ bar: string }>>() },
-    { "name": "myThirdSlice", "reducer": null },
+    { "name": "myThirdSlice", "reducer": null }
 ] as const;
 
 const reducer = usecasesToReducer(usecases);

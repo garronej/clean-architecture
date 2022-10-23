@@ -12,20 +12,20 @@ fs.writeFileSync(
         JSON.stringify(
             (() => {
                 const packageJsonParsed = JSON.parse(
-                    fs.readFileSync(pathJoin(tssReactDirPath, "package.json")).toString("utf8"),
+                    fs.readFileSync(pathJoin(tssReactDirPath, "package.json")).toString("utf8")
                 );
 
                 return {
                     ...packageJsonParsed,
                     "main": packageJsonParsed["main"].replace(/^dist\//, ""),
-                    "types": packageJsonParsed["types"].replace(/^dist\//, ""),
+                    "types": packageJsonParsed["types"].replace(/^dist\//, "")
                 };
             })(),
             null,
-            2,
+            2
         ),
-        "utf8",
-    ),
+        "utf8"
+    )
 );
 
 const commonThirdPartyDeps = (() => {
@@ -37,10 +37,10 @@ const commonThirdPartyDeps = (() => {
             .map(namespaceModuleName =>
                 fs
                     .readdirSync(pathJoin(tssReactDirPath, "node_modules", namespaceModuleName))
-                    .map(submoduleName => `${namespaceModuleName}/${submoduleName}`),
+                    .map(submoduleName => `${namespaceModuleName}/${submoduleName}`)
             )
             .reduce((prev, curr) => [...prev, ...curr], []),
-        ...standaloneModuleNames,
+        ...standaloneModuleNames
     ];
 })();
 
@@ -52,7 +52,7 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
     const { targetModuleName, cwd } = params;
 
     const cmd = ["yarn", "link", ...(targetModuleName !== undefined ? [targetModuleName] : [])].join(
-        " ",
+        " "
     );
 
     console.log(`$ cd ${pathRelative(tssReactDirPath, cwd) || "."} && ${cmd}`);
@@ -61,8 +61,8 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
         cwd,
         "env": {
             ...process.env,
-            "HOME": yarnHomeDirPath,
-        },
+            "HOME": yarnHomeDirPath
+        }
     });
 };
 
@@ -89,8 +89,8 @@ commonThirdPartyDeps.forEach(commonThirdPartyDep => {
             "node_modules",
             ...(commonThirdPartyDep.startsWith("@")
                 ? commonThirdPartyDep.split("/")
-                : [commonThirdPartyDep]),
-        ],
+                : [commonThirdPartyDep])
+        ]
     );
 
     execYarnLink({ "cwd": localInstallPath });
@@ -98,8 +98,8 @@ commonThirdPartyDeps.forEach(commonThirdPartyDep => {
     testAppNames.forEach(testAppName =>
         execYarnLink({
             "cwd": getTestAppPath(testAppName),
-            "targetModuleName": commonThirdPartyDep,
-        }),
+            "targetModuleName": commonThirdPartyDep
+        })
     );
 });
 
@@ -110,6 +110,6 @@ execYarnLink({ "cwd": pathJoin(tssReactDirPath, "dist") });
 testAppNames.forEach(testAppName =>
     execYarnLink({
         "cwd": getTestAppPath(testAppName),
-        "targetModuleName": "redux-clean-architecture",
-    }),
+        "targetModuleName": "redux-clean-architecture"
+    })
 );

@@ -9,7 +9,7 @@ type CoreLike<Usecase extends UsecaseLike> = CoreLike_functions<Usecase> & CoreL
 export async function createVanillaApi<
     CoreParams extends Record<string, unknown>,
     Usecase extends UsecaseLike,
-    Core extends CoreLike<Usecase>,
+    Core extends CoreLike<Usecase>
 >(params: {
     createCore: (params: CoreParams) => Promise<Core>;
     usecasesApi: UsecasesApi<Usecase>;
@@ -23,7 +23,7 @@ export async function createVanillaApi<
 
     const {
         getState,
-        thunksExtraArgument: { evtAction },
+        thunksExtraArgument: { evtAction }
     } = core;
 
     const functions = getMemoizedCoreFunctions(core);
@@ -37,6 +37,6 @@ export async function createVanillaApi<
         evtStateUpdated,
         selectors,
         coreEvts,
-        ...functions,
+        ...functions
     };
 }

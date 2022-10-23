@@ -5,7 +5,7 @@ import { UsecaseLike as UsecaseLike_evts, GetMemoizedCoreEvts } from "./usecases
 import { usecasesToFunctions } from "./usecasesToFunctions";
 import type {
     UsecaseLike as UsecaseLike_functions,
-    GetMemoizedCoreFunctions,
+    GetMemoizedCoreFunctions
 } from "./usecasesToFunctions";
 
 export type UsecaseLike = UsecaseLike_selectors & UsecaseLike_evts & UsecaseLike_functions;
@@ -17,7 +17,7 @@ export type UsecasesApi<Usecase extends UsecaseLike> = {
 };
 
 export function createUsecasesApi<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[],
+    usecases: readonly Usecase[]
 ): UsecasesApi<Usecase> {
     const selectors = usecasesToSelectors(usecases);
     const { getMemoizedCoreEvts } = usecasesToEvts(usecases);

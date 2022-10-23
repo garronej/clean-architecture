@@ -5,11 +5,11 @@ import { objectKeys } from "tsafe/objectKeys";
 import type { ThunkAction, AnyAction, Action } from "@reduxjs/toolkit";
 
 export type ThunkToFunction<Thunk extends (params: any) => ThunkAction<any, any, any, any>> = (
-    params: Param0<Thunk>,
+    params: Param0<Thunk>
 ) => ReturnType<Thunk> extends ThunkAction<infer R, any, any, any> ? R : never;
 
 export function thunkToFunction<
-    Thunk extends (params: any) => ThunkAction<any, any, any, AnyAction>,
+    Thunk extends (params: any) => ThunkAction<any, any, any, AnyAction>
 >(params: {
     thunk: Thunk;
     dispatch: (
@@ -20,7 +20,7 @@ export function thunkToFunction<
                 ? ExtraThunkArg
                 : never,
             AnyAction
-        >,
+        >
     ) => ReturnType<Thunk> extends ThunkAction<infer RtnType, any, any, AnyAction> ? RtnType : never;
 }): ThunkToFunction<Thunk> {
     const { dispatch, thunk } = params;
@@ -29,11 +29,11 @@ export function thunkToFunction<
 }
 
 export type ThunksToFunctions<
-    Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, AnyAction>>,
+    Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, AnyAction>>
 > = { [Key in keyof Thunks]: ThunkToFunction<Thunks[Key]> };
 
 export function thunksToFunctions<
-    Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, any>>,
+    Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, any>>
 >(params: {
     thunks: Thunks;
     dispatch: (
@@ -53,14 +53,14 @@ export function thunksToFunctions<
                 ? ExtraThunkArg
                 : never,
             AnyAction
-        >,
+        >
     ) => ReturnType<Thunks[keyof Thunks]> extends ThunkAction<infer RtnType, any, any, AnyAction>
         ? RtnType
         : never;
 }): ThunksToFunctions<Thunks> {
     const { dispatch, thunks } = params;
     return Object.fromEntries(
-        objectKeys(thunks).map(name => [name, thunkToFunction({ "thunk": thunks[name], dispatch })]),
+        objectKeys(thunks).map(name => [name, thunkToFunction({ "thunk": thunks[name], dispatch })])
     ) as any;
 }
 
@@ -97,7 +97,7 @@ export type CoreLike<Usecase extends UsecaseLike> = {
                 ? ExtraThunkArg
                 : never,
             AnyAction
-        >,
+        >
     ) => ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
         infer RtnType,
         any,
@@ -113,7 +113,7 @@ export type GetMemoizedCoreFunctions<Usecase extends UsecaseLike> = (core: CoreL
 };
 
 export function usecasesToFunctions<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[],
+    usecases: readonly Usecase[]
 ): {
     getMemoizedCoreFunctions: GetMemoizedCoreFunctions<Usecase>;
 } {
@@ -130,14 +130,14 @@ export function usecasesToFunctions<Usecase extends UsecaseLike>(
             functions = Object.fromEntries(
                 usecases.map(({ name, thunks }) => [
                     name,
-                    thunksToFunctions({ thunks, "dispatch": core.dispatch }),
-                ]),
+                    thunksToFunctions({ thunks, "dispatch": core.dispatch })
+                ])
             ) as any;
 
             functionsBtDispatch.set(core, functions);
 
             return functions;
-        },
+        }
     };
 }
 
@@ -145,10 +145,10 @@ export type GenericThunks<
     Core extends {
         getState: () => any;
         thunksExtraArgument: Record<string, unknown>;
-    },
+    }
 > = Record<
     string,
     (
-        params: any,
+        params: any
     ) => ThunkAction<any, ReturnType<Core["getState"]>, Core["thunksExtraArgument"], Action<string>>
 >;

@@ -11,7 +11,7 @@ type CoreLike<Usecase extends UsecaseLike> = CoreLike_functions<Usecase> & CoreL
 export function createReactApi<
     CoreParams extends Record<string, unknown>,
     Usecase extends UsecaseLike,
-    Core extends CoreLike<Usecase>,
+    Core extends CoreLike<Usecase>
 >(params: { createCore: (params: CoreParams) => Promise<Core>; usecasesApi: UsecasesApi<Usecase> }) {
     const { createCore, usecasesApi } = params;
 
@@ -83,7 +83,7 @@ export function createReactApi<
 
         useEvt(
             ctx => core.thunksExtraArgument.evtAction.attach(ctx, () => setState(core.getState())),
-            [core],
+            [core]
         );
 
         return selector(state);
@@ -106,6 +106,6 @@ export function createReactApi<
         selectors,
         useCoreState,
         useCoreFunctions,
-        useCoreEvts,
+        useCoreEvts
     };
 }

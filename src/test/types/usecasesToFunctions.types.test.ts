@@ -49,7 +49,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
     const got = thunkToFunction({
         dispatch,
-        thunk,
+        thunk
     });
 
     const expected = Reflect<(params: Params) => RtnType>();
@@ -134,7 +134,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
     const got = thunksToFunctions({
         dispatch,
-        thunks,
+        thunks
     });
 
     const expected = Reflect<{
@@ -184,10 +184,10 @@ import type { AnyAction } from "@reduxjs/toolkit";
                 name: "firstSlice";
                 thunks: {
                     firstMethod: (
-                        params: Params1,
+                        params: Params1
                     ) => ThunkAction<RtnType1, State, ExtraThunkArg, AnyAction>;
                     secondMethod: (
-                        params: Params2,
+                        params: Params2
                     ) => ThunkAction<RtnType2, State, ExtraThunkArg, AnyAction>;
                 };
             },
@@ -196,7 +196,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
                 thunks: {
                     thirdMethod: (params: Params3) => ThunkAction<RtnType3, any, any, any>;
                 };
-            },
+            }
         ]
     >();
 

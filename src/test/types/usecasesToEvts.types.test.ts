@@ -27,7 +27,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
 
             {
                 name: "thirdSlice";
-            },
+            }
         ]
     >();
 
@@ -36,8 +36,8 @@ import { usecasesToEvts } from "../../usecasesToEvts";
     const core = {
         "getState": Reflect<() => Record<string, unknown>>(),
         "thunksExtraArgument": {
-            "evtAction": Reflect<NonPostableEvt<any>>(),
-        },
+            "evtAction": Reflect<NonPostableEvt<any>>()
+        }
     };
 
     const got = getMemoizedCoreEvts(core);

@@ -16,7 +16,7 @@ export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
 
     return new Proxy<T>({} as any, {
         get,
-        "set": get,
+        "set": get
     });
 }
 
@@ -31,15 +31,15 @@ export function createObjectThatThrowsIfAccessedFactory(params: {
 
             return createObjectThatThrowsIfAccessed<T>({
                 debugMessage,
-                isPropertyWhitelisted,
+                isPropertyWhitelisted
             });
-        },
+        }
     };
 }
 
 export function createPropertyThatThrowIfAccessed<T extends object, PropertyName extends keyof T>(
     propertyName: PropertyName,
-    debugMessage?: string,
+    debugMessage?: string
 ): { [K in PropertyName]: T[K] } {
     const getAndSet = () => {
         throw new Error(`Cannot access ${String(propertyName)} yet ${debugMessage ?? ""}`);
@@ -48,6 +48,6 @@ export function createPropertyThatThrowIfAccessed<T extends object, PropertyName
     return Object.defineProperty({} as any, propertyName, {
         "get": getAndSet,
         "set": getAndSet,
-        "enumerable": true,
+        "enumerable": true
     });
 }

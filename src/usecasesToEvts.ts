@@ -39,7 +39,7 @@ export type GetMemoizedCoreEvts<Usecase extends UsecaseLike> = (core: CoreLike) 
 };
 
 export function usecasesToEvts<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[],
+    usecases: readonly Usecase[]
 ): {
     getMemoizedCoreEvts: GetMemoizedCoreEvts<Usecase>;
 } {
@@ -55,27 +55,27 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(
 
             const {
                 getState,
-                thunksExtraArgument: { evtAction },
+                thunksExtraArgument: { evtAction }
             } = core;
 
             evts = Object.fromEntries(
                 usecases
                     .map(({ name, createEvt }) =>
-                        createEvt === undefined ? undefined : { name, createEvt },
+                        createEvt === undefined ? undefined : { name, createEvt }
                     )
                     .filter(exclude(undefined))
                     .map(({ name, createEvt }) => [
                         `${wordId}${capitalize(name)}`,
                         createEvt({
                             evtAction,
-                            getState,
-                        }),
-                    ]),
+                            getState
+                        })
+                    ])
             ) as any;
 
             evtsByCore.set(core, evts);
 
             return evts;
-        },
+        }
     };
 }

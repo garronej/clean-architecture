@@ -7,7 +7,7 @@ import type {
     Dispatch,
     Action,
     ActionCreatorWithPayload,
-    ActionCreatorWithoutPayload,
+    ActionCreatorWithoutPayload
 } from "@reduxjs/toolkit";
 import type { NonPostableEvt } from "evt";
 import { UsecaseToEvent } from "../../middlewareEvtAction";
@@ -28,7 +28,7 @@ import type { Equals } from "tsafe";
                 foo: ActionCreatorWithPayload<{ delta: number }>;
                 bar: ActionCreatorWithoutPayload<any>;
                 baz: ActionCreatorWithPayload<{ beta: string }>;
-            }>(),
+            }>()
         },
         {
             "name": "mySecondSlice",
@@ -38,14 +38,14 @@ import type { Equals } from "tsafe";
                 foo1: ActionCreatorWithPayload<{ delta1: number }>;
                 bar1: ActionCreatorWithoutPayload<any>;
                 baz1: ActionCreatorWithPayload<{ beta1: string }>;
-            }>(),
+            }>()
         },
-        { "name": "myThirdSlice", "reducer": null },
+        { "name": "myThirdSlice", "reducer": null }
     ] as const;
 
     const core = createCoreFromUsecases({
         "thunksExtraArgument": Reflect<ThunksExtraArgumentWithoutEvtAction>(),
-        usecases,
+        usecases
     });
 
     type Got = typeof core;

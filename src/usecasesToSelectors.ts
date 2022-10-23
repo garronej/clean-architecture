@@ -10,20 +10,20 @@ export type UsecaseLike = {
 
 type WrapSelectorsReturnValue<Selectors extends { [Name in string]: (state: any) => unknown }> = {
     [Name in keyof Selectors]: (
-        state: Param0<Selectors[Name]>,
+        state: Param0<Selectors[Name]>
     ) => Record<Name, ReturnType<Selectors[Name]>>;
 };
 
 export function wrapSelectorsReturnValue<
-    Selectors extends { [Name in string]: (state: any) => unknown },
+    Selectors extends { [Name in string]: (state: any) => unknown }
 >(selectors: Selectors): WrapSelectorsReturnValue<Selectors> {
     return Object.fromEntries(
         objectKeys(selectors).map(name => [
             name,
             (state: Param0<Selectors[typeof name]>) => ({
-                [name]: selectors[name](state),
-            }),
-        ]),
+                [name]: selectors[name](state)
+            })
+        ])
     ) as any;
 }
 
@@ -34,14 +34,14 @@ export type Selectors<Usecase extends UsecaseLike> = {
 };
 
 export function usecasesToSelectors<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[],
+    usecases: readonly Usecase[]
 ): Selectors<Usecase> {
     return Object.fromEntries(
         usecases
             .map(({ name, selectors }) =>
-                selectors === undefined ? undefined : ([name, selectors] as const),
+                selectors === undefined ? undefined : ([name, selectors] as const)
             )
             .filter(exclude(undefined))
-            .map(([name, selector]) => [name, wrapSelectorsReturnValue(selector)]),
+            .map(([name, selector]) => [name, wrapSelectorsReturnValue(selector)])
     ) as any;
 }
