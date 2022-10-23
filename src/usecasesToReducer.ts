@@ -1,11 +1,18 @@
 import "minimal-polyfills/Object.fromEntries";
 import type { Reducer } from "@reduxjs/toolkit";
 
-export function usecasesToReducer<Usecase extends { name: string; reducer: Reducer | null }>(
-    usecases: readonly Usecase[],
-): RemoveNullProperties<{
+export type UsecaseLike = {
+    name: string;
+    reducer: Reducer | null;
+};
+
+export type UsecasesToReducer<Usecase extends UsecaseLike> = RemoveNullProperties<{
     [Key in Usecase["name"]]: Extract<Usecase, { name: Key }>["reducer"];
-}> {
+}>;
+
+export function usecasesToReducer<Usecase extends UsecaseLike>(
+    usecases: readonly Usecase[],
+): UsecasesToReducer<Usecase> {
     return Object.fromEntries(
         usecases.map(({ name, reducer }) => [name, reducer]).filter(([, reducer]) => reducer !== null),
     ) as any;

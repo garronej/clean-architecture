@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@reduxjs/toolkit": "^1.8.0",
-        "evt": "^2.4.8",
+        "evt": "^2.4.10",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "redux-clean-architecture": "file:../../../dist",

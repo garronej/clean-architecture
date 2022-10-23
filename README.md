@@ -45,7 +45,7 @@
 # Install / Import
 
 ```bash
-$ yarn add redux-clean-architecture @reduxjs/toolkit
+$ yarn add redux-clean-architecture evt @reduxjs/toolkit
 ```
 
 # Examples setups
