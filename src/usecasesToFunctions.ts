@@ -64,54 +64,56 @@ export function thunksToFunctions<
     ) as any;
 }
 
-export function usecasesToFunctions<
-    Usecase extends {
-        name: string;
-        thunks: Record<string, (params: any) => ThunkAction<any, any, any, any>>;
-    },
->(
+export type UsecaseLike = {
+    name: string;
+    thunks: Record<string, (params: any) => ThunkAction<any, any, any, any>>;
+};
+
+export type GetMemoizedCoreFunctions<Usecase extends UsecaseLike> = (core: {
+    dispatch: (
+        thunkAction: ThunkAction<
+            ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
+                infer RtnType,
+                any,
+                any,
+                AnyAction
+            >
+                ? RtnType
+                : never,
+            ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
+                any,
+                infer State,
+                any,
+                AnyAction
+            >
+                ? State
+                : never,
+            ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
+                any,
+                any,
+                infer ExtraThunkArg,
+                AnyAction
+            >
+                ? ExtraThunkArg
+                : never,
+            AnyAction
+        >,
+    ) => ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
+        infer RtnType,
+        any,
+        any,
+        AnyAction
+    >
+        ? RtnType
+        : never;
+}) => {
+    [Key in Usecase["name"]]: ThunksToFunctions<Extract<Usecase, { name: Key }>["thunks"]>;
+};
+
+export function usecasesToFunctions<Usecase extends UsecaseLike>(
     usecases: readonly Usecase[],
 ): {
-    getMemoizedCoreFunctions: (core: {
-        dispatch: (
-            thunkAction: ThunkAction<
-                ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
-                    infer RtnType,
-                    any,
-                    any,
-                    AnyAction
-                >
-                    ? RtnType
-                    : never,
-                ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
-                    any,
-                    infer State,
-                    any,
-                    AnyAction
-                >
-                    ? State
-                    : never,
-                ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
-                    any,
-                    any,
-                    infer ExtraThunkArg,
-                    AnyAction
-                >
-                    ? ExtraThunkArg
-                    : never,
-                AnyAction
-            >,
-        ) => ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
-            infer RtnType,
-            any,
-            any,
-            AnyAction
-        >
-            ? RtnType
-            : never;
-    }) => {
-        [Key in Usecase["name"]]: ThunksToFunctions<Extract<Usecase, { name: Key }>["thunks"]>;
-    };
+    getMemoizedCoreFunctions: GetMemoizedCoreFunctions<Usecase>;
 } {
     const functionsBtDispatch = new WeakMap<Record<string, unknown>, any>();
 

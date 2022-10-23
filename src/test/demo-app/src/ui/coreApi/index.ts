@@ -1,3 +1,3 @@
-
+import { usecasesApi } from "core";
+export const { selectors } = usecasesApi;
 export * from "./coreHooks";
-export { selectors } from "core";

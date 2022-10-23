@@ -19,29 +19,29 @@ export type GenericCreateEvt<Core extends CoreLike> = (params: {
     getState: Core["getState"];
 }) => NonPostableEvt<any>;
 
-export function usecasesToEvts<
-    Usecase extends {
-        name: string;
-        createEvt?: GenericCreateEvt<CoreLike>;
-    },
->(
+export type UsecaseLike = {
+    name: string;
+    createEvt?: GenericCreateEvt<CoreLike>;
+};
+
+export type GetMemoizedCoreEvts<Usecase extends UsecaseLike> = (core: CoreLike) => {
+    [Key in `${typeof wordId}${Capitalize<Extract<Usecase, { createEvt: any }>["name"]>}`]: ReturnType<
+        Extract<
+            Usecase,
+            {
+                name: Key extends `${typeof wordId}${infer CapitalizedName}`
+                    ? Uncapitalize<CapitalizedName>
+                    : never;
+                createEvt: any;
+            }
+        >["createEvt"]
+    >;
+};
+
+export function usecasesToEvts<Usecase extends UsecaseLike>(
     usecases: readonly Usecase[],
 ): {
-    getMemoizedCoreEvts: (core: CoreLike) => {
-        [Key in `${typeof wordId}${Capitalize<
-            Extract<Usecase, { createEvt: any }>["name"]
-        >}`]: ReturnType<
-            Extract<
-                Usecase,
-                {
-                    name: Key extends `${typeof wordId}${infer CapitalizedName}`
-                        ? Uncapitalize<CapitalizedName>
-                        : never;
-                    createEvt: any;
-                }
-            >["createEvt"]
-        >;
-    };
+    getMemoizedCoreEvts: GetMemoizedCoreEvts<Usecase>;
 } {
     const evtsByCore = new WeakMap<Record<string, unknown>, any>();
 

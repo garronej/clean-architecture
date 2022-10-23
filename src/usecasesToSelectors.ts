@@ -3,6 +3,11 @@ import type { Param0 } from "tsafe";
 import { objectKeys } from "tsafe/objectKeys";
 import { exclude } from "tsafe/exclude";
 
+export type UsecaseLike = {
+    name: string;
+    selectors?: { [Name in string]: (state: any) => unknown };
+};
+
 type WrapSelectorsReturnValue<Selectors extends { [Name in string]: (state: any) => unknown }> = {
     [Name in keyof Selectors]: (
         state: Param0<Selectors[Name]>,
@@ -22,18 +27,15 @@ export function wrapSelectorsReturnValue<
     ) as any;
 }
 
-export function usecasesToSelectors<
-    Usecase extends {
-        name: string;
-        selectors?: { [Name in string]: (state: any) => unknown };
-    },
->(
-    usecases: readonly Usecase[],
-): {
+export type Selectors<Usecase extends UsecaseLike> = {
     [Key in Extract<Usecase, { selectors: any }>["name"]]: WrapSelectorsReturnValue<
         NonNullable<Extract<Usecase, { name: Key }>["selectors"]>
     >;
-} {
+};
+
+export function usecasesToSelectors<Usecase extends UsecaseLike>(
+    usecases: readonly Usecase[],
+): Selectors<Usecase> {
     return Object.fromEntries(
         usecases
             .map(({ name, selectors }) =>

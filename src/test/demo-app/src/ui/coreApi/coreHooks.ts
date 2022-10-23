@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { getMemoizedCoreEvts, getMemoizedCoreFunctions } from "core";
+import { usecasesApi } from "core";
 import type { State } from "core";
 import { useCore } from "./CoreProvider";
+
+const { getMemoizedCoreEvts, getMemoizedCoreFunctions } = usecasesApi;
 
 export function useCoreState<T>(selector: (state: State) => T): T {
 
