@@ -39,7 +39,7 @@ export type GenericCore<
       }
     : never;
 
-export function createCore<
+export function createCoreFromUsecases<
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
     Usecase extends UsecaseLike,
 >(params: {
@@ -55,7 +55,7 @@ export function createCore<
         evtAction,
     };
 
-    const { getState, dispatch, subscribe } = configureStore({
+    const { getState, dispatch } = configureStore({
         "reducer": usecasesToReducer(usecases) as any,
         "middleware": getDefaultMiddleware =>
             getDefaultMiddleware({
@@ -66,7 +66,6 @@ export function createCore<
     const core = {
         getState,
         dispatch,
-        subscribe,
         thunksExtraArgument,
     };
 

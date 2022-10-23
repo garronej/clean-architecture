@@ -1,0 +1,104 @@
+import { useState, useEffect, createContext, useContext } from "react";
+import type { ReactNode } from "react";
+import type { UsecasesApi, UsecaseLike } from "./createUsecasesApi";
+import type { CoreLike as CoreLike_functions } from "./usecasesToFunctions";
+import type { CoreLike as CoreLike_evts } from "./usecasesToEvts";
+import { assert } from "tsafe/assert";
+import { useEvt } from "evt/hooks/useEvt";
+
+type CoreLike<Usecase extends UsecaseLike> = CoreLike_functions<Usecase> & CoreLike_evts;
+
+export function createReactApi<
+    CoreParams extends Record<string, unknown>,
+    Usecase extends UsecaseLike,
+    Core extends CoreLike<Usecase>,
+>(params: { createCore: (params: CoreParams) => Promise<Core>; usecasesApi: UsecasesApi<Usecase> }) {
+    const { createCore, usecasesApi } = params;
+
+    const { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions } = usecasesApi;
+
+    const coreContext = createContext<Core | undefined>(undefined);
+
+    function useCore() {
+        const core = useContext(coreContext);
+        assert(core !== undefined, "Not wrapped within CoreProvider");
+        return core;
+    }
+
+    type Props = {
+        children: ReactNode;
+        fallback?: NonNullable<ReactNode> | null;
+        coreParams: CoreParams;
+    };
+
+    const coreByParams = new WeakMap<CoreParams, Promise<Core>>();
+
+    function CoreProvider(props: Props) {
+        const { children, fallback, coreParams } = props;
+
+        const [core, setCore] = useState<Core | undefined>(undefined);
+
+        useEffect(() => {
+            let prCore = coreByParams.get(coreParams);
+
+            if (prCore === undefined) {
+                prCore = createCore(coreParams);
+                coreByParams.set(coreParams, prCore);
+            }
+
+            let isCleanedUp = false;
+
+            prCore.then(core => {
+                if (isCleanedUp) {
+                    return;
+                }
+                setCore(core);
+            });
+
+            return () => {
+                isCleanedUp = true;
+            };
+        }, [coreParams]);
+
+        if (core === undefined) {
+            return (fallback ?? null) as null;
+        }
+
+        return <coreContext.Provider value={core}>{children}</coreContext.Provider>;
+    }
+
+    type State = ReturnType<Core["getState"]>;
+
+    function useCoreState<T>(selector: (state: State) => T): T {
+        const core = useCore();
+
+        const [state, setState] = useState(core.getState);
+
+        useEvt(
+            ctx => core.thunksExtraArgument.evtAction.attach(ctx, () => setState(core.getState())),
+            [core],
+        );
+
+        return selector(state);
+    }
+
+    function useCoreFunctions() {
+        const core = useCore();
+
+        return getMemoizedCoreFunctions(core);
+    }
+
+    function useCoreEvts() {
+        const core = useCore();
+
+        return getMemoizedCoreEvts(core);
+    }
+
+    return {
+        CoreProvider,
+        selectors,
+        useCoreState,
+        useCoreFunctions,
+        useCoreEvts,
+    };
+}

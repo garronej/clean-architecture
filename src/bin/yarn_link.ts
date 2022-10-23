@@ -30,7 +30,7 @@ fs.writeFileSync(
 
 const commonThirdPartyDeps = (() => {
     const namespaceModuleNames: string[] = [];
-    const standaloneModuleNames = ["@reduxjs/toolkit", "evt"];
+    const standaloneModuleNames = ["react", "@reduxjs/toolkit", "evt"];
 
     return [
         ...namespaceModuleNames

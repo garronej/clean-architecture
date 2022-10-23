@@ -1,4 +1,4 @@
-import { createCore } from "../../createCore";
+import { createCoreFromUsecases } from "../../createCore";
 import { Reflect } from "tsafe/Reflect";
 import type {
     Reducer,
@@ -43,7 +43,7 @@ import type { Equals } from "tsafe";
         { "name": "myThirdSlice", "reducer": null },
     ] as const;
 
-    const core = createCore({
+    const core = createCoreFromUsecases({
         "thunksExtraArgument": Reflect<ThunksExtraArgumentWithoutEvtAction>(),
         usecases,
     });
