@@ -49,3 +49,29 @@ import { usecasesToEvts } from "../../usecasesToEvts";
 
     assert<Equals<typeof got, typeof expected>>();
 }
+
+//Test if it works if there is no slice with a createEvt
+{
+    const usecases = Reflect<
+        [
+            {
+                name: "firstSlice";
+            }
+        ]
+    >();
+
+    const { getMemoizedCoreEvts } = usecasesToEvts(usecases);
+
+    const core = {
+        "getState": Reflect<() => Record<string, unknown>>(),
+        "thunksExtraArgument": {
+            "evtAction": Reflect<NonPostableEvt<any>>()
+        }
+    };
+
+    const got = getMemoizedCoreEvts(core);
+
+    const expected = Reflect<{}>();
+
+    assert<Equals<typeof got, typeof expected>>();
+}
