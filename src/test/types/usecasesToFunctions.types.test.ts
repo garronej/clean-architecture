@@ -204,7 +204,9 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
     const { getMemoizedCoreFunctions } = usecasesToFunctions(usecases);
 
-    const got = getMemoizedCoreFunctions({ dispatch });
+    const core = { dispatch };
+
+    const got = getMemoizedCoreFunctions(core);
 
     const expected = Reflect<{
         firstSlice: {
