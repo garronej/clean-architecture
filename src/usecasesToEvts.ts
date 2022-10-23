@@ -6,7 +6,7 @@ import { exclude } from "tsafe/exclude";
 
 const wordId = "evt";
 
-type CoreLike = {
+export type CoreLike = {
     thunksExtraArgument: {
         evtAction: NonPostableEvt<any>;
     };

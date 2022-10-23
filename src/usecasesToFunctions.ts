@@ -69,7 +69,7 @@ export type UsecaseLike = {
     thunks: Record<string, (params: any) => ThunkAction<any, any, any, any>>;
 };
 
-export type GetMemoizedCoreFunctions<Usecase extends UsecaseLike> = (core: {
+export type CoreLike<Usecase extends UsecaseLike> = {
     dispatch: (
         thunkAction: ThunkAction<
             ReturnType<Usecase["thunks"][keyof Usecase["thunks"]]> extends ThunkAction<
@@ -106,7 +106,9 @@ export type GetMemoizedCoreFunctions<Usecase extends UsecaseLike> = (core: {
     >
         ? RtnType
         : never;
-}) => {
+};
+
+export type GetMemoizedCoreFunctions<Usecase extends UsecaseLike> = (core: CoreLike<Usecase>) => {
     [Key in Usecase["name"]]: ThunksToFunctions<Extract<Usecase, { name: Key }>["thunks"]>;
 };
 
@@ -139,12 +141,12 @@ export function usecasesToFunctions<Usecase extends UsecaseLike>(
     };
 }
 
-type CoreLike = {
-    getState: () => any;
-    thunksExtraArgument: Record<string, unknown>;
-};
-
-export type GenericThunks<Core extends CoreLike> = Record<
+export type GenericThunks<
+    Core extends {
+        getState: () => any;
+        thunksExtraArgument: Record<string, unknown>;
+    },
+> = Record<
     string,
     (
         params: any,
