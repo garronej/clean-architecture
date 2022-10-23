@@ -25,46 +25,53 @@ export function createReactApi<
         return core;
     }
 
-    type Props = {
-        children: ReactNode;
-        fallback?: NonNullable<ReactNode> | null;
-        coreParams: CoreParams;
-    };
+    function createCoreProvider(params: { coreParams: CoreParams | (() => CoreParams) }) {
+        const { coreParams: coreParamsOrGetCoreParams } = params;
 
-    const coreByParams = new WeakMap<CoreParams, Promise<Core>>();
+        const getCoreParams =
+            typeof coreParamsOrGetCoreParams === "function"
+                ? coreParamsOrGetCoreParams
+                : () => coreParamsOrGetCoreParams;
 
-    function CoreProvider(props: Props) {
-        const { children, fallback, coreParams } = props;
+        type Props = {
+            children: ReactNode;
+            fallback?: NonNullable<ReactNode> | null;
+        };
 
-        const [core, setCore] = useState<Core | undefined>(undefined);
+        let prCore: Promise<Core> | undefined = undefined;
 
-        useEffect(() => {
-            let prCore = coreByParams.get(coreParams);
+        function CoreProvider(props: Props) {
+            const { children, fallback } = props;
 
-            if (prCore === undefined) {
-                prCore = createCore(coreParams);
-                coreByParams.set(coreParams, prCore);
+            const [core, setCore] = useState<Core | undefined>(undefined);
+
+            useEffect(() => {
+                if (prCore === undefined) {
+                    prCore = createCore(getCoreParams());
+                }
+
+                let isCleanedUp = false;
+
+                prCore.then(core => {
+                    if (isCleanedUp) {
+                        return;
+                    }
+                    setCore(core);
+                });
+
+                return () => {
+                    isCleanedUp = true;
+                };
+            }, []);
+
+            if (core === undefined) {
+                return (fallback ?? null) as null;
             }
 
-            let isCleanedUp = false;
-
-            prCore.then(core => {
-                if (isCleanedUp) {
-                    return;
-                }
-                setCore(core);
-            });
-
-            return () => {
-                isCleanedUp = true;
-            };
-        }, [coreParams]);
-
-        if (core === undefined) {
-            return (fallback ?? null) as null;
+            return <coreContext.Provider value={core}>{children}</coreContext.Provider>;
         }
 
-        return <coreContext.Provider value={core}>{children}</coreContext.Provider>;
+        return { CoreProvider };
     }
 
     type State = ReturnType<Core["getState"]>;
@@ -95,7 +102,7 @@ export function createReactApi<
     }
 
     return {
-        CoreProvider,
+        createCoreProvider,
         selectors,
         useCoreState,
         useCoreFunctions,

@@ -7179,7 +7179,7 @@ react-scripts@5.1.0-next.14:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react@^18.2.0:
+react@18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -7230,10 +7230,10 @@ recursive-readdir@^2.2.2:
     minimatch "3.0.4"
 
 "redux-clean-architecture@file:../../../dist":
-  version "2.1.0"
+  version "2.2.0"
   dependencies:
     minimal-polyfills "^2.2.2"
-    tsafe "^1.1.3"
+    tsafe "^1.2.1"
 
 redux-thunk@^2.4.1:
   version "2.4.1"
@@ -8162,7 +8162,7 @@ tryer@^1.0.1:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
-tsafe@^1.1.3, tsafe@^1.2.1:
+tsafe@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.2.1.tgz#578f7acd22b5ff32b5b820b6eb551af9ad4024da"
   integrity sha512-fDDbPiAG6xjZuyXXakHZi8ewGx7ERxGVJ3dwFtcoex+9lvp/nHm5ROlFAB6lyZSmspG0cjpYpFxrKyRnniiOdQ==
