@@ -28,7 +28,7 @@ type CoreParams = {
 };
 
 type ThunksExtraArgument = {
-    createStoreParams: CoreParams;
+    coreParams: CoreParams;
     port1: Port1;
     port2: Port2;
 };
@@ -40,7 +40,7 @@ export async function createCore(params: CoreParams) {
     ]);
 
     const thunksExtraArgument: ThunksExtraArgument = {
-        "createStoreParams": params,
+        "coreParams": params,
         port1,
         port2,
     };
