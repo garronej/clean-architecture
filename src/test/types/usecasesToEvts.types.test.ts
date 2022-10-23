@@ -24,6 +24,10 @@ import { usecasesToEvts } from "../../usecasesToEvts";
                 name: "secondSlice";
                 createEvt: (params: any) => NonPostableEvt<Data2>;
             },
+
+            {
+                name: "thirdSlice";
+            },
         ]
     >();
 

@@ -2,6 +2,7 @@ import "minimal-polyfills/Object.fromEntries";
 import { Polyfill as WeakMap } from "minimal-polyfills/WeakMap";
 import { capitalize } from "tsafe/capitalize";
 import type { NonPostableEvt } from "evt";
+import { exclude } from "tsafe/exclude";
 
 const wordId = "evt";
 
@@ -12,27 +13,30 @@ type CoreLike = {
     getState: () => Record<string, unknown>;
 };
 
-export type GenericCreateEvtParam<Core extends CoreLike> = {
+export type GenericCreateEvt<Core extends CoreLike> = (params: {
     evtAction: Core["thunksExtraArgument"]["evtAction"];
     getState: Core["getState"];
-};
+}) => NonPostableEvt<any>;
 
 export function usecasesToEvts<
     Usecase extends {
         name: string;
-        createEvt: (params: GenericCreateEvtParam<CoreLike>) => NonPostableEvt<any>;
+        createEvt?: GenericCreateEvt<CoreLike>;
     },
 >(
     usecases: readonly Usecase[],
 ): {
     getMemoizedCoreEvts: (core: CoreLike) => {
-        [Key in `${typeof wordId}${Capitalize<Usecase["name"]>}`]: ReturnType<
+        [Key in `${typeof wordId}${Capitalize<
+            Extract<Usecase, { createEvt: any }>["name"]
+        >}`]: ReturnType<
             Extract<
                 Usecase,
                 {
                     name: Key extends `${typeof wordId}${infer CapitalizedName}`
                         ? Uncapitalize<CapitalizedName>
                         : never;
+                    createEvt: any;
                 }
             >["createEvt"]
         >;
@@ -54,13 +58,18 @@ export function usecasesToEvts<
             } = core;
 
             evts = Object.fromEntries(
-                usecases.map(({ name, createEvt }) => [
-                    `${wordId}${capitalize(name)}`,
-                    createEvt({
-                        evtAction,
-                        getState,
-                    }),
-                ]),
+                usecases
+                    .map(({ name, createEvt }) =>
+                        createEvt === undefined ? undefined : { name, createEvt },
+                    )
+                    .filter(exclude(undefined))
+                    .map(({ name, createEvt }) => [
+                        `${wordId}${capitalize(name)}`,
+                        createEvt({
+                            evtAction,
+                            getState,
+                        }),
+                    ]),
             ) as any;
 
             evtsByCore.set(core, evts);
