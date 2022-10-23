@@ -23,12 +23,12 @@ const usecases = [usecase1, usecase2, usecase3];
 
 export const usecasesApi = createUsecasesApi(usecases);
 
-export type CoreParams = {
+type CoreParams = {
     port1Config: Port1Config;
     port2Config: Port2Config;
 };
 
-export type ThunksExtraArgument = {
+type ThunksExtraArgument = {
     createStoreParams: CoreParams;
     port1: Port1;
     port2: Port2;
