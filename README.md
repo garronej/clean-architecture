@@ -34,7 +34,7 @@
 -   Clean architecture without [the object-orientedness](https://www.youtube.com/watch?v=QM1iUe6IofM).
 -   No need to explicitly call `dispatch()` on the UI side.  
     As a matter of fact, React being used
-    under the hood is an implementation detail that can be ignored by the dev working ont the UI.
+    under the hood is an implementation detail that can as well be ignored by the dev working ont the UI.
 -   Strict isolation between the Core and the UI. Port your web app to React Native or switch to another
     UI framework without having to re-write a single line of the core logic.
 -   Names things once, it propagate through all the codebase via [TypeScript's template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html). No more hard to maintain stuttering.  
