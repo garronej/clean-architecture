@@ -37,7 +37,7 @@
     under the hood is an implementation detail that can as well be ignored by the dev working ont the UI.
 -   Strict isolation between the Core and the UI. Port your web app to React Native or switch to another
     UI framework without having to re-write a single line of the core logic.  
--   It's not specifically a frontend framework, it can and is used on the backend.  
+-   It's not specifically a React framwork, hell it's not even specifically a frontend framwork, it can and is be used on the backend.  
 -   Names things once, it propagate through all the codebase via [TypeScript's template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html). No more hard to maintain stuttering.  
     Name things once then let intellisense guide you.
 -   The core can tell the UI to do thing imperatively. Like "Play a sound now" which is something that
