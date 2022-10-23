@@ -24,7 +24,7 @@ type CaseReducerToEvent<T extends Record<string, ActionCreator<any>>> = RecordTo
 type UsecaseToEvent<
     Usecase extends { name: string } & (
         | { actions: Record<string, ActionCreator<any>> }
-        | { reducer: null }
+        | { reducer: null; actions?: undefined; }
     ),
 > = RecordToUnion<{
     [Key in Extract<Usecase, { actions: unknown }>["name"]]: Usecase extends Extract<
@@ -39,7 +39,7 @@ type UsecaseToEvent<
 export function createMiddlewareEvtActionFactory<
     Usecase extends { name: string } & (
         | { actions: Record<string, ActionCreator<any>> }
-        | { reducer: null }
+        | { reducer: null; actions?: undefined }
     ),
 >(usecases: readonly Usecase[]) {
     function createMiddlewareEvtAction(): {
@@ -48,7 +48,7 @@ export function createMiddlewareEvtActionFactory<
          * a composition of union:
          * This: https://user-images.githubusercontent.com/6702424/147380322-bf2fa468-0a1c-4961-a7d8-16eaa14b6c4e.png
          * Instead of this: https://user-images.githubusercontent.com/6702424/147380353-9956a98a-9f9c-4811-a8b4-16cd1e4e76ca.png
-         * Don't try, however, to work edit the expanded version. Start from the factorized
+         * Don't try, however, to edit the expanded version. Start from the factorized
          * form by uncommenting the following line and the helper types it leverages.
          */
         //evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
