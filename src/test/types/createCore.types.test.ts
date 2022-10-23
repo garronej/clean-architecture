@@ -13,6 +13,7 @@ import type { NonPostableEvt } from "evt";
 import { UsecaseToEvent } from "../../middlewareEvtAction";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
+import type { UnpackEvt } from "evt";
 
 {
     type ThunksExtraArgumentWithoutEvtAction = {
@@ -69,6 +70,21 @@ import type { Equals } from "tsafe";
     };
 
     assert<Equals<Got["getState"], Expected["getState"]>>();
-    assert<Equals<Got["thunksExtraArgument"], Expected["thunksExtraArgument"]>>();
     assert<Equals<Got["dispatch"], Expected["dispatch"]>>();
+
+    //NOTE: Because we use an expanded version of the type in createCore we reaches the limit of Equals<>
+    //assert<Equals<Got["thunksExtraArgument"], Expected["thunksExtraArgument"]>>();
+    assert<
+        Equals<
+            UnpackEvt<Got["thunksExtraArgument"]["evtAction"]>,
+            UnpackEvt<Expected["thunksExtraArgument"]["evtAction"]>
+        >
+    >();
+
+    assert<
+        Equals<
+            Omit<Got["thunksExtraArgument"], "evtAction">,
+            Omit<Expected["thunksExtraArgument"], "evtAction">
+        >
+    >();
 }

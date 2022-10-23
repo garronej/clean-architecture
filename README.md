@@ -2,11 +2,11 @@
     <img src="https://user-images.githubusercontent.com/6702424/151054088-b21c1cd6-912a-4dcf-b54d-af74e8632620.png">  
 </p>
 <p align="center">
-    <i>📐 A clean architecture framework 📐</i>
+    <i>📐 A clean architecture framework  📐</i>
+    <br/>
+    <i>🎯 For the front and the back 🎯</i>
     <br/>
     <i>🔩 Focuses on achieving great type inference 🔩</i>
-    <br/>
-    <i>🎯 Easy to navigate, easy to maintain 🎯</i>
     <br>
     <br>
     <a href="https://github.com/garronej/redux-clean-architecture/actions">
