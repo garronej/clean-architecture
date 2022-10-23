@@ -31,7 +31,7 @@
 
 # Benefits
 
--   Clean architecture without [OOP](https://www.youtube.com/watch?v=QM1iUe6IofM).
+-   Clean architecture without [the object-orientedness](https://www.youtube.com/watch?v=QM1iUe6IofM).
 -   No need to explicitly call `dispatch()` on the UI side.  
     As a matter of fact, React being used
     under the hood is an implementation detail that can be ignored by the dev working ont the UI.
