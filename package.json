@@ -1,6 +1,6 @@
 {
     "name": "redux-clean-architecture",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "description": "Utilities for implementing clean architecture using Redux",
     "repository": {
         "type": "git",
@@ -59,6 +59,6 @@
     "dependencies": {
         "minimal-polyfills": "^2.2.2",
         "tsafe": "^1.2.1",
-        "evt": "^2.4.8"
+        "evt": "^2.4.10"
     }
 }
