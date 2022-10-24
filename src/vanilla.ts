@@ -56,6 +56,7 @@ export function createCoreApiFactory<
         return {
             getState,
             evtStateUpdated,
+            //TODO: we want an API like const { xxx }= selectors.sliceName.xxx() instead of const {} = selectors.sliceName.xxx(getState())
             selectors,
             coreEvts,
             functions,
