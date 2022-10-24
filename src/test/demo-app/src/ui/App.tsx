@@ -17,17 +17,11 @@ export const App = memo(() => {
 
     useEffect(() => {
 
-        (async ()=> {
 
-            try{
 
-                await usecase1.thunk1({ "pX": "" });
+        usecase1.thunk1({ "pX": "" });
 
-            }catch(error){
-                console.log("============>", String(error));
-            }
 
-        })();
 
     },
         [usecase1]
