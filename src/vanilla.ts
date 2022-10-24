@@ -23,7 +23,7 @@ type VanillaApi<
 };
 
 /** To use on the backend */
-export async function createVanillaApi<
+export function createCoreApiFactory<
     CoreParams extends Record<string, unknown>,
     Usecase extends UsecaseLike,
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
@@ -33,27 +33,35 @@ export async function createVanillaApi<
     ) => Promise<GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
     usecasesApi: UsecasesApi<Usecase>;
     coreParams: CoreParams;
-}): Promise<VanillaApi<Usecase, ThunksExtraArgumentWithoutEvtAction>> {
+}): {
+    createCoreApi: (
+        params: CoreParams
+    ) => Promise<VanillaApi<Usecase, ThunksExtraArgumentWithoutEvtAction>>;
+} {
     const { createCore, usecasesApi, coreParams } = params;
 
     const { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions } = usecasesApi;
 
-    const core = await createCore(coreParams);
+    async function createCoreApi() {
+        const core = await createCore(coreParams);
 
-    const { getState, thunksExtraArgument: extras } = core;
+        const { getState, thunksExtraArgument: extras } = core;
 
-    const functions = getMemoizedCoreFunctions(core as any);
+        const functions = getMemoizedCoreFunctions(core as any);
 
-    const coreEvts = getMemoizedCoreEvts(core);
+        const coreEvts = getMemoizedCoreEvts(core);
 
-    const evtStateUpdated = Evt.asNonPostable(extras.evtAction.pipe(() => [undefined as void]));
+        const evtStateUpdated = Evt.asNonPostable(extras.evtAction.pipe(() => [undefined as void]));
 
-    return {
-        getState,
-        evtStateUpdated,
-        selectors,
-        coreEvts,
-        functions,
-        extras
-    };
+        return {
+            getState,
+            evtStateUpdated,
+            selectors,
+            coreEvts,
+            functions,
+            extras
+        };
+    }
+
+    return { createCoreApi };
 }
