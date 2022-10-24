@@ -101,11 +101,18 @@ export function createReactApi<
         return getMemoizedCoreEvts(core);
     }
 
+    function useCoreExtras() {
+        const core = useCore();
+
+        return core.thunksExtraArgument;
+    }
+
     return {
         createCoreProvider,
         selectors,
         useCoreState,
         useCoreFunctions,
-        useCoreEvts
+        useCoreEvts,
+        useCoreExtras
     };
 }

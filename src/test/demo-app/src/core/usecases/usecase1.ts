@@ -46,6 +46,13 @@ export const thunks = {
 
                 const r = await port2.port2Method1({ "port2Method2Param1": pX });
 
+                if( 2 === 1 + 1 ){
+
+                    console.log("on throw l'erreur");
+                throw new Error("my error");
+
+                }
+
                 dispatch(actions.thunk1Completed({ "delta": r }));
             },
     "thunk2":

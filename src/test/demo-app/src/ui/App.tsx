@@ -16,9 +16,19 @@ export const App = memo(() => {
     }, [evtUsecase2]);
 
     useEffect(() => {
-        usecase1.thunk1({ "pX": "" }).then(v => {
-            /*...*/
-        });
+
+        (async ()=> {
+
+            try{
+
+                await usecase1.thunk1({ "pX": "" });
+
+            }catch(error){
+                console.log("============>", String(error));
+            }
+
+        })();
+
     },
         [usecase1]
     );

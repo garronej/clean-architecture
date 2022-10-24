@@ -21,22 +21,20 @@ export async function createVanillaApi<
 
     const core = await createCore(coreParams);
 
-    const {
-        getState,
-        thunksExtraArgument: { evtAction }
-    } = core;
+    const { getState, thunksExtraArgument: extras } = core;
 
     const functions = getMemoizedCoreFunctions(core);
 
     const coreEvts = getMemoizedCoreEvts(core);
 
-    const evtStateUpdated = Evt.asNonPostable(evtAction.pipe(() => [undefined as void]));
+    const evtStateUpdated = Evt.asNonPostable(extras.evtAction.pipe(() => [undefined as void]));
 
     return {
         getState,
         evtStateUpdated,
         selectors,
         coreEvts,
+        extras,
         ...functions
     };
 }
