@@ -6,7 +6,8 @@ export const {
     selectors,
     useCoreEvts,
     useCoreFunctions,
-    useCoreState
+    useCoreState,
+    useCoreExtras,
 } = createReactApi({
     createCore,
     usecasesApi

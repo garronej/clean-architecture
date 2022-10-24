@@ -27,7 +27,7 @@ export function wrapSelectorsReturnValue<
     ) as any;
 }
 
-export type Selectors<Usecase extends UsecaseLike> = {
+export type GenericSelectors<Usecase extends UsecaseLike> = {
     [Key in Extract<Usecase, { selectors: any }>["name"]]: WrapSelectorsReturnValue<
         NonNullable<Extract<Usecase, { name: Key }>["selectors"]>
     >;
@@ -35,7 +35,7 @@ export type Selectors<Usecase extends UsecaseLike> = {
 
 export function usecasesToSelectors<Usecase extends UsecaseLike>(
     usecases: readonly Usecase[]
-): Selectors<Usecase> {
+): GenericSelectors<Usecase> {
     return Object.fromEntries(
         usecases
             .map(({ name, selectors }) =>
