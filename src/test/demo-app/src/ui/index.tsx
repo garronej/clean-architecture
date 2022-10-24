@@ -2,7 +2,7 @@
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createCoreProvider } from "ui/coreApi";
+import { createCoreProvider } from "core";
 import { App } from "./App";
 import { assert } from "tsafe/assert";
 

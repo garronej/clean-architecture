@@ -1,5 +1,5 @@
 import { memo, useEffect } from "react";
-import { selectors, useCoreEvts, useCoreState, useCoreFunctions } from "ui/coreApi";
+import { selectors, useCoreEvts, useCoreState, useCoreFunctions } from "core";
 import { useEvt } from "evt/hooks";
 
 export const App = memo(() => {
