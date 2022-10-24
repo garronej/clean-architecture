@@ -6,7 +6,7 @@
     <br/>
     <i>🎯 For the front and the back 🎯</i>
     <br/>
-    <i>🔩 Focuses on achieving great type inference 🔩</i>
+    <i>🔩 Focusing on achieving great type inference 🔩</i>
     <br>
     <br>
     <a href="https://github.com/garronej/redux-clean-architecture/actions">
