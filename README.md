@@ -33,7 +33,7 @@
 
 -   Clean architecture without [the object-orientedness](https://www.youtube.com/watch?v=QM1iUe6IofM).
 -   No need to explicitly call `dispatch()` on the UI side.  
-    As a matter of fact, React being used
+    As a matter of fact, Redux being used
     under the hood is an implementation detail that can as well be ignored by the dev working ont the UI.
 -   Strict isolation between the Core and the UI. Port your web app to React Native or switch to another
     UI framework without having to re-write a single line of the core logic.
