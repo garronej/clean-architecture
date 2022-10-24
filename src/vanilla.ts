@@ -32,18 +32,17 @@ export function createCoreApiFactory<
         params: CoreParams
     ) => Promise<GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
     usecasesApi: UsecasesApi<Usecase>;
-    coreParams: CoreParams;
 }): {
     createCoreApi: (
         params: CoreParams
     ) => Promise<VanillaApi<Usecase, ThunksExtraArgumentWithoutEvtAction>>;
 } {
-    const { createCore, usecasesApi, coreParams } = params;
+    const { createCore, usecasesApi } = params;
 
     const { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions } = usecasesApi;
 
-    async function createCoreApi() {
-        const core = await createCore(coreParams);
+    async function createCoreApi(params: CoreParams) {
+        const core = await createCore(params);
 
         const { getState, thunksExtraArgument: extras } = core;
 
