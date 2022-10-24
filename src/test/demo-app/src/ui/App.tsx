@@ -17,15 +17,9 @@ export const App = memo(() => {
 
     useEffect(() => {
 
-
-
         usecase1.thunk1({ "pX": "" });
 
-
-
-    },
-        [usecase1]
-    );
+    }, [usecase1]);
 
     return (
         <button onClick={() => usecase2.thunkX({ "pX": "ok" })}>
