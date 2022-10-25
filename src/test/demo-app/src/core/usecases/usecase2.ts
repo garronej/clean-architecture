@@ -5,6 +5,7 @@ import type { State } from "../setup";
 import { id } from "tsafe/id";
 import { createSelector } from "@reduxjs/toolkit";
 import type { Param0 } from "tsafe";
+import { createSliceContext } from "redux-clean-architecture";
 
 export type Usecase2State = {
     counter2: number;
@@ -38,14 +39,16 @@ export const thunks = {
         (params: { pX: string }): ThunkAction =>
         async (...args) => {
             const { pX } = params;
-            const [dispatch, , thunkExtraArgument] = args;
-            const { port2 } = thunkExtraArgument;
+            const [dispatch, , extraArg] = args;
+            const { port2 } = extraArg;
+
+            const { n } = getSliceContext(extraArg);
 
             dispatch(actions.thunkXStarted());
 
             const r = await port2.port2Method1({ "port2Method2Param1": pX });
 
-            dispatch(actions.thunkXCompleted({ "delta": r }));
+            dispatch(actions.thunkXCompleted({ "delta": r + n }));
         },
     "thunkY":
         (params: { pY: string }): ThunkAction<Promise<number>> =>
@@ -65,11 +68,19 @@ export const privateThunks = {
     "initialize":
         (): ThunkAction =>
             async (...args) => {
-                const [dispatch] = args;
+                const [dispatch,,extraArg] = args;
+
+                setSliceContext(extraArg, ()=> ({ "n": 42 }));
 
                 dispatch(actions.thunkXCompleted({ "delta": 1 }));
             },
 };
+
+type SliceContext = {
+    n: number;
+};
+
+const { setSliceContext, getSliceContext } = createSliceContext<SliceContext>();
 
 export const selectors = (() => {
     const isBig = (state: State) => {
