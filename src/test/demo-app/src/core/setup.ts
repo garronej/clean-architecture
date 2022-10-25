@@ -1,8 +1,4 @@
 import type { Action, ThunkAction as ReduxGenericThunkAction } from "@reduxjs/toolkit";
-import type { NonPostableEvt } from "evt";
-import { UsecaseToEvent } from "redux-clean-architecture/middlewareEvtAction";
-import type { Port1 } from "./ports/Port1";
-import type { Port2 } from "./ports/Port2";
 import { createPort2 } from "./adapters/createProt2";
 import type { Port2Config } from "./adapters/createProt2";
 import { createPort1 } from "./adapters/createPort1";
@@ -27,11 +23,6 @@ type CoreParams = {
     port2Config: Port2Config;
 };
 
-type ThunksExtraArgument = {
-    coreParams: CoreParams;
-    port1: Port1;
-    port2: Port2;
-};
 
 export async function createCore(params: CoreParams) {
     const [port1, port2] = await Promise.all([
@@ -39,14 +30,12 @@ export async function createCore(params: CoreParams) {
         createPort2(params.port2Config),
     ]);
 
-    const thunksExtraArgument: ThunksExtraArgument = {
-        "coreParams": params,
-        port1,
-        port2,
-    };
-
-    const core =  createCoreFromUsecases({
-        thunksExtraArgument,
+    const core = createCoreFromUsecases({
+        "thunksExtraArgument": {
+            "coreParams": params,
+            port1,
+            port2
+        },
         usecases
     });
 
@@ -58,11 +47,13 @@ type Core = Awaited<ReturnType<typeof createCore>>;
 
 export type State = ReturnType<Core["getState"]>;
 
+type ThunksExtraArgument = Core["thunksExtraArgument"];
+
 /** @deprecated: Use Thunks as soon as we cas use 'satisfy' from TS 4.9 */
 export type ThunkAction<RtnType = Promise<void>> = ReduxGenericThunkAction<
     RtnType,
     State,
-    ThunksExtraArgument & { evtAction: NonPostableEvt<UsecaseToEvent<typeof usecases[number]>>; },
+    ThunksExtraArgument,
     Action<string>
 >;
 
