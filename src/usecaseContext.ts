@@ -2,10 +2,10 @@ import { assert } from "tsafe/assert";
 
 type ThunksExtraArgumentLike = { evtAction: unknown };
 
-export function createSliceContext<SliceContext extends Record<string, unknown>>() {
+export function createUsecaseContext<SliceContext extends Record<string, unknown>>() {
     const weakMap = new WeakMap<ThunksExtraArgumentLike, () => SliceContext>();
 
-    function getSliceContext(extraArg: ThunksExtraArgumentLike): SliceContext {
+    function getUsecaseContext(extraArg: ThunksExtraArgumentLike): SliceContext {
         const getMemoizedSliceContext = weakMap.get(extraArg);
 
         assert(getMemoizedSliceContext !== undefined, "Slice context not initialized");
@@ -13,7 +13,7 @@ export function createSliceContext<SliceContext extends Record<string, unknown>>
         return getMemoizedSliceContext();
     }
 
-    function setSliceContext(
+    function setUsecaseContext(
         extraArg: ThunksExtraArgumentLike,
         /** If it's a function it's evaluated only on first call */
         sliceContext: SliceContext | (() => SliceContext)
@@ -34,5 +34,5 @@ export function createSliceContext<SliceContext extends Record<string, unknown>>
         weakMap.set(extraArg, getSliceContextMemoized);
     }
 
-    return { getSliceContext, setSliceContext };
+    return { getUsecaseContext, setUsecaseContext };
 }

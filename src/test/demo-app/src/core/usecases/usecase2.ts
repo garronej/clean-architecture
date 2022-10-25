@@ -5,7 +5,7 @@ import type { State } from "../setup";
 import { id } from "tsafe/id";
 import { createSelector } from "@reduxjs/toolkit";
 import type { Param0 } from "tsafe";
-import { createSliceContext } from "redux-clean-architecture";
+import { createUsecaseContext } from "redux-clean-architecture";
 
 export type Usecase2State = {
     counter2: number;
@@ -42,7 +42,7 @@ export const thunks = {
             const [dispatch, , extraArg] = args;
             const { port2 } = extraArg;
 
-            const { n } = getSliceContext(extraArg);
+            const { n } = getUsecaseContext(extraArg);
 
             dispatch(actions.thunkXStarted());
 
@@ -70,7 +70,7 @@ export const privateThunks = {
             async (...args) => {
                 const [dispatch,,extraArg] = args;
 
-                setSliceContext(extraArg, ()=> ({ "n": 42 }));
+                setUsecaseContext(extraArg, ()=> ({ "n": 42 }));
 
                 dispatch(actions.thunkXCompleted({ "delta": 1 }));
             },
@@ -80,7 +80,7 @@ type SliceContext = {
     n: number;
 };
 
-const { setSliceContext, getSliceContext } = createSliceContext<SliceContext>();
+const { setUsecaseContext, getUsecaseContext } = createUsecaseContext<SliceContext>();
 
 export const selectors = (() => {
     const isBig = (state: State) => {

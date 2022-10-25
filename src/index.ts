@@ -3,4 +3,4 @@ export type { GenericCreateEvt } from "./usecasesToEvts";
 export { createCoreFromUsecases } from "./createCore";
 export { createUsecasesApi } from "./createUsecasesApi";
 export { createObjectThatThrowsIfAccessed } from "./createObjectThatThrowsIfAccessed";
-export { createSliceContext } from "./sliceContext";
+export { createUsecaseContext } from "./usecaseContext";
