@@ -1,51 +1,40 @@
 import { assert } from "tsafe/assert";
 
-type ThunksExtraArgumentLike = { evtAction: unknown };
+export type ThunksExtraArgumentLike = { evtAction: unknown };
 
-type UsecaseContextApi<SliceContext extends Record<string, unknown>> = {
-    getUsecaseContext: (extraArg: ThunksExtraArgumentLike) => SliceContext;
-    setUsecaseContext: (extraArg: ThunksExtraArgumentLike, sliceContext: SliceContext) => void;
+type ContextApi<Context extends Record<string, unknown>> = {
+    getContext: (extraArg: ThunksExtraArgumentLike) => Context;
+    setContext: (extraArg: ThunksExtraArgumentLike, context: Context | (() => Context)) => void;
 };
 
-export function createUsecaseContext<
-    SliceContext extends Record<string, unknown>
->(): UsecaseContextApi<SliceContext>;
-export function createUsecaseContext<SliceContext extends Record<string, unknown>>(
-    getInitialSliceContext: () => SliceContext
-): Omit<UsecaseContextApi<SliceContext>, "setSliceContext">;
-export function createUsecaseContext<SliceContext extends Record<string, unknown>>(
-    getInitialSliceContext?: () => SliceContext
-): UsecaseContextApi<SliceContext> {
-    const weakMap = new WeakMap<ThunksExtraArgumentLike, () => SliceContext>();
+export function createUsecaseContextApi<Context extends Record<string, unknown>>(): ContextApi<Context>;
+export function createUsecaseContextApi<Context extends Record<string, unknown>>(
+    getInitialContext: () => Context
+): Omit<ContextApi<Context>, "setContext">;
+export function createUsecaseContextApi<context extends Record<string, unknown>>(
+    getInitialContext?: () => context
+): ContextApi<context> {
+    const weakMap = new WeakMap<ThunksExtraArgumentLike, () => context>();
 
-    function getUsecaseContext(extraArg: ThunksExtraArgumentLike): SliceContext {
-        let getMemoizedSliceContext = weakMap.get(extraArg);
+    return {
+        "getContext": extraArg => {
+            let getMemoizedContext = weakMap.get(extraArg);
 
-        if (getMemoizedSliceContext !== undefined) {
-            return getMemoizedSliceContext();
-        }
+            if (getMemoizedContext !== undefined) {
+                return getMemoizedContext();
+            }
 
-        assert(getInitialSliceContext !== undefined, "Slice context not initialized");
+            assert(getInitialContext !== undefined, "Slice context not initialized");
 
-        getMemoizedSliceContext = memoize(getInitialSliceContext);
+            getMemoizedContext = memoize(getInitialContext);
 
-        weakMap.set(extraArg, getMemoizedSliceContext);
+            weakMap.set(extraArg, getMemoizedContext);
 
-        return getMemoizedSliceContext();
-    }
-
-    function setUsecaseContext(
-        extraArg: ThunksExtraArgumentLike,
-        /** If it's a function it's evaluated only on first call */
-        sliceContext: SliceContext | (() => SliceContext)
-    ): void {
-        weakMap.set(
-            extraArg,
-            memoize(typeof sliceContext === "function" ? sliceContext : () => sliceContext)
-        );
-    }
-
-    return { getUsecaseContext, setUsecaseContext };
+            return getMemoizedContext();
+        },
+        "setContext": (extraArg, context) =>
+            weakMap.set(extraArg, memoize(typeof context === "function" ? context : () => context))
+    };
 }
 
 function memoize<R extends Record<string, unknown>>(fn: () => R): () => R {
