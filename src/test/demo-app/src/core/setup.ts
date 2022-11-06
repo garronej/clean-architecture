@@ -39,6 +39,8 @@ export async function createCore(params: CoreParams) {
         usecases
     });
 
+    await core.dispatch(usecase2.privateThunks.initialize());
+
     return core;
 
 }

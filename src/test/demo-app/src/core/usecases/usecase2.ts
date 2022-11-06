@@ -5,7 +5,7 @@ import type { State } from "../setup";
 import { id } from "tsafe/id";
 import { createSelector } from "@reduxjs/toolkit";
 import type { Param0 } from "tsafe";
-import { createUsecaseContext } from "redux-clean-architecture";
+import { createUsecaseContextApi } from "redux-clean-architecture";
 
 export type Usecase2State = {
     counter2: number;
@@ -37,40 +37,40 @@ export const { reducer, actions } = createSlice({
 export const thunks = {
     "thunkX":
         (params: { pX: string }): ThunkAction =>
-        async (...args) => {
-            const { pX } = params;
-            const [dispatch, , extraArg] = args;
-            const { port2 } = extraArg;
+            async (...args) => {
+                const { pX } = params;
+                const [dispatch, , extraArg] = args;
+                const { port2 } = extraArg;
 
-            const { n } = getUsecaseContext(extraArg);
+                const { n } = getContext(extraArg);
 
-            dispatch(actions.thunkXStarted());
+                dispatch(actions.thunkXStarted());
 
-            const r = await port2.port2Method1({ "port2Method2Param1": pX });
+                const r = await port2.port2Method1({ "port2Method2Param1": pX });
 
-            dispatch(actions.thunkXCompleted({ "delta": r + n }));
-        },
+                dispatch(actions.thunkXCompleted({ "delta": r + n }));
+            },
     "thunkY":
         (params: { pY: string }): ThunkAction<Promise<number>> =>
-        async (...args) => {
-            const { pY } = params;
-            const [dispatch, getState] = args;
+            async (...args) => {
+                const { pY } = params;
+                const [dispatch, getState] = args;
 
-            await dispatch(thunks.thunkX({ "pX": pY }));
+                await dispatch(thunks.thunkX({ "pX": pY }));
 
-            const { counter2 } = getState().usecase2;
+                const { counter2 } = getState().usecase2;
 
-            return counter2 + 42;
-        },
+                return counter2 + 42;
+            },
 };
 
 export const privateThunks = {
     "initialize":
         (): ThunkAction =>
             async (...args) => {
-                const [dispatch,,extraArg] = args;
+                const [dispatch, , extraArg] = args;
 
-                setUsecaseContext(extraArg, ()=> ({ "n": 42 }));
+                setContext(extraArg, () => ({ "n": 42 }));
 
                 dispatch(actions.thunkXCompleted({ "delta": 1 }));
             },
@@ -80,7 +80,7 @@ type SliceContext = {
     n: number;
 };
 
-const { setUsecaseContext, getUsecaseContext } = createUsecaseContext<SliceContext>();
+const { getContext, setContext } = createUsecaseContextApi<SliceContext>();
 
 export const selectors = (() => {
     const isBig = (state: State) => {
