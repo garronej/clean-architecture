@@ -17,7 +17,7 @@ type ReactApi<
     Usecase extends UsecaseLike,
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
 > = {
-    createCoreProvider: (params: { coreParams: CoreParams | (() => CoreParams) }) => {
+    createCoreProvider: (coreParams: CoreParams | (() => CoreParams)) => {
         CoreProvider: (props: {
             children: ReactNode;
             fallback?: NonNullable<ReactNode> | null;
@@ -61,9 +61,7 @@ export function createReactApi<
         return core;
     }
 
-    function createCoreProvider(params: { coreParams: CoreParams | (() => CoreParams) }) {
-        const { coreParams: coreParamsOrGetCoreParams } = params;
-
+    function createCoreProvider(coreParamsOrGetCoreParams: CoreParams | (() => CoreParams)) {
         const getCoreParams =
             typeof coreParamsOrGetCoreParams === "function"
                 ? coreParamsOrGetCoreParams

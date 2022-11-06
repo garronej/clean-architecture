@@ -6,17 +6,15 @@ import { createCoreProvider } from "core";
 import { App } from "./App";
 import { assert } from "tsafe/assert";
 
-const { CoreProvider } = createCoreProvider({
-    "coreParams": () => ({
-        "port1Config": {
-            "port1Config1": "foo",
-        },
-        "port2Config": {
-            "port2Config1": "bar",
-            "port2Config2": "baz",
-        }
-    })
-});
+const { CoreProvider } = createCoreProvider(() => ({
+    "port1Config": {
+        "port1Config1": "foo",
+    },
+    "port2Config": {
+        "port2Config1": "bar",
+        "port2Config2": "baz",
+    }
+}));
 
 createRoot((() => {
 
