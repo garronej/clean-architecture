@@ -170,7 +170,7 @@ export function createCoreFromUsecases<
     //can't be ready at inception.
     Object.assign(thunksExtraArgument, { evtAction });
 
-    const { getState, dispatch } = configureStore({
+    const store = configureStore({
         "reducer": usecasesToReducer(usecasesArr) as any,
         "middleware": getDefaultMiddleware =>
             getDefaultMiddleware({
@@ -178,10 +178,14 @@ export function createCoreFromUsecases<
             }).concat(middlewareEvtAction)
     });
 
+    const { getState, dispatch } = store;
+
     const core = {
         getState,
         dispatch,
-        thunksExtraArgument
+        thunksExtraArgument,
+        //NOTE: The redux store as a hidden property, just if you really need it
+        store
     };
 
     return core as any;
