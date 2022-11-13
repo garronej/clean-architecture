@@ -160,16 +160,15 @@ export function createCoreFromUsecases<
     //usecases: readonly Usecase[];
     usecases: Record<string, Usecase>;
 }): GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase> {
-    const { thunksExtraArgument: thunksExtraArgumentWithoutEvtAction, usecases } = params;
+    const { thunksExtraArgument, usecases } = params;
 
     const usecasesArr = Object.values(usecases);
 
     const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction(usecasesArr);
 
-    const thunksExtraArgument = {
-        ...thunksExtraArgumentWithoutEvtAction,
-        evtAction
-    };
+    //NOTE: We want to let the user change the properties, sometimes all the port
+    //can't be ready at inception.
+    Object.assign(thunksExtraArgument, { evtAction });
 
     const { getState, dispatch } = configureStore({
         "reducer": usecasesToReducer(usecasesArr) as any,
