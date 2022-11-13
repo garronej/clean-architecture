@@ -36,6 +36,8 @@ type ReactApi<
         ThunksExtraArgumentWithoutEvtAction,
         Usecase
     >["thunksExtraArgument"];
+    /** @deprecated: There should be no need to access the core directly */
+    useCore: () => GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>;
 };
 
 export function createReactApi<
@@ -150,6 +152,7 @@ export function createReactApi<
         useCoreState,
         useCoreFunctions,
         useCoreEvts,
-        useCoreExtras
+        useCoreExtras,
+        useCore
     };
 }
