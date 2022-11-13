@@ -20,9 +20,9 @@ import type { UnpackEvt } from "evt";
         _brandThunksExtraArgument: unknown;
     };
 
-    const usecases = [
-        {
-            "name": "myFirstSlice",
+    const usecases = {
+        "myFirst": {
+            "name": "myFirstSlice" as const,
             "reducer": Reflect<Reducer<{ foo: string }>>(),
 
             "actions": Reflect<{
@@ -31,8 +31,8 @@ import type { UnpackEvt } from "evt";
                 baz: ActionCreatorWithPayload<{ beta: string }>;
             }>()
         },
-        {
-            "name": "mySecondSlice",
+        "mySecond": {
+            "name": "mySecondSlice" as const,
             "reducer": Reflect<Reducer<{ bar: string }>>(),
 
             "actions": Reflect<{
@@ -41,8 +41,10 @@ import type { UnpackEvt } from "evt";
                 baz1: ActionCreatorWithPayload<{ beta1: string }>;
             }>()
         },
-        { "name": "myThirdSlice", "reducer": null }
-    ] as const;
+        "myThird": { "name": "myThirdSlice" as const, "reducer": null }
+    };
+
+    const usecasesArr = Object.values(usecases);
 
     const core = createCoreFromUsecases({
         "thunksExtraArgument": Reflect<ThunksExtraArgumentWithoutEvtAction>(),
@@ -59,7 +61,7 @@ import type { UnpackEvt } from "evt";
     };
 
     type ExpectedThunksExtraArgument = ThunksExtraArgumentWithoutEvtAction & {
-        evtAction: NonPostableEvt<UsecaseToEvent<typeof usecases[number]>>;
+        evtAction: NonPostableEvt<UsecaseToEvent<typeof usecasesArr[number]>>;
     };
 
     type Expected = {

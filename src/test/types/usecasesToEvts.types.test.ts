@@ -14,7 +14,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         _brandData2: unknown;
     };
 
-    const usecases = Reflect<
+    const usecasesArr = Reflect<
         [
             {
                 name: "firstSlice";
@@ -31,7 +31,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         ]
     >();
 
-    const { getMemoizedCoreEvts } = usecasesToEvts(usecases);
+    const { getMemoizedCoreEvts } = usecasesToEvts(usecasesArr);
 
     const core = {
         "getState": Reflect<() => Record<string, unknown>>(),
@@ -52,7 +52,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
 
 //Test if it works if there is no slice with a createEvt
 {
-    const usecases = Reflect<
+    const usecasesArr = Reflect<
         [
             {
                 name: "firstSlice";
@@ -60,7 +60,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         ]
     >();
 
-    const { getMemoizedCoreEvts } = usecasesToEvts(usecases);
+    const { getMemoizedCoreEvts } = usecasesToEvts(usecasesArr);
 
     const core = {
         "getState": Reflect<() => Record<string, unknown>>(),

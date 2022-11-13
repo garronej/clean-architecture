@@ -3,20 +3,10 @@ import { createPort2 } from "./adapters/createProt2";
 import type { Port2Config } from "./adapters/createProt2";
 import { createPort1 } from "./adapters/createPort1";
 import type { Port1Config } from "./adapters/createPort1";
-import { createCoreFromUsecases, createUsecasesApi } from "redux-clean-architecture";
+import { createCoreFromUsecases } from "redux-clean-architecture";
 import type { GenericCreateEvt, GenericThunks } from "redux-clean-architecture";
-/*Naming suggestion: 
- * if you have usecases/explorer.ts
- * import it like:
- * import * as explorerUsecase from "./usecases/explorer";
- */
-import * as usecase1 from "./usecases/usecase1";
-import * as usecase2 from "./usecases/usecase2";
-import * as usecase3 from "./usecases/usecase3";
+import { usecases } from "./usecases"
 
-const usecases = [usecase1, usecase2, usecase3];
-
-export const usecasesApi = createUsecasesApi(usecases);
 
 type CoreParams = {
     port1Config: Port1Config;
@@ -39,7 +29,7 @@ export async function createCore(params: CoreParams) {
         usecases
     });
 
-    await core.dispatch(usecase2.privateThunks.initialize());
+    await core.dispatch(usecases.usecase2.privateThunks.initialize());
 
     return core;
 

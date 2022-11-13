@@ -17,11 +17,11 @@ export type UsecasesApi<Usecase extends UsecaseLike> = {
 };
 
 export function createUsecasesApi<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[]
+    usecasesArr: readonly Usecase[]
 ): UsecasesApi<Usecase> {
-    const selectors = usecasesToSelectors(usecases);
-    const { getMemoizedCoreEvts } = usecasesToEvts(usecases);
-    const { getMemoizedCoreFunctions } = usecasesToFunctions(usecases);
+    const selectors = usecasesToSelectors(usecasesArr);
+    const { getMemoizedCoreEvts } = usecasesToEvts(usecasesArr);
+    const { getMemoizedCoreFunctions } = usecasesToFunctions(usecasesArr);
 
     return { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions };
 }

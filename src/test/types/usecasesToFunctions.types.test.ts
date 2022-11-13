@@ -178,7 +178,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
         _brandExtraThunkArg: unknown;
     };
 
-    const usecases = Reflect<
+    const usecasesArr = Reflect<
         [
             {
                 name: "firstSlice";
@@ -202,7 +202,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
     const dispatch = Reflect<<R>(thunkAction: ThunkAction<R, any, any, any>) => R>();
 
-    const { getMemoizedCoreFunctions } = usecasesToFunctions(usecases);
+    const { getMemoizedCoreFunctions } = usecasesToFunctions(usecasesArr);
 
     const core = { dispatch };
 

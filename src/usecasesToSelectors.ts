@@ -34,10 +34,10 @@ export type GenericSelectors<Usecase extends UsecaseLike> = {
 };
 
 export function usecasesToSelectors<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[]
+    usecasesArr: readonly Usecase[]
 ): GenericSelectors<Usecase> {
     return Object.fromEntries(
-        usecases
+        usecasesArr
             .map(({ name, selectors }) =>
                 selectors === undefined ? undefined : ([name, selectors] as const)
             )

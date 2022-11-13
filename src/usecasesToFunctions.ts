@@ -113,7 +113,7 @@ export type GetMemoizedCoreFunctions<Usecase extends UsecaseLike> = (core: CoreL
 };
 
 export function usecasesToFunctions<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[]
+    usecasesArr: readonly Usecase[]
 ): {
     getMemoizedCoreFunctions: GetMemoizedCoreFunctions<Usecase>;
 } {
@@ -128,7 +128,7 @@ export function usecasesToFunctions<Usecase extends UsecaseLike>(
             }
 
             functions = Object.fromEntries(
-                usecases.map(({ name, thunks }) => [
+                usecasesArr.map(({ name, thunks }) => [
                     name,
                     thunksToFunctions({ thunks, "dispatch": core.dispatch })
                 ])

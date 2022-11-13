@@ -20,7 +20,7 @@ import { wrapSelectorsReturnValue, usecasesToSelectors } from "../../usecasesToS
 }
 
 {
-    const usecases = [
+    const usecasesArr = [
         {
             "name": "myFirstSlice",
             "selectors": {
@@ -35,7 +35,7 @@ import { wrapSelectorsReturnValue, usecasesToSelectors } from "../../usecasesToS
         { "name": "myThirdSlice" }
     ] as const;
 
-    const got = usecasesToSelectors(usecases);
+    const got = usecasesToSelectors(usecasesArr);
 
     type Expected = {
         myFirstSlice: {

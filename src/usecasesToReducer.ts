@@ -11,10 +11,10 @@ export type UsecasesToReducer<Usecase extends UsecaseLike> = RemoveNullPropertie
 }>;
 
 export function usecasesToReducer<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[]
+    usecasesArr: readonly Usecase[]
 ): UsecasesToReducer<Usecase> {
     return Object.fromEntries(
-        usecases.map(({ name, reducer }) => [name, reducer]).filter(([, reducer]) => reducer !== null)
+        usecasesArr.map(({ name, reducer }) => [name, reducer]).filter(([, reducer]) => reducer !== null)
     ) as any;
 }
 

@@ -105,13 +105,13 @@ export type UsecaseToEvent<Usecase extends UsecaseLike> = {
 */
 
 export function createMiddlewareEvtAction<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[]
+    usecasesArr: readonly Usecase[]
 ): {
     evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
     middlewareEvtAction: Middleware;
 } {
     const actionTypes = new Set(
-        usecases
+        usecasesArr
             .map(usecase =>
                 typeGuard<Extract<typeof usecase, { actions: unknown }>>(
                     usecase,

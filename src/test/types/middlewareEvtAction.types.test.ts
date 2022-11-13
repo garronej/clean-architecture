@@ -10,7 +10,7 @@ import type {
     ActionCreatorWithoutPayload
 } from "@reduxjs/toolkit";
 
-const usecases = Reflect<
+const usecasesArr = Reflect<
     (
         | {
               name: "myFirstSlice";
@@ -32,7 +32,7 @@ const usecases = Reflect<
     )[]
 >();
 
-const got = createMiddlewareEvtAction(usecases);
+const got = createMiddlewareEvtAction(usecasesArr);
 
 const expected = Reflect<{
     evtAction: NonPostableEvt<

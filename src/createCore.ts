@@ -157,11 +157,14 @@ export function createCoreFromUsecases<
     Usecase extends UsecaseLike
 >(params: {
     thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction;
-    usecases: readonly Usecase[];
+    //usecases: readonly Usecase[];
+    usecases: Record<string, Usecase>;
 }): GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase> {
     const { thunksExtraArgument: thunksExtraArgumentWithoutEvtAction, usecases } = params;
 
-    const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction(usecases as any);
+    const usecasesArr = Object.values(usecases);
+
+    const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction(usecasesArr);
 
     const thunksExtraArgument = {
         ...thunksExtraArgumentWithoutEvtAction,
@@ -169,7 +172,7 @@ export function createCoreFromUsecases<
     };
 
     const { getState, dispatch } = configureStore({
-        "reducer": usecasesToReducer(usecases) as any,
+        "reducer": usecasesToReducer(usecasesArr) as any,
         "middleware": getDefaultMiddleware =>
             getDefaultMiddleware({
                 "thunk": { "extraArgument": thunksExtraArgument }

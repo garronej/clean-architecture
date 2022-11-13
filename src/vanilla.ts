@@ -1,4 +1,5 @@
-import type { UsecasesApi, UsecaseLike as UsecaseLike_create } from "./createUsecasesApi";
+import type { UsecaseLike as UsecaseLike_create } from "./createUsecasesApi";
+import { createUsecasesApi } from "./createUsecasesApi";
 import type { GetMemoizedCoreFunctions } from "./usecasesToFunctions";
 import type { UsecaseLike as UseCaseLike_reducer } from "./usecasesToReducer";
 import type { GenericCore } from "./createCore";
@@ -31,15 +32,17 @@ export function createCoreApiFactory<
     createCore: (
         params: CoreParams
     ) => Promise<GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
-    usecasesApi: UsecasesApi<Usecase>;
+    usecases: Record<string, Usecase>;
 }): {
     createCoreApi: (
         params: CoreParams
     ) => Promise<VanillaApi<Usecase, ThunksExtraArgumentWithoutEvtAction>>;
 } {
-    const { createCore, usecasesApi } = params;
+    const { createCore, usecases } = params;
 
-    const { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions } = usecasesApi;
+    const { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions } = createUsecasesApi(
+        Object.values(usecases)
+    );
 
     async function createCoreApi(params: CoreParams) {
         const core = await createCore(params);

@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import type { ReactNode } from "react";
-import type { UsecasesApi, UsecaseLike as UsecaseLike_create } from "./createUsecasesApi";
+import type { UsecaseLike as UsecaseLike_create } from "./createUsecasesApi";
 import { assert } from "tsafe/assert";
 import { useEvt } from "evt/hooks/useEvt";
 import type { GetMemoizedCoreFunctions } from "./usecasesToFunctions";
@@ -9,6 +9,7 @@ import type { GenericCore } from "./createCore";
 import type { UsecaseLike as UsecaseLike_evt } from "./middlewareEvtAction";
 import type { GetMemoizedCoreEvts } from "./usecasesToEvts";
 import type { GenericSelectors } from "./usecasesToSelectors";
+import { createUsecasesApi } from "./createUsecasesApi";
 
 type UsecaseLike = UsecaseLike_create & UseCaseLike_reducer & UsecaseLike_evt;
 
@@ -45,11 +46,13 @@ export function createReactApi<
     createCore: (
         params: CoreParams
     ) => Promise<GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
-    usecasesApi: UsecasesApi<Usecase>;
+    usecases: Record<string, Usecase>;
 }): ReactApi<CoreParams, Usecase, ThunksExtraArgumentWithoutEvtAction> {
-    const { createCore, usecasesApi } = params;
+    const { createCore, usecases } = params;
 
-    const { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions } = usecasesApi;
+    const { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions } = createUsecasesApi(
+        Object.values(usecases)
+    );
 
     type Core = GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>;
 

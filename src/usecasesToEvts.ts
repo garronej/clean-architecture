@@ -39,7 +39,7 @@ export type GetMemoizedCoreEvts<Usecase extends UsecaseLike> = (core: CoreLike) 
 };
 
 export function usecasesToEvts<Usecase extends UsecaseLike>(
-    usecases: readonly Usecase[]
+    usecasesArr: readonly Usecase[]
 ): {
     getMemoizedCoreEvts: GetMemoizedCoreEvts<Usecase>;
 } {
@@ -59,7 +59,7 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(
             } = core;
 
             evts = Object.fromEntries(
-                usecases
+                usecasesArr
                     .map(({ name, createEvt }) =>
                         createEvt === undefined ? undefined : { name, createEvt }
                     )
