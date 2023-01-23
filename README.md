@@ -4,8 +4,6 @@
 <p align="center">
     <i>📐 A clean architecture framework  📐</i>
     <br/>
-    <i>🎯 For the front and the back 🎯</i>
-    <br/>
     <i>🔩 Focusing on achieving great type inference 🔩</i>
     <br>
     <br>
