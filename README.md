@@ -4,8 +4,6 @@
 <p align="center">
     <i>📐 A clean architecture framework  📐</i>
     <br/>
-    <i>🎯 For the front and the back 🎯</i>
-    <br/>
     <i>🔩 Focusing on achieving great type inference 🔩</i>
     <br>
     <br>
@@ -34,7 +32,7 @@
 -   Clean architecture without [the object-orientedness](https://www.youtube.com/watch?v=QM1iUe6IofM).
 -   No need to explicitly call `dispatch()` on the UI side.  
     As a matter of fact, Redux being used
-    under the hood is an implementation detail that can as well be ignored by the dev working ont the UI.
+    under the hood is an implementation detail that can as well be ignored by the dev working on the UI.
 -   Strict isolation between the Core and the UI. Port your web app to React Native or switch to another
     UI framework without having to re-write a single line of the core logic.
 -   It's not specifically a React framwork, it's not even specifically a frontend framwork, it can and is be used on the backend.
