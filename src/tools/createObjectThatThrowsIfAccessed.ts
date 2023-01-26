@@ -2,7 +2,8 @@ export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
     debugMessage?: string;
     isPropertyWhitelisted?: (prop: string | number | symbol) => boolean;
 }): T {
-    const { debugMessage = "", isPropertyWhitelisted = () => false } = params ?? {};
+    const { debugMessage = "", isPropertyWhitelisted = isPropertyAccessedByReduxOrStorybook } =
+        params ?? {};
 
     const get: NonNullable<ProxyHandler<T>["get"]> = (...args) => {
         const [, prop] = args;
@@ -35,6 +36,17 @@ export function createObjectThatThrowsIfAccessedFactory(params: {
             });
         }
     };
+}
+
+export function isPropertyAccessedByReduxOrStorybook(prop: string | number | symbol) {
+    switch (typeof prop) {
+        case "symbol":
+            return ["Symbol.toStringTag", "immer-state"].map(s => `Symbol(${s})`).includes(String(prop));
+        case "string":
+            return ["window", "toJSON"].includes(prop);
+        case "number":
+            return false;
+    }
 }
 
 export function createPropertyThatThrowIfAccessed<T extends object, PropertyName extends keyof T>(
