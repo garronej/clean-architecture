@@ -1,4 +1,8 @@
-import { createObjectThatThrowsIfAccessedFactory } from "./tools/createObjectThatThrowsIfAccessed";
+import {
+    createObjectThatThrowsIfAccessedFactory,
+    isObjectThatThrowIfAccessed
+} from "./tools/createObjectThatThrowsIfAccessed";
+export { isObjectThatThrowIfAccessed };
 
 function isPropertyAccessedByReduxOrStorybook(prop: string | number | symbol) {
     switch (typeof prop) {

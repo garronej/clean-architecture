@@ -1,3 +1,5 @@
+const trappedObjects = new WeakSet<object>();
+
 export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
     debugMessage?: string;
     isPropertyWhitelisted?: (prop: string | number | symbol) => boolean;
@@ -15,10 +17,14 @@ export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
         throw new Error(`Cannot access ${String(prop)} yet ${debugMessage}`);
     };
 
-    return new Proxy<T>({} as any, {
+    const trappedObject = new Proxy<T>({} as any, {
         get,
         "set": get
     });
+
+    trappedObjects.add(trappedObject);
+
+    return trappedObject;
 }
 
 export function createObjectThatThrowsIfAccessedFactory(params: {
@@ -38,15 +44,8 @@ export function createObjectThatThrowsIfAccessedFactory(params: {
     };
 }
 
-export function isPropertyAccessedByReduxOrStorybook(prop: string | number | symbol) {
-    switch (typeof prop) {
-        case "symbol":
-            return ["Symbol.toStringTag", "immer-state"].map(s => `Symbol(${s})`).includes(String(prop));
-        case "string":
-            return ["window", "toJSON"].includes(prop);
-        case "number":
-            return false;
-    }
+export function isObjectThatThrowIfAccessed(obj: object) {
+    return trappedObjects.has(obj);
 }
 
 export function createPropertyThatThrowIfAccessed<T extends object, PropertyName extends keyof T>(
