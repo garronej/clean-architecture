@@ -1,4 +1,4 @@
-const trappedObjects = new WeakSet<object>();
+const keyIsTrapped = "isTrapped_zSskDe9d";
 
 export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
     debugMessage?: string;
@@ -13,6 +13,10 @@ export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
             return Reflect.get(...args);
         }
 
+        if (prop === keyIsTrapped) {
+            return true;
+        }
+
         throw new Error(`Cannot access ${String(prop)} yet ${debugMessage}`);
     };
 
@@ -20,8 +24,6 @@ export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
         get,
         "set": get
     });
-
-    trappedObjects.add(trappedObject);
 
     return trappedObject;
 }
@@ -44,7 +46,7 @@ export function createObjectThatThrowsIfAccessedFactory(params: {
 }
 
 export function isObjectThatThrowIfAccessed(obj: object) {
-    return trappedObjects.has(obj);
+    return (obj as any)[keyIsTrapped] === true;
 }
 
 export function createPropertyThatThrowIfAccessed<T extends object, PropertyName extends keyof T>(
