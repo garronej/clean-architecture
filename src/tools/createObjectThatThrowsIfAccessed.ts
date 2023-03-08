@@ -4,8 +4,7 @@ export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
     debugMessage?: string;
     isPropertyWhitelisted?: (prop: string | number | symbol) => boolean;
 }): T {
-    const { debugMessage = "", isPropertyWhitelisted = isPropertyAccessedByReduxOrStorybook } =
-        params ?? {};
+    const { debugMessage = "", isPropertyWhitelisted = () => false } = params ?? {};
 
     const get: NonNullable<ProxyHandler<T>["get"]> = (...args) => {
         const [, prop] = args;
