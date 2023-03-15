@@ -917,6 +917,11 @@ tsafe@^1.4.3:
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.4.3.tgz#a98ce83616f0d9c01e3c6167a2ead45ba455b2ae"
   integrity sha512-KjCdgjIqsbKW9oeJGSMVC23jhWm/VXJwkaZ7jffo/WaTioLGTHJqliHe9dECEVzIACNVNs/fwtKwU8wWK4jY4g==
 
+tsafe@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.5.1.tgz#b23b0e677a33efe6682ff5e50e8c1944eb331f0e"
+  integrity sha512-xLkNkdIzIXmfGiOYU+rGxeOcdEwlMHpfE6B9KnW51BFhvc+r+yMXe9+u5DgfrLXWSahUcqFRLZiA/oOmy+kcwg==
+
 tslib@^2.1.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.1.tgz#0d0bfbaac2880b91e22df0768e55be9753a5b17e"
