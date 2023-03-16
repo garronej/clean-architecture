@@ -355,14 +355,14 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==
 
-evt@^2.4.16:
-  version "2.4.16"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.16.tgz#afee920422361fe9a2ca7c210045b5c6fd943c9c"
-  integrity sha512-24k6HUZ8HGCuiqy4BQs6SI0IFmB5sLcMrXInfSOt53QQXWb44zIRXdY9p88Wj4XRwCojQcEX8J9vULMxqn/AjA==
+evt@^2.4.17:
+  version "2.4.17"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.17.tgz#d8e308aa0091f34434a437954deb7e8a9cefcf7c"
+  integrity sha512-fXt455jAUaoAIYifHRnY0LBkAdgUKNqKbd65mtwxC+4iZ4vVqkHYNe2DIAKgGrW5oF3Dp8e+6mFsFnchC+mLYA==
   dependencies:
     minimal-polyfills "^2.2.2"
     run-exclusive "^2.2.18"
-    tsafe "^1.5.1"
+    tsafe "^1.5.2"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -912,10 +912,10 @@ ts-node@^10.4.0:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
-tsafe@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.5.1.tgz#b23b0e677a33efe6682ff5e50e8c1944eb331f0e"
-  integrity sha512-xLkNkdIzIXmfGiOYU+rGxeOcdEwlMHpfE6B9KnW51BFhvc+r+yMXe9+u5DgfrLXWSahUcqFRLZiA/oOmy+kcwg==
+tsafe@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.5.2.tgz#c5bc8c3d663b41dcd6c05793a02d50f781bd03ef"
+  integrity sha512-2DfRSqP2TnumYaIc/4LIb4SK0jyHnAwJgvr+EVrVwHGdsxuBjwh736uPrdYEvXQ9oqxV1P3gfspmAImbHp4N5A==
 
 tslib@^2.1.0:
   version "2.4.1"
