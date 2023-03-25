@@ -25,7 +25,7 @@ fs.writeFileSync(
                         : Object.fromEntries(
                               Object.entries(packageJsonParsed["bin"]).map(([key, value]) => [
                                   key,
-                                  (value as string).replace(/^\.\/dist\//, "./")
+                                  (value as string).replace(/^dist\//, "")
                               ])
                           ),
                     "exports": !("exports" in packageJsonParsed)
