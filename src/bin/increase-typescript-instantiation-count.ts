@@ -18,8 +18,8 @@ crawl(typescriptDirPath)
         const fileContentStr = fs.readFileSync(jsFilePath).toString("utf8");
 
         const fixedFileContentStr = fileContentStr.replace(
-            /instantiationDepth === [0-9]+/g,
-            "instantiationDepth === 10000"
+            /instantiationCount >=? [0-9e]+/g,
+            "instantiationCount >= 5e10"
         );
 
         if (fixedFileContentStr.length === fileContentStr.length) {

@@ -15,11 +15,10 @@
         "format:check": "npm run _format -- --list-different",
         "link-in-test-app": "ts-node --skipProject scripts/link-in-test-app.ts",
         "start-demo-app": "yarn link-in-test-app && cd demo-app && yarn start",
-        "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
-        "postinstall": "increase-typescript-instantiation-depth || true"
+        "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js"
     },
     "bin": {
-        "increase-typescript-instantiation-depth": "dist/bin/increase-typescript-instantiation-depth.js"
+        "increase-typescript-instantiation-count": "dist/bin/increase-typescript-instantiation-count.js"
     },
     "lint-staged": {
         "*.{ts,tsx,json,md}": [
