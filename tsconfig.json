@@ -16,6 +16,5 @@
         "jsx": "react-jsx",
         "noFallthroughCasesInSwitch": true
     },
-    "include": ["src"],
-    "exclude": ["src/test/demo-app", "src/bin"]
+    "include": ["src"]
 }

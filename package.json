@@ -9,12 +9,17 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && yarn grant-exec-perms",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "npm run _format -- --write",
         "format:check": "npm run _format -- --list-different",
-        "yarn_link": "ts-node src/bin/yarn_link.ts",
-        "start-demo-app": "yarn yarn_link && cd src/test/demo-app && yarn start"
+        "link-in-test-app": "ts-node --skipProject scripts/link-in-test-app.ts",
+        "start-demo-app": "yarn link-in-test-app && cd src/demo-app && yarn start",
+        "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js",
+        "postinstall": "increase-typescript-instantiation-depth || true"
+    },
+    "bin": {
+        "increase-typescript-instantiation-depth": "dist/bin/increase-typescript-instantiation-depth.js"
     },
     "lint-staged": {
         "*.{ts,tsx,json,md}": [
