@@ -90,6 +90,6 @@ To get rid of it simply add this script to your package json.
 }
 ```
 
-Then make vscode use the workspace version of typescript and restart typescript server:  
+Then make vscode use the workspace version of typescript and restart typescript server:
 
 https://user-images.githubusercontent.com/6702424/227682089-e42d36ba-9b53-401c-803b-94a1556a508f.mov
