@@ -86,13 +86,9 @@ const execYarnLink = (params: { targetModuleName?: string; cwd: string }) => {
 const testAppNames = ["demo-app"] as const;
 
 const getTestAppPath = (testAppName: typeof testAppNames[number]) =>
-    pathJoin(projectRootDirPath, "src", testAppName);
-
-console.log("before");
+    pathJoin(projectRootDirPath, testAppName);
 
 testAppNames.forEach(testAppName => execSync("yarn install", { "cwd": getTestAppPath(testAppName) }));
-
-console.log("after");
 
 console.log("=== Linking common dependencies ===");
 

@@ -5,13 +5,6 @@ import { crawl } from "./tools/crawl";
 import * as fs from "fs";
 import { join as pathJoin } from "path";
 
-console.log("wesh!!!!!!!!!!!!");
-
-fs.writeFileSync(
-    "/Users/joseph/github/redux-clean-architecture/demo-app/touch.txt",
-    Buffer.from("hello world", "utf8")
-);
-
 const typescriptDirPath = pathJoin(getProjectRoot(), "..", "typescript");
 
 if (!fs.existsSync(typescriptDirPath)) {
