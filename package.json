@@ -17,9 +17,6 @@
         "start-demo-app": "yarn link-in-test-app && cd demo-app && yarn start",
         "grant-exec-perms": "node dist/bin/tools/grant-exec-perms.js"
     },
-    "bin": {
-        "increase-typescript-instantiation-count": "dist/bin/increase-typescript-instantiation-count.js"
-    },
     "lint-staged": {
         "*.{ts,tsx,json,md}": [
             "prettier --write"
@@ -59,7 +56,7 @@
         "lint-staged": "^11.1.1",
         "prettier": "^2.3.2",
         "ts-node": "^10.4.0",
-        "typescript": "4.9.1-beta",
+        "typescript": "5.0.2",
         "evt": "^2.4.18",
         "react": "18.2.0",
         "@types/react": "^18.0.21"

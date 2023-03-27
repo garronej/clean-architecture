@@ -73,23 +73,3 @@ yarn
 yarn build
 yarn start-demo-app
 ```
-
-# type instantiation is execively deep and possibly infinit
-
-If your app becomes very complex you might run into this error message.
-
-<img width="656" alt="image" src="https://user-images.githubusercontent.com/6702424/227680365-07a8d499-4b66-4553-85a3-976aed87a62c.png">
-
-To get rid of it simply add this script to your package json.
-
-`package.json`
-
-```json
-"scripts": {
-  "postinstall": "increase-typescript-instantiation-count"
-}
-```
-
-Then make vscode use the workspace version of typescript and restart typescript server:
-
-https://user-images.githubusercontent.com/6702424/227682089-e42d36ba-9b53-401c-803b-94a1556a508f.mov
