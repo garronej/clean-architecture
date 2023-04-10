@@ -61,7 +61,8 @@ export function createCoreFromUsecases<
         "reducer": usecasesToReducer(usecasesArr) as any,
         "middleware": getDefaultMiddleware =>
             getDefaultMiddleware({
-                "thunk": { "extraArgument": thunksExtraArgument }
+                "thunk": { "extraArgument": thunksExtraArgument },
+                "serializableCheck": false
             }).concat(middlewareEvtAction)
     });
 
