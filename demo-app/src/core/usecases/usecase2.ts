@@ -53,12 +53,17 @@ export const thunks = {
             const { pY } = params;
             const [dispatch, getState] = args;
 
+            dispatch(thunks.clear());
+
             await dispatch(thunks.thunkX({ "pX": pY }));
 
             const { counter2 } = getState().usecase2;
 
             return counter2 + 42;
-        }
+        },
+    "clear":
+        () =>
+        async (...args) => {}
 } satisfies Thunks;
 
 export const privateThunks = {

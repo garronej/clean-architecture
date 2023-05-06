@@ -149,6 +149,6 @@ export type GenericThunks<
 > = Record<
     string,
     (
-        params: any
+        ...args: any[]
     ) => ThunkAction<any, ReturnType<Core["getState"]>, Core["thunksExtraArgument"], Action<string>>
 >;
