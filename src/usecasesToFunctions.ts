@@ -4,12 +4,12 @@ import type { Param0 } from "tsafe";
 import { objectKeys } from "tsafe/objectKeys";
 import type { ThunkAction, AnyAction, Action } from "@reduxjs/toolkit";
 
-export type ThunkToFunction<Thunk extends (...args: any[]) => ThunkAction<any, any, any, any>> = (
+export type ThunkToFunction<Thunk extends (params: any) => ThunkAction<any, any, any, any>> = (
     params: Param0<Thunk>
 ) => ReturnType<Thunk> extends ThunkAction<infer R, any, any, any> ? R : never;
 
 export function thunkToFunction<
-    Thunk extends (...args: any[]) => ThunkAction<any, any, any, AnyAction>
+    Thunk extends (params: any) => ThunkAction<any, any, any, AnyAction>
 >(params: {
     thunk: Thunk;
     dispatch: (
@@ -29,11 +29,11 @@ export function thunkToFunction<
 }
 
 export type ThunksToFunctions<
-    Thunks extends Record<string, (...args: any[]) => ThunkAction<any, any, any, AnyAction>>
+    Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, AnyAction>>
 > = { [Key in keyof Thunks]: ThunkToFunction<Thunks[Key]> };
 
 export function thunksToFunctions<
-    Thunks extends Record<string, (...args: any[]) => ThunkAction<any, any, any, any>>
+    Thunks extends Record<string, (params: any) => ThunkAction<any, any, any, any>>
 >(params: {
     thunks: Thunks;
     dispatch: (
@@ -66,7 +66,7 @@ export function thunksToFunctions<
 
 export type UsecaseLike = {
     name: string;
-    thunks: Record<string, (...args: any[]) => ThunkAction<any, any, any, any>>;
+    thunks: Record<string, (params: any) => ThunkAction<any, any, any, any>>;
 };
 
 export type CoreLike<Usecase extends UsecaseLike> = {
@@ -149,6 +149,6 @@ export type GenericThunks<
 > = Record<
     string,
     (
-        ...args: any[]
+        params: any
     ) => ThunkAction<any, ReturnType<Core["getState"]>, Core["thunksExtraArgument"], Action<string>>
 >;
