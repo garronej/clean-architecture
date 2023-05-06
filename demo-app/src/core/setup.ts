@@ -1,4 +1,3 @@
-import type { Action, ThunkAction as ReduxGenericThunkAction } from "@reduxjs/toolkit";
 import { createPort2 } from "./adapters/createProt2";
 import type { Port2Config } from "./adapters/createProt2";
 import { createPort1 } from "./adapters/createPort1";
@@ -35,14 +34,6 @@ export async function createCore(params: CoreParams) {
 type Core = Awaited<ReturnType<typeof createCore>>;
 
 export type State = ReturnType<Core["getState"]>;
-
-/** @deprecated: Use Thunks as soon as we cas use 'satisfy' from TS 4.9 */
-export type ThunkAction<RtnType = Promise<void>> = ReduxGenericThunkAction<
-    RtnType,
-    State,
-    Core["thunksExtraArgument"],
-    Action<string>
->;
 
 export type Thunks = GenericThunks<Core>;
 

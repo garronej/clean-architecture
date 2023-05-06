@@ -1,10 +1,9 @@
-import type { ThunkAction, CreateEvt } from "../setup";
+import type { Thunks, CreateEvt } from "../setup";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { State } from "../setup";
 import { id } from "tsafe/id";
 import { createSelector } from "@reduxjs/toolkit";
-import type { Param0 } from "tsafe";
 import { createUsecaseContextApi } from "redux-clean-architecture";
 
 export type Usecase2State = {
@@ -34,7 +33,7 @@ export const { reducer, actions } = createSlice({
 
 export const thunks = {
     "thunkX":
-        (params: { pX: string }): ThunkAction =>
+        (params: { pX: string }) =>
         async (...args) => {
             const { pX } = params;
             const [dispatch, , extraArg] = args;
@@ -49,8 +48,8 @@ export const thunks = {
             dispatch(actions.thunkXCompleted({ "delta": r + n }));
         },
     "thunkY":
-        (params: { pY: string }): ThunkAction<Promise<number>> =>
-        async (...args) => {
+        (params: { pY: string }) =>
+        async (...args): Promise<number> => {
             const { pY } = params;
             const [dispatch, getState] = args;
 
@@ -60,11 +59,11 @@ export const thunks = {
 
             return counter2 + 42;
         }
-};
+} satisfies Thunks;
 
 export const privateThunks = {
     "initialize":
-        (): ThunkAction =>
+        () =>
         async (...args) => {
             const [dispatch, , extraArg] = args;
 
@@ -72,7 +71,7 @@ export const privateThunks = {
 
             dispatch(actions.thunkXCompleted({ "delta": 1 }));
         }
-};
+} satisfies Thunks;
 
 type SliceContext = {
     n: number;
@@ -99,8 +98,9 @@ export const selectors = (() => {
     };
 })();
 
-export const createEvt = ({ evtAction }: Param0<CreateEvt>) => {
-    return evtAction
+export const createEvt = (({ evtAction }) =>
+    evtAction
         .pipe(action => (action.sliceName === "usecase2" ? [action] : null))
-        .pipe(action => (action.actionName === "thunkXCompleted" ? [action] : null));
-};
+        .pipe(action =>
+            action.actionName === "thunkXCompleted" ? [action] : null
+        )) satisfies CreateEvt;

@@ -61,7 +61,7 @@ import type { UnpackEvt } from "evt";
     };
 
     type ExpectedThunksExtraArgument = ThunksExtraArgumentWithoutEvtAction & {
-        evtAction: NonPostableEvt<UsecaseToEvent<typeof usecasesArr[number]>>;
+        evtAction: NonPostableEvt<UsecaseToEvent<(typeof usecasesArr)[number]>>;
     };
 
     type Expected = {

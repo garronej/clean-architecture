@@ -70,5 +70,5 @@ const expected = Reflect<{
 
 //NOTE: We can compare got and expected directly because we can't unite recursively in Equals.
 //assert<Equals<typeof got, typeof expected>>();
-assert<Equals<typeof got["middlewareEvtAction"], typeof expected["middlewareEvtAction"]>>();
-assert<Equals<UnpackEvt<typeof got["evtAction"]>, UnpackEvt<typeof expected["evtAction"]>>>();
+assert<Equals<(typeof got)["middlewareEvtAction"], (typeof expected)["middlewareEvtAction"]>>();
+assert<Equals<UnpackEvt<(typeof got)["evtAction"]>, UnpackEvt<(typeof expected)["evtAction"]>>>();

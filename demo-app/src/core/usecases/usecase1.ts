@@ -1,4 +1,4 @@
-import type { ThunkAction } from "../setup";
+import type { Thunks } from "../setup";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { State } from "../setup";
@@ -32,7 +32,7 @@ export const { reducer, actions } = createSlice({
 
 export const thunks = {
     "thunk1":
-        (params: { pX: string }): ThunkAction =>
+        (params: { pX: string }) =>
         async (...args) => {
             const { pX } = params;
             const [dispatch, getState, thunkExtraArgument] = args;
@@ -49,8 +49,8 @@ export const thunks = {
             dispatch(actions.thunk1Completed({ "delta": r }));
         },
     "thunk2":
-        (params: { pY: string }): ThunkAction<Promise<number>> =>
-        async (...args) => {
+        (params: { pY: string }) =>
+        async (...args): Promise<number> => {
             const { pY } = params;
             const [dispatch, getState, { evtAction }] = args;
 
@@ -69,7 +69,7 @@ export const thunks = {
 
             return counter + 42;
         }
-};
+} satisfies Thunks;
 
 export const selectors = (() => {
     const isBig = (state: State) => {
