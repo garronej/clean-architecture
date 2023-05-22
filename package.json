@@ -1,6 +1,6 @@
 {
     "name": "redux-clean-architecture",
-    "version": "3.5.4",
+    "version": "3.5.5",
     "description": "Utilities for implementing clean architecture using Redux",
     "repository": {
         "type": "git",
@@ -46,7 +46,7 @@
     "homepage": "https://github.com/garronej/redux-clean-architecture",
     "peerDependencies": {
         "@reduxjs/toolkit": "^1.9.0",
-        "evt": "^2.4.20"
+        "evt": "^2.4.21"
     },
     "devDependencies": {
         "@reduxjs/toolkit": "^1.9.0",
@@ -57,7 +57,7 @@
         "prettier": "^2.8.8",
         "ts-node": "^10.4.0",
         "typescript": "5.0.2",
-        "evt": "^2.4.20",
+        "evt": "^2.4.21",
         "react": "18.2.0",
         "@types/react": "^18.0.21"
     },
