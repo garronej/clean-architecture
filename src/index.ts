@@ -3,6 +3,7 @@ export type { GenericCreateEvt } from "./usecasesToEvts";
 export { createCoreFromUsecases } from "./createCore";
 export {
     createObjectThatThrowsIfAccessed,
-    isObjectThatThrowIfAccessed
+    isObjectThatThrowIfAccessed,
+    AccessError
 } from "./createObjectThatThrowsIfAccessed";
 export { createUsecaseContextApi } from "./usecaseContext";

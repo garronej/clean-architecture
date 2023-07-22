@@ -1,5 +1,12 @@
 const keyIsTrapped = "isTrapped_zSskDe9d";
 
+export class AccessError extends Error {
+    constructor(message: string) {
+        super(message);
+        Object.setPrototypeOf(this, new.target.prototype);
+    }
+}
+
 export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
     debugMessage?: string;
     isPropertyWhitelisted?: (prop: string | number | symbol) => boolean;
@@ -17,7 +24,7 @@ export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
             return true;
         }
 
-        throw new Error(`Cannot access ${String(prop)} yet ${debugMessage}`);
+        throw new AccessError(`Cannot access ${String(prop)} yet ${debugMessage}`);
     };
 
     const trappedObject = new Proxy<T>({} as any, {
@@ -54,7 +61,7 @@ export function createPropertyThatThrowIfAccessed<T extends object, PropertyName
     debugMessage?: string
 ): { [K in PropertyName]: T[K] } {
     const getAndSet = () => {
-        throw new Error(`Cannot access ${String(propertyName)} yet ${debugMessage ?? ""}`);
+        throw new AccessError(`Cannot access ${String(propertyName)} yet ${debugMessage ?? ""}`);
     };
 
     return Object.defineProperty({} as any, propertyName, {

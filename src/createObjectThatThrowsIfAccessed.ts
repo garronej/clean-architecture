@@ -1,8 +1,11 @@
 import {
     createObjectThatThrowsIfAccessedFactory,
-    isObjectThatThrowIfAccessed
+    isObjectThatThrowIfAccessed,
+    AccessError
 } from "./tools/createObjectThatThrowsIfAccessed";
 export { isObjectThatThrowIfAccessed };
+
+export { AccessError };
 
 function isPropertyAccessedByReduxOrStorybook(prop: string | number | symbol) {
     switch (typeof prop) {
