@@ -5,12 +5,13 @@ export type ThunksExtraArgumentLike = { evtAction: unknown };
 type ContextApi<Context extends Record<string, unknown>> = {
     getContext: (extraArg: ThunksExtraArgumentLike) => Context;
     setContext: (extraArg: ThunksExtraArgumentLike, context: Context | (() => Context)) => void;
+    getIsContextSet: (extraArg: ThunksExtraArgumentLike) => boolean;
 };
 
 export function createUsecaseContextApi<Context extends Record<string, unknown>>(): ContextApi<Context>;
 export function createUsecaseContextApi<Context extends Record<string, unknown>>(
     getInitialContext: () => Context
-): Omit<ContextApi<Context>, "setContext">;
+): Omit<ContextApi<Context>, "setContext" | "getIsContextSet">;
 export function createUsecaseContextApi<context extends Record<string, unknown>>(
     getInitialContext?: () => context
 ): ContextApi<context> {
@@ -33,7 +34,8 @@ export function createUsecaseContextApi<context extends Record<string, unknown>>
             return getMemoizedContext();
         },
         "setContext": (extraArg, context) =>
-            weakMap.set(extraArg, memoize(typeof context === "function" ? context : () => context))
+            weakMap.set(extraArg, memoize(typeof context === "function" ? context : () => context)),
+        "getIsContextSet": extraArg => weakMap.has(extraArg)
     };
 }
 
