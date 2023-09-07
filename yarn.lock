@@ -355,10 +355,10 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==
 
-evt@^2.4.22:
-  version "2.4.22"
-  resolved "https://registry.yarnpkg.com/evt/-/evt-2.4.22.tgz#1a87471bca6e71909b66a9f8da86929bd34c8736"
-  integrity sha512-lxC4XLMhKXD2jj1p5O6AZ3tTFTIOt2qhD2NjX5phXPTfK/oIZhWUsZsqsdtrifxUOXf7PZ9TZF4PtylK/S5QGw==
+evt@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/evt/-/evt-2.5.0.tgz#e7dfc3d97ef93ffdc585644d6c9439022c44616f"
+  integrity sha512-dvyPRD1J8ruBiSJvEoE81Wfus2QMxLyjFigY5+uoe1yxWqC+UOS9U77oXrkD17B4jxixGWNdmxlusUzOCVrlcg==
   dependencies:
     minimal-polyfills "^2.2.3"
     run-exclusive "^2.2.19"
