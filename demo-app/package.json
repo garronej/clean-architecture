@@ -1,6 +1,6 @@
 {
     "name": "demo-app",
-    "version": "0.1.16",
+    "version": "0.1.17",
     "private": true,
     "devDependencies": {
         "@types/node": "^20.1.0",
@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.5",
-        "evt": "^2.5.0",
+        "evt": "^2.5.2",
         "react": "18.2.0",
         "react-dom": "^18.2.0",
         "redux-clean-architecture": "file:../dist",
