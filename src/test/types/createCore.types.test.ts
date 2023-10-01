@@ -22,7 +22,7 @@ import type { UnpackEvt } from "evt";
 
     const usecases = {
         "myFirst": {
-            "name": "myFirstSlice" as const,
+            "name": "myFirstUsecase" as const,
             "reducer": Reflect<Reducer<{ foo: string }>>(),
 
             "actions": Reflect<{
@@ -32,7 +32,7 @@ import type { UnpackEvt } from "evt";
             }>()
         },
         "mySecond": {
-            "name": "mySecondSlice" as const,
+            "name": "mySecondUsecase" as const,
             "reducer": Reflect<Reducer<{ bar: string }>>(),
 
             "actions": Reflect<{
@@ -56,8 +56,8 @@ import type { UnpackEvt } from "evt";
     //type Dispatch = Got["dispatch"]
 
     type StateExpected = {
-        myFirstSlice: { foo: string };
-        mySecondSlice: { bar: string };
+        myFirstUsecase: { foo: string };
+        mySecondUsecase: { bar: string };
     };
 
     type ExpectedThunksExtraArgument = ThunksExtraArgumentWithoutEvtAction & {

@@ -30,7 +30,7 @@ export type UsecaseToEvent<Usecase extends UsecaseLike> = RecordToUnion<{
         Usecase,
         { name: Key; actions: unknown }
     >
-        ? { sliceName: Key } & CaseReducerToEvent<Usecase["actions"]>
+        ? { usecaseName: Key } & CaseReducerToEvent<Usecase["actions"]>
         : never;
 }>;
 
@@ -43,11 +43,11 @@ export type UsecaseToEvent<Usecase extends UsecaseLike> = {
         ? {
               [K in keyof Usecase["actions"]]: Usecase["actions"][K] extends ActionCreatorWithoutPayload<any>
                   ? {
-                        sliceName: Key;
+                        usecaseName: Key;
                         actionName: K;
                     }
                   : {
-                        sliceName: Key;
+                        usecaseName: Key;
                         actionName: K;
                         payload: Usecase["actions"][K] extends ActionCreatorWithPayload<infer U>
                             ? U
@@ -56,11 +56,11 @@ export type UsecaseToEvent<Usecase extends UsecaseLike> = {
           }[keyof {
               [K in keyof Usecase["actions"]]: Usecase["actions"][K] extends ActionCreatorWithoutPayload<any>
                   ? {
-                        sliceName: Key;
+                        usecaseName: Key;
                         actionName: K;
                     }
                   : {
-                        sliceName: Key;
+                        usecaseName: Key;
                         actionName: K;
                         payload: Usecase["actions"][K] extends ActionCreatorWithPayload<infer U>
                             ? U
@@ -76,11 +76,11 @@ export type UsecaseToEvent<Usecase extends UsecaseLike> = {
         ? {
               [K in keyof Usecase["actions"]]: Usecase["actions"][K] extends ActionCreatorWithoutPayload<any>
                   ? {
-                        sliceName: Key;
+                        usecaseName: Key;
                         actionName: K;
                     }
                   : {
-                        sliceName: Key;
+                        usecaseName: Key;
                         actionName: K;
                         payload: Usecase["actions"][K] extends ActionCreatorWithPayload<infer U>
                             ? U
@@ -89,11 +89,11 @@ export type UsecaseToEvent<Usecase extends UsecaseLike> = {
           }[keyof {
               [K in keyof Usecase["actions"]]: Usecase["actions"][K] extends ActionCreatorWithoutPayload<any>
                   ? {
-                        sliceName: Key;
+                        usecaseName: Key;
                         actionName: K;
                     }
                   : {
-                        sliceName: Key;
+                        usecaseName: Key;
                         actionName: K;
                         payload: Usecase["actions"][K] extends ActionCreatorWithPayload<infer U>
                             ? U
@@ -126,7 +126,7 @@ export function createMiddlewareEvtAction<Usecase extends UsecaseLike>(
     );
 
     const evtAction = Evt.create<{
-        sliceName: string;
+        usecaseName: string;
         actionName: string;
         lifecycleStage?: string;
         payload: any;
@@ -149,12 +149,12 @@ export function createMiddlewareEvtAction<Usecase extends UsecaseLike>(
             return next(action);
         }
 
-        const [sliceName, actionName, ...lifecycleStage] = action.type.split("/");
+        const [usecaseName, actionName, ...lifecycleStage] = action.type.split("/");
 
         const out = next(action);
 
         evtAction.post({
-            sliceName,
+            usecaseName,
             actionName,
             ...(lifecycleStage.length === 0
                 ? {}

@@ -1,21 +1,18 @@
 import type { Thunks, CreateEvt } from "../setup";
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { State } from "../setup";
+import type { State as RootState } from "../setup";
 import { id } from "tsafe/id";
-import { createSelector } from "@reduxjs/toolkit";
-import { createUsecaseContextApi } from "redux-clean-architecture";
+import { createUsecaseContextApi, createUsecaseActions, createSelector } from "redux-clean-architecture";
 
-export type Usecase2State = {
+export type State = {
     counter2: number;
     isDoingSomething2: boolean;
 };
 
 export const name = "usecase2";
 
-export const { reducer, actions } = createSlice({
+export const { reducer, actions } = createUsecaseActions({
     name,
-    "initialState": id<Usecase2State>({
+    "initialState": id<State>({
         "counter2": -1,
         "isDoingSomething2": false
     }),
@@ -23,7 +20,7 @@ export const { reducer, actions } = createSlice({
         "thunkXStarted": state => {
             state.isDoingSomething2 = true;
         },
-        "thunkXCompleted": (state, { payload }: PayloadAction<{ delta: number }>) => {
+        "thunkXCompleted": (state, { payload }: { payload: { delta: number } }) => {
             const { delta } = payload;
             state.counter2 += delta;
             state.isDoingSomething2 = false;
@@ -73,19 +70,19 @@ export const privateThunks = {
         }
 } satisfies Thunks;
 
-type SliceContext = {
+type Context = {
     n: number;
 };
 
-const { getContext, setContext } = createUsecaseContextApi<SliceContext>();
+const { getContext, setContext } = createUsecaseContextApi<Context>();
 
 export const selectors = (() => {
-    const isBig = (state: State) => {
+    const isBig = (state: RootState) => {
         const { counter } = state.usecase1;
         return counter > 1000;
     };
 
-    const isReady = (state: State) => {
+    const isReady = (state: RootState) => {
         const { counter, isDoingSomething } = state.usecase1;
         return !isDoingSomething && !isNaN(counter);
     };
@@ -100,7 +97,7 @@ export const selectors = (() => {
 
 export const createEvt = (({ evtAction }) =>
     evtAction
-        .pipe(action => (action.sliceName === "usecase2" ? [action] : null))
+        .pipe(action => (action.usecaseName === "usecase2" ? [action] : null))
         .pipe(action =>
             action.actionName === "thunkXCompleted" ? [action] : null
         )) satisfies CreateEvt;

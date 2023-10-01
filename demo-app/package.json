@@ -10,7 +10,6 @@
         "typescript": "^5.0.4"
     },
     "dependencies": {
-        "@reduxjs/toolkit": "^1.9.5",
         "evt": "^2.4.22",
         "react": "18.2.0",
         "react-dom": "^18.2.0",
