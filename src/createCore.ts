@@ -12,6 +12,7 @@ import { createMiddlewareEvtAction } from "./middlewareEvtAction";
 import type { UsecasesToReducer, UsecaseLike as UsecaseLike_reducer } from "./usecasesToReducer";
 import type { UsecaseToEvent, UsecaseLike as UsecaseLike_evt } from "./middlewareEvtAction";
 import type { NonPostableEvt } from "evt";
+import { assert } from "tsafe/assert";
 
 export type UsecaseLike = UsecaseLike_reducer & UsecaseLike_evt;
 
@@ -48,6 +49,13 @@ export function createCoreFromUsecases<
     usecases: Record<string, Usecase>;
 }): GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase> {
     const { thunksExtraArgument, usecases } = params;
+
+    Object.entries(usecases).forEach(([key, usecase]) => {
+        assert(
+            key === usecase.name,
+            `You should reconcile the name of the usecase (${usecase}) and the key it's assigned to in the usecases object (${key})`
+        );
+    });
 
     const usecasesArr = Object.values(usecases);
 
