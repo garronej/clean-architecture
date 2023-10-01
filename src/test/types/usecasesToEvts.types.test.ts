@@ -31,16 +31,13 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         ]
     >();
 
-    const { getMemoizedCoreEvts } = usecasesToEvts(usecasesArr);
-
-    const core = {
-        "getState": Reflect<() => Record<string, unknown>>(),
-        "thunksExtraArgument": {
+    const { coreEvts: got } = usecasesToEvts({
+        usecasesArr,
+        "store": {
+            "getState": Reflect<() => Record<string, unknown>>(),
             "evtAction": Reflect<NonPostableEvt<any>>()
         }
-    };
-
-    const got = getMemoizedCoreEvts(core);
+    });
 
     const expected = Reflect<{
         evtFirstSlice: NonPostableEvt<Data1>;
@@ -60,16 +57,13 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         ]
     >();
 
-    const { getMemoizedCoreEvts } = usecasesToEvts(usecasesArr);
-
-    const core = {
-        "getState": Reflect<() => Record<string, unknown>>(),
-        "thunksExtraArgument": {
+    const { coreEvts: got } = usecasesToEvts({
+        usecasesArr,
+        "store": {
+            "getState": Reflect<() => Record<string, unknown>>(),
             "evtAction": Reflect<NonPostableEvt<any>>()
         }
-    };
-
-    const got = getMemoizedCoreEvts(core);
+    });
 
     const expected = Reflect<{}>();
 

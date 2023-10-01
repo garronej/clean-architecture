@@ -1,5 +1,5 @@
-export { createCoreFromUsecases } from "./createCore";
-export type { GenericUtils } from "./createCore";
+export { createCore } from "./createCore";
+export type { Scaffolding } from "./createCore";
 export {
     createObjectThatThrowsIfAccessed,
     isObjectThatThrowIfAccessed,

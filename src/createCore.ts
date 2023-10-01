@@ -2,6 +2,7 @@ import { Evt } from "evt";
 import type { NonPostableEvt } from "evt";
 import { id } from "tsafe/id";
 import type { ReturnType } from "tsafe";
+import { assert } from "tsafe/assert";
 
 import { createStore, type GenericStore, type UsecaseLike as UsecaseLike_store } from "./createStore";
 
@@ -39,9 +40,7 @@ export type GenericCore<
         ofTypeCreateEvt: GenericCreateEvt<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
         ofTypeThunks: Record<
             string,
-            (
-                params: any
-            ) => ThunkAction<
+            (params: any) => ThunkAction<
                 any,
                 ReturnType<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"]>,
                 ThunksExtraArgumentWithoutEvtAction & {
@@ -62,9 +61,16 @@ export function createCore<
 }): GenericCore<Usecase, ThunksExtraArgumentWithoutEvtAction> {
     const { thunksExtraArgument, usecases } = params;
 
-    const store = createStore({ thunksExtraArgument, usecases });
+    Object.entries(usecases).forEach(([key, usecase]) => {
+        assert(
+            key === usecase.name,
+            `You should reconcile the name of the usecase (${usecase}) and the key it's assigned to in the usecases object (${key})`
+        );
+    });
 
     const usecasesArr = Object.values(usecases);
+
+    const store = createStore({ thunksExtraArgument, usecasesArr });
 
     const selectors = usecasesToSelectors({ usecasesArr });
     const { coreEvts } = usecasesToEvts({ usecasesArr, store });

@@ -18,7 +18,6 @@ import {
     type UsecaseLike as UsecaseLike_evtMiddleware
 } from "./middlewareEvtAction";
 import type { NonPostableEvt } from "evt";
-import { assert } from "tsafe/assert";
 
 export type UsecaseLike = UsecaseLike_reducer & UsecaseLike_evtMiddleware;
 
@@ -49,18 +48,9 @@ export function createStore<
     Usecase extends UsecaseLike
 >(params: {
     thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction;
-    usecases: Record<string, Usecase>;
+    usecasesArr: readonly Usecase[];
 }): GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase> {
-    const { thunksExtraArgument, usecases } = params;
-
-    Object.entries(usecases).forEach(([key, usecase]) => {
-        assert(
-            key === usecase.name,
-            `You should reconcile the name of the usecase (${usecase}) and the key it's assigned to in the usecases object (${key})`
-        );
-    });
-
-    const usecasesArr = Object.values(usecases);
+    const { thunksExtraArgument, usecasesArr } = params;
 
     const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction(usecasesArr);
 

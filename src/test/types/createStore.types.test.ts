@@ -1,4 +1,4 @@
-import { createCoreFromUsecases } from "../../createCore";
+import { createStore } from "../../createStore";
 import { Reflect } from "tsafe/Reflect";
 import type {
     Reducer,
@@ -13,7 +13,6 @@ import type { NonPostableEvt } from "evt";
 import { UsecaseToEvent } from "../../middlewareEvtAction";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
-import type { UnpackEvt } from "evt";
 
 {
     type ThunksExtraArgumentWithoutEvtAction = {
@@ -46,12 +45,12 @@ import type { UnpackEvt } from "evt";
 
     const usecasesArr = Object.values(usecases);
 
-    const core = createCoreFromUsecases({
+    const store = createStore({
         "thunksExtraArgument": Reflect<ThunksExtraArgumentWithoutEvtAction>(),
-        usecases
+        usecasesArr
     });
 
-    type Got = typeof core;
+    type Got = typeof store;
 
     //type Dispatch = Got["dispatch"]
 
@@ -68,25 +67,8 @@ import type { UnpackEvt } from "evt";
         getState: () => StateExpected;
         dispatch: ThunkDispatch<StateExpected, ExpectedThunksExtraArgument, AnyAction> &
             Dispatch<Action<any>>;
-        thunksExtraArgument: ExpectedThunksExtraArgument;
+        evtAction: ExpectedThunksExtraArgument["evtAction"];
     };
 
-    assert<Equals<Got["getState"], Expected["getState"]>>();
-    assert<Equals<Got["dispatch"], Expected["dispatch"]>>();
-
-    //NOTE: Because we use an expanded version of the type in createCore we reaches the limit of Equals<>
-    //assert<Equals<Got["thunksExtraArgument"], Expected["thunksExtraArgument"]>>();
-    assert<
-        Equals<
-            UnpackEvt<Got["thunksExtraArgument"]["evtAction"]>,
-            UnpackEvt<Expected["thunksExtraArgument"]["evtAction"]>
-        >
-    >();
-
-    assert<
-        Equals<
-            Omit<Got["thunksExtraArgument"], "evtAction">,
-            Omit<Expected["thunksExtraArgument"], "evtAction">
-        >
-    >();
+    assert<Equals<Got, Expected>>();
 }
