@@ -2,8 +2,7 @@ import { createPort2 } from "./adapters/createProt2";
 import type { Port2Config } from "./adapters/createProt2";
 import { createPort1 } from "./adapters/createPort1";
 import type { Port1Config } from "./adapters/createPort1";
-import { createCoreFromUsecases } from "redux-clean-architecture";
-import type { GenericCreateEvt, GenericThunks } from "redux-clean-architecture";
+import { createCoreFromUsecases, type Scaffolding } from "redux-clean-architecture";
 import { usecases } from "./usecases";
 
 type CoreParams = {
@@ -11,14 +10,14 @@ type CoreParams = {
     port2Config: Port2Config;
 };
 
-export async function createCore(params: CoreParams) {
+export async function setup(params: CoreParams) {
     const [port1, port2] = await Promise.all([
         createPort1(params.port1Config),
         createPort2(params.port2Config)
     ]);
 
-    const core = createCoreFromUsecases({
-        "thunksExtraArgument": {
+    const { core, dispatch } = createCoreFromUsecases({
+        "context": {
             "coreParams": params,
             port1,
             port2
@@ -26,15 +25,13 @@ export async function createCore(params: CoreParams) {
         usecases
     });
 
-    await core.dispatch(usecases.usecase2.privateThunks.initialize());
+    await dispatch(usecases.usecase2.privateThunks.initialize());
 
-    return core;
+    return { core, "context": { port1 } };
 }
 
-type Core = Awaited<ReturnType<typeof createCore>>;
+type _ = Scaffolding<typeof setup>;
 
-export type State = ReturnType<Core["getState"]>;
-
-export type Thunks = GenericThunks<Core>;
-
-export type CreateEvt = GenericCreateEvt<Core>;
+export type State = _["State"];
+export type Thunks = _["Thunks"];
+export type CreateEvt = _["CreateEvt"];

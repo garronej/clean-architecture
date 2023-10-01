@@ -33,9 +33,11 @@ export type GenericSelectors<Usecase extends UsecaseLike> = {
     >;
 };
 
-export function usecasesToSelectors<Usecase extends UsecaseLike>(
-    usecasesArr: readonly Usecase[]
-): GenericSelectors<Usecase> {
+export function usecasesToSelectors<Usecase extends UsecaseLike>(params: {
+    usecasesArr: readonly Usecase[];
+}): GenericSelectors<Usecase> {
+    const { usecasesArr } = params;
+
     return Object.fromEntries(
         usecasesArr
             .map(({ name, selectors }) =>

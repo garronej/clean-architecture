@@ -1,6 +1,5 @@
-export type { GenericThunks } from "./usecasesToFunctions";
-export type { GenericCreateEvt } from "./usecasesToEvts";
 export { createCoreFromUsecases } from "./createCore";
+export type { GenericUtils } from "./createCore";
 export {
     createObjectThatThrowsIfAccessed,
     isObjectThatThrowIfAccessed,

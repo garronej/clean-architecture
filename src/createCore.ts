@@ -1,88 +1,99 @@
-import type {
-    ConfigureStoreOptions,
-    EnhancedStore,
-    MiddlewareArray,
-    ThunkMiddleware,
-    AnyAction,
-    ReducersMapObject
-} from "@reduxjs/toolkit";
-import { configureStore } from "@reduxjs/toolkit";
-import { usecasesToReducer } from "./usecasesToReducer";
-import { createMiddlewareEvtAction } from "./middlewareEvtAction";
-import type { UsecasesToReducer, UsecaseLike as UsecaseLike_reducer } from "./usecasesToReducer";
-import type { UsecaseToEvent, UsecaseLike as UsecaseLike_evt } from "./middlewareEvtAction";
+import { Evt } from "evt";
 import type { NonPostableEvt } from "evt";
-import { assert } from "tsafe/assert";
+import { id } from "tsafe/id";
+import type { ReturnType } from "tsafe";
 
-export type UsecaseLike = UsecaseLike_reducer & UsecaseLike_evt;
+import { createStore, type GenericStore, type UsecaseLike as UsecaseLike_store } from "./createStore";
+
+import {
+    usecasesToEvts,
+    type CoreEvts,
+    type GenericCreateEvt,
+    type UsecaseLike as UsecaseLike_evts
+} from "./usecasesToEvts";
+import {
+    usecasesToSelectors,
+    type GenericSelectors,
+    type UsecaseLike as UsecaseLike_selectors
+} from "./usecasesToSelectors";
+import {
+    usecasesToFunctions,
+    CoreFunctions,
+    type UsecaseLike as UsecaseLike_functions
+} from "./usecasesToFunctions";
+import type { ThunkAction, Action } from "@reduxjs/toolkit";
+
+type UsecaseLike = UsecaseLike_store & UsecaseLike_evts & UsecaseLike_selectors & UsecaseLike_functions;
 
 export type GenericCore<
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
-    Usecase extends UsecaseLike
+    Usecase extends UsecaseLike,
+    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
 > = {
-    reducer: UsecasesToReducer<Usecase>;
-    middleware: MiddlewareArray<
-        [
-            ThunkMiddleware<
-                UsecasesToReducer<Usecase> extends ReducersMapObject<infer S, any> ? S : never,
-                AnyAction,
+    getState: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"];
+    selectors: GenericSelectors<Usecase>;
+    evtStateUpdated: NonPostableEvt<void>;
+    coreEvts: CoreEvts<Usecase>;
+    functions: CoreFunctions<Usecase>;
+    ["~internal"]: {
+        ofTypeState: ReturnType<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"]>;
+        ofTypeCreateEvt: GenericCreateEvt<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
+        ofTypeThunks: Record<
+            string,
+            (
+                params: any
+            ) => ThunkAction<
+                any,
+                ReturnType<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"]>,
                 ThunksExtraArgumentWithoutEvtAction & {
-                    evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
-                }
+                    evtAction: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["evtAction"];
+                },
+                Action<string>
             >
-        ]
-    >;
-} extends ConfigureStoreOptions<infer S, infer A, infer M>
-    ? EnhancedStore<S, A, M> & {
-          thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction & {
-              evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
-          };
-      }
-    : never;
+        >;
+    };
+};
 
-export function createCoreFromUsecases<
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
-    Usecase extends UsecaseLike
+export function createCore<
+    Usecase extends UsecaseLike,
+    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
 >(params: {
     thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction;
-    //usecases: readonly Usecase[];
     usecases: Record<string, Usecase>;
-}): GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase> {
+}): GenericCore<Usecase, ThunksExtraArgumentWithoutEvtAction> {
     const { thunksExtraArgument, usecases } = params;
 
-    Object.entries(usecases).forEach(([key, usecase]) => {
-        assert(
-            key === usecase.name,
-            `You should reconcile the name of the usecase (${usecase}) and the key it's assigned to in the usecases object (${key})`
-        );
-    });
+    const store = createStore({ thunksExtraArgument, usecases });
 
     const usecasesArr = Object.values(usecases);
 
-    const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction(usecasesArr);
+    const selectors = usecasesToSelectors({ usecasesArr });
+    const { coreEvts } = usecasesToEvts({ usecasesArr, store });
+    const { functions } = usecasesToFunctions({ usecasesArr, store });
 
-    //NOTE: We want to let the user change the properties, sometimes all the port
-    //can't be ready at inception.
-    Object.assign(thunksExtraArgument, { evtAction });
-
-    const store = configureStore({
-        "reducer": usecasesToReducer(usecasesArr) as any,
-        "middleware": getDefaultMiddleware =>
-            getDefaultMiddleware({
-                "thunk": { "extraArgument": thunksExtraArgument },
-                "serializableCheck": false
-            }).concat(middlewareEvtAction)
-    });
-
-    const { getState, dispatch } = store;
-
-    const core = {
-        getState,
-        dispatch,
-        thunksExtraArgument,
-        //NOTE: The redux store as a hidden property, just if you really need it
-        store
+    return {
+        "getState": store.getState,
+        "evtStateUpdated": Evt.asNonPostable(store.evtAction.pipe(() => [id<void>(undefined)])),
+        selectors,
+        coreEvts,
+        functions,
+        "evtAction": store.evtAction,
+        //@ts-expect-error
+        "~internal": null
     };
-
-    return core as any;
 }
+
+export type Scaffolding<
+    Setup extends (params: any) => Promise<{
+        core: {
+            ["~internal"]: {
+                ofTypeState: any;
+                ofTypeCreateEvt: any;
+                ofTypeThunks: any;
+            };
+        };
+    }>
+> = {
+    State: ReturnType<Setup>["core"]["~internal"]["ofTypeState"];
+    Thunks: ReturnType<Setup>["core"]["~internal"]["ofTypeThunks"];
+    CreateEvt: ReturnType<Setup>["core"]["~internal"]["ofTypeCreateEvt"];
+};
