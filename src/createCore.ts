@@ -1,6 +1,4 @@
 import { Evt } from "evt";
-import type { NonPostableEvt } from "evt";
-import { id } from "tsafe/id";
 import type { ReturnType } from "tsafe";
 import { assert } from "tsafe/assert";
 
@@ -32,7 +30,7 @@ export type GenericCore<
 > = {
     getState: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"];
     selectors: GenericSelectors<Usecase>;
-    evtStateUpdated: NonPostableEvt<void>;
+    subscribe: (listener: () => void) => { unsubscribe: () => void };
     coreEvts: CoreEvts<Usecase>;
     functions: CoreFunctions<Usecase>;
     ["~internal"]: {
@@ -78,13 +76,19 @@ export function createCore<
 
     return {
         "getState": store.getState,
-        "evtStateUpdated": Evt.asNonPostable(store.evtAction.pipe(() => [id<void>(undefined)])),
+        "subscribe": listener => {
+            const ctx = Evt.newCtx();
+
+            store.evtAction.attach(ctx, () => listener());
+
+            return {
+                "unsubscribe": () => ctx.done()
+            };
+        },
         selectors,
         coreEvts,
         functions,
-        "evtAction": store.evtAction,
-        //@ts-expect-error
-        "~internal": null
+        "~internal": null as any
     };
 }
 
