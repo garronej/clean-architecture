@@ -1,23 +1,7 @@
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import { Equals } from "tsafe";
-import { wrapSelectorsReturnValue, usecasesToGetSelectedState } from "../../usecasesToGetSelectedState";
-
-{
-    const selectors = {
-        "foo": Reflect<(state: any) => string>(),
-        "bar": Reflect<(state: any) => number>()
-    };
-
-    const got = wrapSelectorsReturnValue(selectors);
-
-    type Expected = {
-        foo: (state: any) => { foo: string };
-        bar: (state: any) => { bar: number };
-    };
-
-    assert<Equals<typeof got, Expected>>();
-}
+import { usecasesToGetSelectedState } from "../../usecasesToGetSelectedState";
 
 {
     const usecasesArr = [

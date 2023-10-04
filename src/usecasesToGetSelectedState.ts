@@ -47,9 +47,22 @@ export function usecasesToGetSelectedState<Usecase extends UsecaseLike>(params: 
         getState: () => any;
     };
 }): { getSelectedState: GenericGetSelectedState<Usecase> } {
-    const { usecasesArr } = params;
+    const { usecasesArr, store } = params;
 
-    const getSelectedState: any = () => {};
+    const getSelectedState: any = (params: { usecase: string; selector: string }) => {
+        const usecase = usecasesArr.find(({ name }) => name === params.usecase);
+
+        assert(usecase !== undefined);
+        assert(usecase.selectors !== undefined);
+
+        const selector = usecase.selectors[params.selector];
+
+        assert(selector !== undefined);
+
+        const value = selector(store.getState());
+
+        return { [params.selector]: value };
+    };
 
     return { getSelectedState };
 }
