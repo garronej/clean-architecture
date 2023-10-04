@@ -1,9 +1,5 @@
 import "minimal-polyfills/Object.fromEntries";
-import type { Param0 } from "tsafe";
-import { objectKeys } from "tsafe/objectKeys";
-import { exclude } from "tsafe/exclude";
 import { assert } from "tsafe/assert";
-import { Equals } from "tsafe";
 
 export type UsecaseLike = {
     name: string;
@@ -35,7 +31,7 @@ type GenericGetSelectedStateReturnType<
         : never
     : never;
 
-type GenericGetSelectedState<Usecase extends UsecaseLike> = <
+export type GenericGetSelectedState<Usecase extends UsecaseLike> = <
     Params extends GenericGetSelectedStateParam<Usecase>
 >(
     params: Params
