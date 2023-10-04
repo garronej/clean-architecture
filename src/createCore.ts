@@ -28,7 +28,6 @@ export type GenericCore<
     Usecase extends UsecaseLike,
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
 > = {
-    getState: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"];
     getSelectedState: GenericGetSelectedState<Usecase>;
     subscribe: (listener: () => void) => { unsubscribe: () => void };
     coreEvts: CoreEvts<Usecase>;
@@ -75,7 +74,6 @@ export function createCore<
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
     return {
-        "getState": store.getState,
         "subscribe": listener => {
             const ctx = Evt.newCtx();
 
