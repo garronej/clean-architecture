@@ -5,16 +5,16 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 
 const usecasesArr = [
-    { "name": "myFirstSlice", "reducer": Reflect<Reducer<{ foo: string }>>() },
-    { "name": "mySecondSlice", "reducer": Reflect<Reducer<{ bar: string }>>() },
+    { "name": "myFirstUsecase", "reducer": Reflect<Reducer<{ foo: string }>>() },
+    { "name": "mySecondUsecase", "reducer": Reflect<Reducer<{ bar: string }>>() },
     { "name": "myThirdSlice", "reducer": null }
 ] as const;
 
 const reducer = usecasesToReducer(usecasesArr);
 
 type ExpectedReducer = {
-    myFirstSlice: Reducer<{ foo: string }>;
-    mySecondSlice: Reducer<{ bar: string }>;
+    myFirstUsecase: Reducer<{ foo: string }>;
+    mySecondUsecase: Reducer<{ bar: string }>;
 };
 
 assert<Equals<typeof reducer, ExpectedReducer>>();

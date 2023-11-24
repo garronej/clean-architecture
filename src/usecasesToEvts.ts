@@ -1,30 +1,26 @@
 import "minimal-polyfills/Object.fromEntries";
-import { Polyfill as WeakMap } from "minimal-polyfills/WeakMap";
 import { capitalize } from "tsafe/capitalize";
 import type { NonPostableEvt } from "evt";
 import { exclude } from "tsafe/exclude";
 
 const wordId = "evt";
 
-export type CoreLike = {
-    thunksExtraArgument: {
-        evtAction: NonPostableEvt<any>;
-    };
-    //getState: () => Record<string, unknown>;
+export type StoreLike = {
+    evtAction: NonPostableEvt<any>;
     getState: () => any;
 };
 
-export type GenericCreateEvt<Core extends CoreLike> = (params: {
-    evtAction: Core["thunksExtraArgument"]["evtAction"];
-    getState: Core["getState"];
+export type GenericCreateEvt<Store extends StoreLike> = (params: {
+    evtAction: Store["evtAction"];
+    getState: Store["getState"];
 }) => NonPostableEvt<any>;
 
 export type UsecaseLike = {
     name: string;
-    createEvt?: GenericCreateEvt<CoreLike>;
+    createEvt?: GenericCreateEvt<StoreLike>;
 };
 
-export type GetMemoizedCoreEvts<Usecase extends UsecaseLike> = (core: CoreLike) => {
+export type CoreEvts<Usecase extends UsecaseLike> = {
     [Key in `${typeof wordId}${Capitalize<Extract<Usecase, { createEvt: any }>["name"]>}`]: ReturnType<
         Extract<
             Usecase,
@@ -38,44 +34,28 @@ export type GetMemoizedCoreEvts<Usecase extends UsecaseLike> = (core: CoreLike) 
     >;
 };
 
-export function usecasesToEvts<Usecase extends UsecaseLike>(
-    usecasesArr: readonly Usecase[]
-): {
-    getMemoizedCoreEvts: GetMemoizedCoreEvts<Usecase>;
+export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
+    usecasesArr: readonly Usecase[];
+    store: StoreLike;
+}): {
+    evts: CoreEvts<Usecase>;
 } {
-    const evtsByCore = new WeakMap<Record<string, unknown>, any>();
+    const { store, usecasesArr } = params;
 
-    return {
-        "getMemoizedCoreEvts": core => {
-            let evts = evtsByCore.get(core);
+    const { getState, evtAction } = store;
 
-            if (evts !== undefined) {
-                return evts;
-            }
+    const evts = Object.fromEntries(
+        usecasesArr
+            .map(({ name, createEvt }) => (createEvt === undefined ? undefined : { name, createEvt }))
+            .filter(exclude(undefined))
+            .map(({ name, createEvt }) => [
+                `${wordId}${capitalize(name)}`,
+                createEvt({
+                    evtAction,
+                    getState
+                })
+            ])
+    ) as any;
 
-            const {
-                getState,
-                thunksExtraArgument: { evtAction }
-            } = core;
-
-            evts = Object.fromEntries(
-                usecasesArr
-                    .map(({ name, createEvt }) =>
-                        createEvt === undefined ? undefined : { name, createEvt }
-                    )
-                    .filter(exclude(undefined))
-                    .map(({ name, createEvt }) => [
-                        `${wordId}${capitalize(name)}`,
-                        createEvt({
-                            evtAction,
-                            getState
-                        })
-                    ])
-            ) as any;
-
-            evtsByCore.set(core, evts);
-
-            return evts;
-        }
-    };
+    return { evts };
 }

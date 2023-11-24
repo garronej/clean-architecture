@@ -1,13 +1,13 @@
 import { memo, useEffect } from "react";
-import { selectors, useCoreEvts, useCoreState, useCoreFunctions } from "core";
+import { useCore, useCoreState } from "core";
 import { useEvt } from "evt/hooks";
 
 export const App = memo(() => {
-    const counter = useCoreState(state => state.usecase2.counter2);
-    const { isReady } = useCoreState(selectors.usecase2.isReady);
-    const { isReadyBig } = useCoreState(selectors.usecase2.isReadyBig);
-    const { usecase1, usecase2 } = useCoreFunctions();
-    const { evtUsecase2 } = useCoreEvts();
+    const counter = useCoreState("usecase2", "counter2");
+    const isReady = useCoreState("usecase2", "isReady");
+    const isReadyBig = useCoreState("usecase2", "isReadyBig");
+    const { usecase1, usecase2 } = useCore().functions;
+    const { evtUsecase2 } = useCore().evts;
 
     useEvt(
         ctx => {

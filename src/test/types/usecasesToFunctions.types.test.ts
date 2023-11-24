@@ -202,11 +202,7 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
     const dispatch = Reflect<<R>(thunkAction: ThunkAction<R, any, any, any>) => R>();
 
-    const { getMemoizedCoreFunctions } = usecasesToFunctions(usecasesArr);
-
-    const core = { dispatch };
-
-    const got = getMemoizedCoreFunctions(core);
+    const { functions: got } = usecasesToFunctions({ usecasesArr, "store": { dispatch } });
 
     const expected = Reflect<{
         firstSlice: {

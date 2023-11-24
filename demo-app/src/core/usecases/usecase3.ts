@@ -1,4 +1,4 @@
-import type { Thunks } from "../setup";
+import type { Thunks } from "../bootstrap";
 
 export const name = "usecase3";
 

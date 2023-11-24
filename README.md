@@ -22,9 +22,7 @@
 -   [Install / Import](#install--import)
 -   [Examples setups](#examples-setups)
     -   [Canonical setup](#canonical-setup)
-    -   [Todos List app](#todos-list-app)
     -   [Enterprise grade app](#enterprise-grade-app)
--   [Opinionated restrictions](#opinionated-restrictions)
 -   [Starting the demo app](#starting-the-demo-app)
 
 # Benefits
@@ -44,7 +42,7 @@
 # Install / Import
 
 ```bash
-$ yarn add redux-clean-architecture evt @reduxjs/toolkit
+$ yarn add redux-clean-architecture evt
 ```
 
 # Examples setups
@@ -55,7 +53,7 @@ A canonical setup can be found here: [👉 `src/test/demo-app`👈 ](https://git
 
 ## Enterprise grade app
 
-You can consult the source code of [onyxia-web](https://github.com/InseeFrLab/onyxia-web) to see how `redux-clean-architecture` is used in a real world complex application.
+You can consult the source code of [onyxia-web](https://github.com/InseeFrLab/onyxia-web) to see how `redux-clean-architecture` is used in a real world application.
 
 <p align="center">
   <a href="https://github.com/InseeFrLab/onyxia-web">

@@ -13,7 +13,7 @@ import type {
 const usecasesArr = Reflect<
     (
         | {
-              name: "myFirstSlice";
+              name: "myFirstUsecase";
               actions: {
                   foo: ActionCreatorWithPayload<{ delta: number }>;
                   bar: ActionCreatorWithoutPayload<any>;
@@ -21,7 +21,7 @@ const usecasesArr = Reflect<
               };
           }
         | {
-              name: "mySecondSlice";
+              name: "mySecondUsecase";
               actions: {
                   foo1: ActionCreatorWithPayload<{ delta1: number }>;
                   bar1: ActionCreatorWithoutPayload<any>;
@@ -37,30 +37,30 @@ const got = createMiddlewareEvtAction(usecasesArr);
 const expected = Reflect<{
     evtAction: NonPostableEvt<
         | {
-              sliceName: "myFirstSlice";
+              usecaseName: "myFirstUsecase";
               actionName: "foo";
               payload: { delta: number };
           }
         | {
-              sliceName: "myFirstSlice";
+              usecaseName: "myFirstUsecase";
               actionName: "bar";
           }
         | {
-              sliceName: "myFirstSlice";
+              usecaseName: "myFirstUsecase";
               actionName: "baz";
               payload: { beta: string };
           }
         | {
-              sliceName: "mySecondSlice";
+              usecaseName: "mySecondUsecase";
               actionName: "foo1";
               payload: { delta1: number };
           }
         | {
-              sliceName: "mySecondSlice";
+              usecaseName: "mySecondUsecase";
               actionName: "bar1";
           }
         | {
-              sliceName: "mySecondSlice";
+              usecaseName: "mySecondUsecase";
               actionName: "baz1";
               payload: { beta1: string };
           }

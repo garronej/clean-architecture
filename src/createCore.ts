@@ -1,80 +1,102 @@
-import type {
-    ConfigureStoreOptions,
-    EnhancedStore,
-    MiddlewareArray,
-    ThunkMiddleware,
-    AnyAction,
-    ReducersMapObject
-} from "@reduxjs/toolkit";
-import { configureStore } from "@reduxjs/toolkit";
-import { usecasesToReducer } from "./usecasesToReducer";
-import { createMiddlewareEvtAction } from "./middlewareEvtAction";
-import type { UsecasesToReducer, UsecaseLike as UsecaseLike_reducer } from "./usecasesToReducer";
-import type { UsecaseToEvent, UsecaseLike as UsecaseLike_evt } from "./middlewareEvtAction";
-import type { NonPostableEvt } from "evt";
+import { Evt } from "evt";
+import type { ReturnType } from "tsafe";
+import { assert } from "tsafe/assert";
 
-export type UsecaseLike = UsecaseLike_reducer & UsecaseLike_evt;
+import { createStore, type GenericStore, type UsecaseLike as UsecaseLike_store } from "./createStore";
+
+import {
+    usecasesToEvts,
+    type CoreEvts,
+    type GenericCreateEvt,
+    type UsecaseLike as UsecaseLike_evts
+} from "./usecasesToEvts";
+import {
+    usecasesToStates,
+    type CoreStates,
+    type UsecaseLike as UsecaseLike_selectors
+} from "./usecasesToStates";
+import {
+    usecasesToFunctions,
+    CoreFunctions,
+    type UsecaseLike as UsecaseLike_functions
+} from "./usecasesToFunctions";
+import type { ThunkAction, Action } from "@reduxjs/toolkit";
+
+type UsecaseLike = UsecaseLike_store & UsecaseLike_evts & UsecaseLike_selectors & UsecaseLike_functions;
 
 export type GenericCore<
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
-    Usecase extends UsecaseLike
+    Usecases extends Record<string, UsecaseLike>,
+    Context extends Record<string, unknown>
 > = {
-    reducer: UsecasesToReducer<Usecase>;
-    middleware: MiddlewareArray<
-        [
-            ThunkMiddleware<
-                UsecasesToReducer<Usecase> extends ReducersMapObject<infer S, any> ? S : never,
-                AnyAction,
-                ThunksExtraArgumentWithoutEvtAction & {
-                    evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
-                }
+    states: CoreStates<Usecases[keyof Usecases]>;
+    subscribe: (listener: () => void) => { unsubscribe: () => void };
+    evts: CoreEvts<Usecases[keyof Usecases]>;
+    functions: CoreFunctions<Usecases[keyof Usecases]>;
+    types: {
+        State: ReturnType<GenericStore<Context, Usecases[keyof Usecases]>["getState"]>;
+        CreateEvt: GenericCreateEvt<GenericStore<Context, Usecases[keyof Usecases]>>;
+        Thunks: Record<
+            string,
+            (params: any) => ThunkAction<
+                any,
+                ReturnType<GenericStore<Context, Usecases[keyof Usecases]>["getState"]>,
+                Context & {
+                    evtAction: GenericStore<Context, Usecases[keyof Usecases]>["evtAction"];
+                },
+                Action<string>
             >
-        ]
-    >;
-} extends ConfigureStoreOptions<infer S, infer A, infer M>
-    ? EnhancedStore<S, A, M> & {
-          thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction & {
-              evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
-          };
-      }
-    : never;
+        >;
+    };
+};
 
-export function createCoreFromUsecases<
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
-    Usecase extends UsecaseLike
+export function createCore<
+    Usecases extends Record<string, UsecaseLike>,
+    Context extends Record<string, unknown>
 >(params: {
-    thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction;
-    //usecases: readonly Usecase[];
-    usecases: Record<string, Usecase>;
-}): GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase> {
-    const { thunksExtraArgument, usecases } = params;
+    context: Context;
+    usecases: Usecases;
+}): {
+    core: GenericCore<Usecases, Context>;
+    dispatch: GenericStore<Context, Usecases[keyof Usecases]>["dispatch"];
+} {
+    const { context, usecases } = params;
 
-    const usecasesArr = Object.values(usecases);
-
-    const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction(usecasesArr);
-
-    //NOTE: We want to let the user change the properties, sometimes all the port
-    //can't be ready at inception.
-    Object.assign(thunksExtraArgument, { evtAction });
-
-    const store = configureStore({
-        "reducer": usecasesToReducer(usecasesArr) as any,
-        "middleware": getDefaultMiddleware =>
-            getDefaultMiddleware({
-                "thunk": { "extraArgument": thunksExtraArgument },
-                "serializableCheck": false
-            }).concat(middlewareEvtAction)
+    Object.entries(usecases).forEach(([key, usecase]) => {
+        assert(
+            key === usecase.name,
+            `You should reconcile the name of the usecase (${usecase}) and the key it's assigned to in the usecases object (${key})`
+        );
     });
 
-    const { getState, dispatch } = store;
+    const usecasesArr = Object.values(usecases) as Usecases[keyof Usecases][];
 
-    const core = {
-        getState,
-        dispatch,
-        thunksExtraArgument,
-        //NOTE: The redux store as a hidden property, just if you really need it
-        store
+    const store = createStore({ context, usecasesArr });
+
+    const { states } = usecasesToStates({ usecasesArr, store });
+    const { evts } = usecasesToEvts({ usecasesArr, store });
+    const { functions } = usecasesToFunctions({ usecasesArr, store });
+
+    const core: GenericCore<Usecases, Context> = {
+        "subscribe": listener => {
+            const ctx = Evt.newCtx();
+
+            store.evtAction.attach(ctx, () => listener());
+
+            return {
+                "unsubscribe": () => ctx.done()
+            };
+        },
+        states,
+        evts,
+        functions,
+        types: null as any
     };
 
-    return core as any;
+    //@ts-expect-error
+    delete core.types;
+
+    return {
+        core,
+        "dispatch": store.dispatch
+    };
 }

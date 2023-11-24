@@ -1,108 +1,73 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import type { ReactNode } from "react";
-import type { UsecaseLike as UsecaseLike_create } from "./createUsecasesApi";
+import { useContext, createContext, useState, useEffect, type ReactNode } from "react";
+import { capitalize } from "tsafe/capitalize";
 import { assert } from "tsafe/assert";
-import { useEvt } from "evt/hooks/useEvt";
-import type { GetMemoizedCoreFunctions } from "./usecasesToFunctions";
-import type { UsecaseLike as UseCaseLike_reducer } from "./usecasesToReducer";
-import type { GenericCore } from "./createCore";
-import type { UsecaseLike as UsecaseLike_evt } from "./middlewareEvtAction";
-import type { GetMemoizedCoreEvts } from "./usecasesToEvts";
-import type { GenericSelectors } from "./usecasesToSelectors";
-import { createUsecasesApi } from "./createUsecasesApi";
 
-type UsecaseLike = UsecaseLike_create & UseCaseLike_reducer & UsecaseLike_evt;
+type StatesToHook<States extends Record<string, Record<string, any>>> = <
+    UsecaseName extends keyof States,
+    SelectorName extends keyof States[UsecaseName] extends `get${infer N}` ? Uncapitalize<N> : never
+>(
+    usecaseName: UsecaseName,
+    selectorName: SelectorName
+) => States[UsecaseName][`get${Capitalize<SelectorName>}`] extends (...args: any[]) => infer ReturnType
+    ? ReturnType
+    : never;
 
-type ReactApi<
-    CoreParams extends Record<string, unknown>,
-    Usecase extends UsecaseLike,
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
-> = {
-    createCoreProvider: (coreParams: CoreParams | (() => CoreParams)) => {
-        CoreProvider: (props: {
-            children: ReactNode;
-            fallback?: NonNullable<ReactNode> | null;
-        }) => JSX.Element | null;
-    };
-    selectors: GenericSelectors<Usecase>;
-    useCoreState: <T>(
-        selector: (
-            state: ReturnType<GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"]>
-        ) => T
-    ) => T;
-    useCoreFunctions: () => ReturnType<GetMemoizedCoreFunctions<Usecase>>;
-    useCoreEvts: () => ReturnType<GetMemoizedCoreEvts<Usecase>>;
-    useCoreExtras: () => GenericCore<
-        ThunksExtraArgumentWithoutEvtAction,
-        Usecase
-    >["thunksExtraArgument"];
+type CoreLike = {
+    states: Record<string, Record<string, any>>;
+    subscribe: (callback: () => void) => { unsubscribe: () => void };
 };
 
-export function createReactApi<
-    CoreParams extends Record<string, unknown>,
-    Usecase extends UsecaseLike,
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
->(params: {
-    createCore: (
-        params: CoreParams
-    ) => Promise<GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
-    usecases: Record<string, Usecase>;
-}): ReactApi<CoreParams, Usecase, ThunksExtraArgumentWithoutEvtAction> {
-    const { createCore, usecases } = params;
+type ReactApi<Core extends CoreLike, ParamsOfBootstrapCore> = {
+    useCore: () => Core;
+    useCoreState: StatesToHook<Core["states"]>;
+    createCoreProvider: (params: ParamsOfBootstrapCore) => {
+        CoreProvider: (props: { fallback?: ReactNode; children: ReactNode }) => JSX.Element;
+    };
+};
 
-    const { selectors, getMemoizedCoreEvts, getMemoizedCoreFunctions } = createUsecasesApi(
-        Object.values(usecases)
-    );
-
-    type Core = GenericCore<ThunksExtraArgumentWithoutEvtAction, Usecase>;
+export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(params: {
+    bootstrapCore: (params: ParamsOfBootstrapCore) => Promise<{ core: Core }>;
+}): ReactApi<Core, ParamsOfBootstrapCore> {
+    const { bootstrapCore } = params;
 
     const coreContext = createContext<Core | undefined>(undefined);
 
     function useCore() {
         const core = useContext(coreContext);
-        assert(core !== undefined, "Not wrapped within CoreProvider");
+
+        assert(core !== undefined, `Must wrap your app within a <CoreProvider />`);
+
         return core;
     }
 
-    function createCoreProvider(coreParamsOrGetCoreParams: CoreParams | (() => CoreParams)) {
-        const getCoreParams =
-            typeof coreParamsOrGetCoreParams === "function"
-                ? coreParamsOrGetCoreParams
-                : () => coreParamsOrGetCoreParams;
+    function createCoreProvider(params: ParamsOfBootstrapCore) {
+        const prCore = bootstrapCore(params).then(({ core }) => core);
 
-        type Props = {
-            children: ReactNode;
-            fallback?: NonNullable<ReactNode> | null;
-        };
-
-        let prCore: Promise<Core> | undefined = undefined;
-
-        function CoreProvider(props: Props) {
-            const { children, fallback } = props;
+        function CoreProvider(props: { fallback?: React.ReactNode; children: React.ReactNode }) {
+            const { fallback, children } = props;
 
             const [core, setCore] = useState<Core | undefined>(undefined);
 
             useEffect(() => {
-                if (prCore === undefined) {
-                    prCore = createCore(getCoreParams());
-                }
+                let isActive = true;
 
-                let isCleanedUp = false;
+                (async () => {
+                    const core = await prCore;
 
-                prCore.then(core => {
-                    if (isCleanedUp) {
+                    if (!isActive) {
                         return;
                     }
+
                     setCore(core);
-                });
+                })();
 
                 return () => {
-                    isCleanedUp = true;
+                    isActive = false;
                 };
             }, []);
 
             if (core === undefined) {
-                return (fallback ?? null) as null;
+                return <>{fallback ?? null}</>;
             }
 
             return <coreContext.Provider value={core}>{children}</coreContext.Provider>;
@@ -111,45 +76,27 @@ export function createReactApi<
         return { CoreProvider };
     }
 
-    type State = ReturnType<Core["getState"]>;
-
-    function useCoreState<T>(selector: (state: State) => T): T {
+    function useCoreState(usecaseName: string, selectorName: string) {
         const core = useCore();
 
-        const [state, setState] = useState(core.getState);
+        const getSelectedState = () => core.states[usecaseName][`get${capitalize(selectorName)}`]();
 
-        useEvt(
-            ctx => core.thunksExtraArgument.evtAction.attach(ctx, () => setState(core.getState())),
-            [core]
-        );
+        const [selectedState, setSelectedState] = useState<any>(() => getSelectedState());
 
-        return selector(state as any);
-    }
+        useEffect(() => {
+            const { unsubscribe } = core.subscribe(() => setSelectedState(getSelectedState()));
 
-    function useCoreFunctions() {
-        const core = useCore();
+            return () => {
+                unsubscribe();
+            };
+        }, [core]);
 
-        return getMemoizedCoreFunctions(core as any);
-    }
-
-    function useCoreEvts() {
-        const core = useCore();
-
-        return getMemoizedCoreEvts(core);
-    }
-
-    function useCoreExtras() {
-        const core = useCore();
-
-        return core.thunksExtraArgument;
+        return selectedState;
     }
 
     return {
         createCoreProvider,
-        selectors,
-        useCoreState,
-        useCoreFunctions,
-        useCoreEvts,
-        useCoreExtras
+        useCore,
+        "useCoreState": useCoreState as any
     };
 }

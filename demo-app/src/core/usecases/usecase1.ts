@@ -1,20 +1,18 @@
-import type { Thunks } from "../setup";
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { State } from "../setup";
+import type { Thunks } from "../bootstrap";
+import type { State as RootState } from "../bootstrap";
 import { id } from "tsafe/id";
-import { createSelector } from "@reduxjs/toolkit";
+import { createUsecaseActions, createSelector } from "redux-clean-architecture";
 
-export type Usecase1State = {
+export type State = {
     counter: number;
     isDoingSomething: boolean;
 };
 
 export const name = "usecase1";
 
-export const { reducer, actions } = createSlice({
+export const { reducer, actions } = createUsecaseActions({
     name,
-    "initialState": id<Usecase1State>({
+    "initialState": id<State>({
         "counter": 0,
         "isDoingSomething": false
     }),
@@ -22,7 +20,7 @@ export const { reducer, actions } = createSlice({
         "thunk1Started": state => {
             state.isDoingSomething = true;
         },
-        "thunk1Completed": (state, { payload }: PayloadAction<{ delta: number }>) => {
+        "thunk1Completed": (state, { payload }: { payload: { delta: number } }) => {
             const { delta } = payload;
             state.counter += delta;
             state.isDoingSomething = false;
@@ -35,8 +33,7 @@ export const thunks = {
         (params: { pX: string }) =>
         async (...args) => {
             const { pX } = params;
-            const [dispatch, getState, thunkExtraArgument] = args;
-            const { port2 } = thunkExtraArgument;
+            const [dispatch, getState, { port2 }] = args;
 
             if (getState().usecase1.isDoingSomething) {
                 return;
@@ -57,7 +54,7 @@ export const thunks = {
             if (getState().usecase2.isDoingSomething2) {
                 await evtAction.waitFor(
                     e =>
-                        e.sliceName === "usecase2" &&
+                        e.usecaseName === "usecase2" &&
                         e.actionName === "thunkXCompleted" &&
                         e.payload.delta !== 666
                 );
@@ -72,12 +69,12 @@ export const thunks = {
 } satisfies Thunks;
 
 export const selectors = (() => {
-    const isBig = (state: State) => {
+    const isBig = (state: RootState) => {
         const { counter } = state.usecase1;
         return counter > 1000;
     };
 
-    const isReady = (state: State) => {
+    const isReady = (state: RootState) => {
         const { counter, isDoingSomething } = state.usecase1;
         return !isDoingSomething && !isNaN(counter);
     };
