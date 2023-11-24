@@ -2,8 +2,7 @@ import type { Port2Config } from "./adapters/createProt2";
 import type { Port1Config } from "./adapters/createPort1";
 import type { Port1 } from "./ports/Port1";
 import type { Port2 } from "./ports/Port2";
-import { createCore } from "redux-clean-architecture";
-import type { MyCore } from "redux-clean-architecture/createCore";
+import { createCore, type GenericCore } from "redux-clean-architecture";
 import { usecases } from "./usecases";
 
 type ParamsOfBootstrapCore = {
@@ -17,7 +16,7 @@ type Context = {
     port2: Port2;
 };
 
-type Core = MyCore<typeof usecases, Context>;
+type Core = GenericCore<typeof usecases, Context>;
 
 export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
     core: Core;

@@ -1,4 +1,5 @@
 export { createCore } from "./createCore";
+export type { GenericCore } from "./createCore";
 export {
     createObjectThatThrowsIfAccessed,
     isObjectThatThrowIfAccessed,

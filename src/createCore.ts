@@ -25,23 +25,35 @@ import type { ThunkAction, Action } from "@reduxjs/toolkit";
 type UsecaseLike = UsecaseLike_store & UsecaseLike_evts & UsecaseLike_selectors & UsecaseLike_functions;
 
 export type GenericCore<
-    Usecase extends UsecaseLike,
+    Usecases extends Record<string, UsecaseLike>,
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
 > = {
-    states: CoreStates<Usecase>;
+    states: CoreStates<Usecases[keyof Usecases]>;
     subscribe: (listener: () => void) => { unsubscribe: () => void };
-    coreEvts: CoreEvts<Usecase>;
-    functions: CoreFunctions<Usecase>;
+    coreEvts: CoreEvts<Usecases[keyof Usecases]>;
+    functions: CoreFunctions<Usecases[keyof Usecases]>;
     types: {
-        State: ReturnType<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"]>;
-        CreateEvt: GenericCreateEvt<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
+        State: ReturnType<
+            GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecases[keyof Usecases]>["getState"]
+        >;
+        CreateEvt: GenericCreateEvt<
+            GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecases[keyof Usecases]>
+        >;
         Thunks: Record<
             string,
             (params: any) => ThunkAction<
                 any,
-                ReturnType<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"]>,
+                ReturnType<
+                    GenericStore<
+                        ThunksExtraArgumentWithoutEvtAction,
+                        Usecases[keyof Usecases]
+                    >["getState"]
+                >,
                 ThunksExtraArgumentWithoutEvtAction & {
-                    evtAction: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["evtAction"];
+                    evtAction: GenericStore<
+                        ThunksExtraArgumentWithoutEvtAction,
+                        Usecases[keyof Usecases]
+                    >["evtAction"];
                 },
                 Action<string>
             >
@@ -49,20 +61,15 @@ export type GenericCore<
     };
 };
 
-export type MyCore<
-    Usecases extends Record<string, UsecaseLike>,
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
-> = GenericCore<Usecases[keyof Usecases], ThunksExtraArgumentWithoutEvtAction>;
-
 export function createCore<
-    Usecase extends UsecaseLike,
+    Usecases extends Record<string, UsecaseLike>,
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
 >(params: {
     thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction;
-    usecases: Record<string, Usecase>;
+    usecases: Usecases;
 }): {
-    core: GenericCore<Usecase, ThunksExtraArgumentWithoutEvtAction>;
-    dispatch: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["dispatch"];
+    core: GenericCore<Usecases, ThunksExtraArgumentWithoutEvtAction>;
+    dispatch: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecases[keyof Usecases]>["dispatch"];
 } {
     const { thunksExtraArgument, usecases } = params;
 
@@ -73,7 +80,7 @@ export function createCore<
         );
     });
 
-    const usecasesArr = Object.values(usecases);
+    const usecasesArr = Object.values(usecases) as Usecases[keyof Usecases][];
 
     const store = createStore({ thunksExtraArgument, usecasesArr });
 
@@ -81,7 +88,7 @@ export function createCore<
     const { coreEvts } = usecasesToEvts({ usecasesArr, store });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
-    const core: GenericCore<Usecase, ThunksExtraArgumentWithoutEvtAction> = {
+    const core: GenericCore<Usecases, ThunksExtraArgumentWithoutEvtAction> = {
         "subscribe": listener => {
             const ctx = Evt.newCtx();
 
