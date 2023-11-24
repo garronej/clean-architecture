@@ -3,7 +3,7 @@ import type { Port2Config } from "./adapters/createProt2";
 import { createPort1 } from "./adapters/createPort1";
 import type { Port1Config } from "./adapters/createPort1";
 import { createCore } from "redux-clean-architecture";
-import { type GenericCore } from "redux-clean-architecture/createCore";
+import type { MyCore } from "redux-clean-architecture/createCore";
 import { usecases } from "./usecases";
 import type { ReturnType } from "tsafe";
 
@@ -18,7 +18,7 @@ type Context = {
     port2: ReturnType<typeof createPort2>;
 };
 
-type Core = GenericCore<(typeof usecases)[keyof typeof usecases], Context>;
+type Core = MyCore<typeof usecases, Context>;
 
 export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
     core: Core;
@@ -52,6 +52,6 @@ export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
     return { core, "context": { port1 } };
 }
 
-export type State = createCore.Infer<"State", typeof bootstrapCore>;
-export type Thunks = createCore.Infer<"Thunks", typeof bootstrapCore>;
-export type CreateEvt = createCore.Infer<"CreateEvt", typeof bootstrapCore>;
+export type State = Core["~internal"]["ofTypeState"];
+export type Thunks = Core["~internal"]["ofTypeThunks"];
+export type CreateEvt = Core["~internal"]["ofTypeCreateEvt"];

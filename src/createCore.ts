@@ -49,6 +49,11 @@ export type GenericCore<
     };
 };
 
+export type MyCore<
+    Usecases extends Record<string, UsecaseLike>,
+    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
+> = GenericCore<Usecases[keyof Usecases], ThunksExtraArgumentWithoutEvtAction>;
+
 export function createCore<
     Usecase extends UsecaseLike,
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
