@@ -90,18 +90,17 @@ export function createCore<
     };
 }
 
-export type Scaffolding<
-    Setup extends (params: any) => Promise<{
-        core: {
-            ["~internal"]: {
-                ofTypeState: any;
-                ofTypeCreateEvt: any;
-                ofTypeThunks: any;
+export namespace createCore {
+    export type Infer<
+        Type extends "State" | "Thunks" | "CreateEvt",
+        BootstrapCore extends (params: any) => Promise<{
+            core: {
+                ["~internal"]: {
+                    ofTypeState: any;
+                    ofTypeCreateEvt: any;
+                    ofTypeThunks: any;
+                };
             };
-        };
-    }>
-> = {
-    State: ReturnType<Setup>["core"]["~internal"]["ofTypeState"];
-    Thunks: ReturnType<Setup>["core"]["~internal"]["ofTypeThunks"];
-    CreateEvt: ReturnType<Setup>["core"]["~internal"]["ofTypeCreateEvt"];
-};
+        }>
+    > = ReturnType<BootstrapCore>["core"]["~internal"][`ofType${Type}`];
+}
