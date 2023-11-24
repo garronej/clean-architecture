@@ -1,9 +1,9 @@
 import { memo, useEffect } from "react";
-import { selectors, useCoreEvts, useCoreState, useCoreFunctions } from "core";
+import { useCore, useCoreState } from "core";
 import { useEvt } from "evt/hooks";
 
 export const App = memo(() => {
-    const counter = useCoreState(state => state.usecase2.counter2);
+    const counter = useCoreState("usecase2", "counter2");
     const { isReady } = useCoreState(selectors.usecase2.isReady);
     const { isReadyBig } = useCoreState(selectors.usecase2.isReadyBig);
     const { usecase1, usecase2 } = useCoreFunctions();

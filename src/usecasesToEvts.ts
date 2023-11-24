@@ -38,13 +38,13 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
     usecasesArr: readonly Usecase[];
     store: StoreLike;
 }): {
-    coreEvts: CoreEvts<Usecase>;
+    evts: CoreEvts<Usecase>;
 } {
     const { store, usecasesArr } = params;
 
     const { getState, evtAction } = store;
 
-    const coreEvts = Object.fromEntries(
+    const evts = Object.fromEntries(
         usecasesArr
             .map(({ name, createEvt }) => (createEvt === undefined ? undefined : { name, createEvt }))
             .filter(exclude(undefined))
@@ -57,5 +57,5 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
             ])
     ) as any;
 
-    return { coreEvts };
+    return { evts };
 }

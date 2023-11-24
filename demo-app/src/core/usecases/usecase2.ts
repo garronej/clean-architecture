@@ -77,19 +77,23 @@ type Context = {
 const { getContext, setContext } = createUsecaseContextApi<Context>();
 
 export const selectors = (() => {
-    const isBig = (state: RootState) => {
-        const { counter } = state.usecase1;
-        return counter > 1000;
-    };
+    const state = (state: RootState) => state[name];
 
-    const isReady = (state: RootState) => {
-        const { counter, isDoingSomething } = state.usecase1;
-        return !isDoingSomething && !isNaN(counter);
-    };
+    const counter2 = createSelector(state, state => state.counter2);
+
+    const isBig = createSelector(state, state => {
+        return state.counter2 > 1000;
+    });
+
+    const isReady = createSelector(state, state => {
+        const { isDoingSomething2, counter2 } = state;
+        return !isDoingSomething2 && !isNaN(counter2);
+    });
 
     const isReadyBig = createSelector(isBig, isReady, (isBig, isReady) => isReady && isBig);
 
     return {
+        counter2,
         isReady,
         isReadyBig
     };

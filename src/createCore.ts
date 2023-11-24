@@ -30,7 +30,7 @@ export type GenericCore<
 > = {
     states: CoreStates<Usecases[keyof Usecases]>;
     subscribe: (listener: () => void) => { unsubscribe: () => void };
-    coreEvts: CoreEvts<Usecases[keyof Usecases]>;
+    evts: CoreEvts<Usecases[keyof Usecases]>;
     functions: CoreFunctions<Usecases[keyof Usecases]>;
     types: {
         State: ReturnType<GenericStore<Context, Usecases[keyof Usecases]>["getState"]>;
@@ -73,7 +73,7 @@ export function createCore<
     const store = createStore({ context, usecasesArr });
 
     const { states } = usecasesToStates({ usecasesArr, store });
-    const { coreEvts } = usecasesToEvts({ usecasesArr, store });
+    const { evts } = usecasesToEvts({ usecasesArr, store });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
     const core: GenericCore<Usecases, Context> = {
@@ -87,7 +87,7 @@ export function createCore<
             };
         },
         states,
-        coreEvts,
+        evts,
         functions,
         types: null as any
     };

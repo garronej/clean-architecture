@@ -4,16 +4,5 @@ In the rest of the core directory everything is agnostic to React
 */
 import { createReactApi } from "redux-clean-architecture/react";
 import { bootstrapCore } from "./bootstrap";
-import { usecases } from "./usecases";
 
-export const {
-    createCoreProvider,
-    selectors,
-    useCoreEvts,
-    useCoreExtras,
-    useCoreFunctions,
-    useCoreState
-} = createReactApi({
-    createCore,
-    usecases
-});
+export const { createCoreProvider, useCore, useCoreState } = createReactApi({ bootstrapCore });

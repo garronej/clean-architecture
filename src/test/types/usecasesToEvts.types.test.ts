@@ -31,7 +31,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         ]
     >();
 
-    const { coreEvts: got } = usecasesToEvts({
+    const { evts: got } = usecasesToEvts({
         usecasesArr,
         "store": {
             "getState": Reflect<() => Record<string, unknown>>(),
@@ -57,7 +57,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         ]
     >();
 
-    const { coreEvts: got } = usecasesToEvts({
+    const { evts: got } = usecasesToEvts({
         usecasesArr,
         "store": {
             "getState": Reflect<() => Record<string, unknown>>(),
