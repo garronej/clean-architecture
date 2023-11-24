@@ -57,7 +57,7 @@ export function createCore<
     usecases: Record<string, Usecase>;
 }): {
     core: GenericCore<Usecase, ThunksExtraArgumentWithoutEvtAction>;
-    //dispatch: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["dispatch"];
+    dispatch: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["dispatch"];
 } {
     const { thunksExtraArgument, usecases } = params;
 
@@ -93,8 +93,8 @@ export function createCore<
     };
 
     return {
-        core
-        //"dispatch": store.dispatch
+        core,
+        "dispatch": store.dispatch
     };
 }
 

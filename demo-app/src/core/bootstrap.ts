@@ -12,15 +12,16 @@ type ParamsOfBootstrapCore = {
     port2Config: Port2Config;
 };
 
+type Context = {
+    paramsOfBootstrapCore: ParamsOfBootstrapCore;
+    port1: ReturnType<typeof createPort1>;
+    port2: ReturnType<typeof createPort2>;
+};
+
+type Core = GenericCore<(typeof usecases)[keyof typeof usecases], Context>;
+
 export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
-    core: GenericCore<
-        (typeof usecases)["usecase1"] | (typeof usecases)["usecase2"] | (typeof usecases)["usecase3"],
-        {
-            paramsOfBootstrapCore: ParamsOfBootstrapCore;
-            port1: ReturnType<typeof createPort1>;
-            port2: ReturnType<typeof createPort2>;
-        }
-    >;
+    core: Core;
     context: {
         port1: ReturnType<typeof createPort1>;
     };
@@ -30,7 +31,7 @@ export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
         createPort2(params.port2Config)
     ]);
 
-    const x = createCore({
+    const { core, dispatch } = createCore({
         /*
         "context": {
             "paramsOfBootstrapCore": params,
@@ -46,9 +47,7 @@ export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
         usecases
     });
 
-    await x.dispatch(usecases.usecase2.privateThunks.initialize());
-
-    const core = x.core;
+    await dispatch(usecases.usecase2.privateThunks.initialize());
 
     return { core, "context": { port1 } };
 }
