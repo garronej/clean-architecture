@@ -26,25 +26,22 @@ type UsecaseLike = UsecaseLike_store & UsecaseLike_evts & UsecaseLike_selectors 
 
 export type GenericCore<
     Usecases extends Record<string, UsecaseLike>,
-    ContextWithoutEvtAction extends Record<string, unknown>
+    Context extends Record<string, unknown>
 > = {
     states: CoreStates<Usecases[keyof Usecases]>;
     subscribe: (listener: () => void) => { unsubscribe: () => void };
     coreEvts: CoreEvts<Usecases[keyof Usecases]>;
     functions: CoreFunctions<Usecases[keyof Usecases]>;
     types: {
-        State: ReturnType<GenericStore<ContextWithoutEvtAction, Usecases[keyof Usecases]>["getState"]>;
-        CreateEvt: GenericCreateEvt<GenericStore<ContextWithoutEvtAction, Usecases[keyof Usecases]>>;
+        State: ReturnType<GenericStore<Context, Usecases[keyof Usecases]>["getState"]>;
+        CreateEvt: GenericCreateEvt<GenericStore<Context, Usecases[keyof Usecases]>>;
         Thunks: Record<
             string,
             (params: any) => ThunkAction<
                 any,
-                ReturnType<GenericStore<ContextWithoutEvtAction, Usecases[keyof Usecases]>["getState"]>,
-                ContextWithoutEvtAction & {
-                    evtAction: GenericStore<
-                        ContextWithoutEvtAction,
-                        Usecases[keyof Usecases]
-                    >["evtAction"];
+                ReturnType<GenericStore<Context, Usecases[keyof Usecases]>["getState"]>,
+                Context & {
+                    evtAction: GenericStore<Context, Usecases[keyof Usecases]>["evtAction"];
                 },
                 Action<string>
             >
@@ -54,13 +51,13 @@ export type GenericCore<
 
 export function createCore<
     Usecases extends Record<string, UsecaseLike>,
-    ContextWithoutEvtAction extends Record<string, unknown>
+    Context extends Record<string, unknown>
 >(params: {
-    context: ContextWithoutEvtAction;
+    context: Context;
     usecases: Usecases;
 }): {
-    core: GenericCore<Usecases, ContextWithoutEvtAction>;
-    dispatch: GenericStore<ContextWithoutEvtAction, Usecases[keyof Usecases]>["dispatch"];
+    core: GenericCore<Usecases, Context>;
+    dispatch: GenericStore<Context, Usecases[keyof Usecases]>["dispatch"];
 } {
     const { context, usecases } = params;
 
@@ -79,7 +76,7 @@ export function createCore<
     const { coreEvts } = usecasesToEvts({ usecasesArr, store });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
-    const core: GenericCore<Usecases, ContextWithoutEvtAction> = {
+    const core: GenericCore<Usecases, Context> = {
         "subscribe": listener => {
             const ctx = Evt.newCtx();
 

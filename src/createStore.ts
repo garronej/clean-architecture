@@ -21,17 +21,14 @@ import type { NonPostableEvt } from "evt";
 
 export type UsecaseLike = UsecaseLike_reducer & UsecaseLike_evtMiddleware;
 
-export type GenericStore<
-    ContextWithoutEvtAction extends Record<string, unknown>,
-    Usecase extends UsecaseLike
-> = {
+export type GenericStore<Context extends Record<string, unknown>, Usecase extends UsecaseLike> = {
     reducer: UsecasesToReducer<Usecase>;
     middleware: MiddlewareArray<
         [
             ThunkMiddleware<
                 UsecasesToReducer<Usecase> extends ReducersMapObject<infer S, any> ? S : never,
                 AnyAction,
-                ContextWithoutEvtAction & {
+                Context & {
                     evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
                 }
             >
@@ -44,12 +41,9 @@ export type GenericStore<
     : never;
 
 export function createStore<
-    ContextWithoutEvtAction extends Record<string, unknown>,
+    Context extends Record<string, unknown>,
     Usecase extends UsecaseLike
->(params: {
-    context: ContextWithoutEvtAction;
-    usecasesArr: readonly Usecase[];
-}): GenericStore<ContextWithoutEvtAction, Usecase> {
+>(params: { context: Context; usecasesArr: readonly Usecase[] }): GenericStore<Context, Usecase> {
     const { context, usecasesArr } = params;
 
     const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction(usecasesArr);

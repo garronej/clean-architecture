@@ -1,5 +1,5 @@
 import { createUsecaseContextApi } from "../../usecaseContext";
-import type { ThunksExtraArgumentLike } from "../../usecaseContext";
+import type { RootContextLike } from "../../usecaseContext";
 import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 import { Reflect } from "tsafe/Reflect";
@@ -12,14 +12,14 @@ import { Reflect } from "tsafe/Reflect";
     const { getContext, setContext } = createUsecaseContextApi<Context>();
 
     {
-        type GetContextExpected = (extraArg: ThunksExtraArgumentLike) => Context;
+        type GetContextExpected = (rootContext: RootContextLike) => Context;
 
         assert<Equals<GetContextExpected, typeof getContext>>();
     }
 
     {
         type SetContextExpected = (
-            extraArg: ThunksExtraArgumentLike,
+            rootContext: RootContextLike,
             context: Context | (() => Context)
         ) => void;
 
@@ -37,7 +37,7 @@ import { Reflect } from "tsafe/Reflect";
     assert<Equals<typeof rest, {}>>();
 
     {
-        type GetContextExpected = (extraArg: ThunksExtraArgumentLike) => Context;
+        type GetContextExpected = (rootContext: RootContextLike) => Context;
 
         assert<Equals<GetContextExpected, typeof getContext>>();
     }

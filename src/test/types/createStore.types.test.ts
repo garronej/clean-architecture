@@ -15,8 +15,8 @@ import { assert } from "tsafe/assert";
 import type { Equals } from "tsafe";
 
 {
-    type ThunksExtraArgumentWithoutEvtAction = {
-        _brandThunksExtraArgument: unknown;
+    type Context = {
+        _brandContext: unknown;
     };
 
     const usecases = {
@@ -46,7 +46,7 @@ import type { Equals } from "tsafe";
     const usecasesArr = Object.values(usecases);
 
     const store = createStore({
-        "thunksExtraArgument": Reflect<ThunksExtraArgumentWithoutEvtAction>(),
+        "context": Reflect<Context>(),
         usecasesArr
     });
 
@@ -59,7 +59,7 @@ import type { Equals } from "tsafe";
         mySecondUsecase: { bar: string };
     };
 
-    type ExpectedThunksExtraArgument = ThunksExtraArgumentWithoutEvtAction & {
+    type ExpectedThunksExtraArgument = Context & {
         evtAction: NonPostableEvt<UsecaseToEvent<(typeof usecasesArr)[number]>>;
     };
 
