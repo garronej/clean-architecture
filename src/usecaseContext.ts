@@ -1,11 +1,11 @@
 import { assert } from "tsafe/assert";
 
-export type ThunksExtraArgumentLike = { evtAction: unknown };
+export type RootContextLike = { evtAction: unknown };
 
 type ContextApi<Context extends Record<string, unknown>> = {
-    getContext: (extraArg: ThunksExtraArgumentLike) => Context;
-    setContext: (extraArg: ThunksExtraArgumentLike, context: Context | (() => Context)) => void;
-    getIsContextSet: (extraArg: ThunksExtraArgumentLike) => boolean;
+    getContext: (rootContext: RootContextLike) => Context;
+    setContext: (rootContext: RootContextLike, context: Context | (() => Context)) => void;
+    getIsContextSet: (rootContext: RootContextLike) => boolean;
 };
 
 export function createUsecaseContextApi<Context extends Record<string, unknown>>(): ContextApi<Context>;
@@ -15,11 +15,11 @@ export function createUsecaseContextApi<Context extends Record<string, unknown>>
 export function createUsecaseContextApi<context extends Record<string, unknown>>(
     getInitialContext?: () => context
 ): ContextApi<context> {
-    const weakMap = new WeakMap<ThunksExtraArgumentLike, () => context>();
+    const weakMap = new WeakMap<RootContextLike, () => context>();
 
     return {
-        "getContext": extraArg => {
-            let getMemoizedContext = weakMap.get(extraArg);
+        "getContext": rootContext => {
+            let getMemoizedContext = weakMap.get(rootContext);
 
             if (getMemoizedContext !== undefined) {
                 return getMemoizedContext();
@@ -29,13 +29,13 @@ export function createUsecaseContextApi<context extends Record<string, unknown>>
 
             getMemoizedContext = memoize(getInitialContext);
 
-            weakMap.set(extraArg, getMemoizedContext);
+            weakMap.set(rootContext, getMemoizedContext);
 
             return getMemoizedContext();
         },
-        "setContext": (extraArg, context) =>
-            weakMap.set(extraArg, memoize(typeof context === "function" ? context : () => context)),
-        "getIsContextSet": extraArg => weakMap.has(extraArg)
+        "setContext": (rootContext, context) =>
+            weakMap.set(rootContext, memoize(typeof context === "function" ? context : () => context)),
+        "getIsContextSet": rootContext => weakMap.has(rootContext)
     };
 }
 
