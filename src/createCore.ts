@@ -32,10 +32,10 @@ export type GenericCore<
     subscribe: (listener: () => void) => { unsubscribe: () => void };
     coreEvts: CoreEvts<Usecase>;
     functions: CoreFunctions<Usecase>;
-    ["~internal"]: {
-        ofTypeState: ReturnType<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"]>;
-        ofTypeCreateEvt: GenericCreateEvt<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
-        ofTypeThunks: Record<
+    types: {
+        State: ReturnType<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["getState"]>;
+        CreateEvt: GenericCreateEvt<GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>>;
+        Thunks: Record<
             string,
             (params: any) => ThunkAction<
                 any,
@@ -94,26 +94,14 @@ export function createCore<
         states,
         coreEvts,
         functions,
-        "~internal": null as any
+        types: null as any
     };
+
+    //@ts-expect-error
+    delete core.types;
 
     return {
         core,
         "dispatch": store.dispatch
     };
-}
-
-export namespace createCore {
-    export type Infer<
-        Type extends "State" | "Thunks" | "CreateEvt",
-        BootstrapCore extends (params: any) => Promise<{
-            core: {
-                ["~internal"]: {
-                    ofTypeState: any;
-                    ofTypeCreateEvt: any;
-                    ofTypeThunks: any;
-                };
-            };
-        }>
-    > = ReturnType<BootstrapCore>["core"]["~internal"][`ofType${Type}`];
 }

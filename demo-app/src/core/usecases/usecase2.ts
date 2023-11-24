@@ -62,9 +62,9 @@ export const privateThunks = {
     "initialize":
         () =>
         async (...args) => {
-            const [dispatch, , extraArg] = args;
+            const [dispatch, , rootContext] = args;
 
-            setContext(extraArg, () => ({ "n": 42 }));
+            setContext(rootContext, () => ({ "n": 42 }));
 
             dispatch(actions.thunkXCompleted({ "delta": 1 }));
         }
