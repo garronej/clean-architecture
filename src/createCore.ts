@@ -55,7 +55,10 @@ export function createCore<
 >(params: {
     thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction;
     usecases: Record<string, Usecase>;
-}): GenericCore<Usecase, ThunksExtraArgumentWithoutEvtAction> {
+}): {
+    core: GenericCore<Usecase, ThunksExtraArgumentWithoutEvtAction>;
+    //dispatch: GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase>["dispatch"];
+} {
     const { thunksExtraArgument, usecases } = params;
 
     Object.entries(usecases).forEach(([key, usecase]) => {
@@ -73,7 +76,7 @@ export function createCore<
     const { coreEvts } = usecasesToEvts({ usecasesArr, store });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
-    return {
+    const core: GenericCore<Usecase, ThunksExtraArgumentWithoutEvtAction> = {
         "subscribe": listener => {
             const ctx = Evt.newCtx();
 
@@ -87,6 +90,11 @@ export function createCore<
         coreEvts,
         functions,
         "~internal": null as any
+    };
+
+    return {
+        core
+        //"dispatch": store.dispatch
     };
 }
 

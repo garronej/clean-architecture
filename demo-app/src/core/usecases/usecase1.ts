@@ -1,5 +1,5 @@
-import type { Thunks } from "../setup";
-import type { State as RootState } from "../setup";
+import type { Thunks } from "../bootstrap";
+import type { State as RootState } from "../bootstrap";
 import { id } from "tsafe/id";
 import { createUsecaseActions, createSelector } from "redux-clean-architecture";
 
