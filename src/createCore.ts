@@ -11,10 +11,10 @@ import {
     type UsecaseLike as UsecaseLike_evts
 } from "./usecasesToEvts";
 import {
-    usecasesToGetSelectedState,
-    type GenericGetSelectedState,
+    usecasesToStates,
+    type CoreStates,
     type UsecaseLike as UsecaseLike_selectors
-} from "./usecasesToGetSelectedState";
+} from "./usecasesToStates";
 import {
     usecasesToFunctions,
     CoreFunctions,
@@ -28,7 +28,7 @@ export type GenericCore<
     Usecase extends UsecaseLike,
     ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>
 > = {
-    getSelectedState: GenericGetSelectedState<Usecase>;
+    states: CoreStates<Usecase>;
     subscribe: (listener: () => void) => { unsubscribe: () => void };
     coreEvts: CoreEvts<Usecase>;
     functions: CoreFunctions<Usecase>;
@@ -69,7 +69,7 @@ export function createCore<
 
     const store = createStore({ thunksExtraArgument, usecasesArr });
 
-    const { getSelectedState } = usecasesToGetSelectedState({ usecasesArr, store });
+    const { states } = usecasesToStates({ usecasesArr, store });
     const { coreEvts } = usecasesToEvts({ usecasesArr, store });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
@@ -83,7 +83,7 @@ export function createCore<
                 "unsubscribe": () => ctx.done()
             };
         },
-        getSelectedState,
+        states,
         coreEvts,
         functions,
         "~internal": null as any

@@ -1,7 +1,7 @@
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import { Equals } from "tsafe";
-import { usecasesToGetSelectedState } from "../../usecasesToGetSelectedState";
+import { usecasesToStates } from "../../usecasesToStates";
 
 {
     const usecasesArr = [
@@ -19,7 +19,7 @@ import { usecasesToGetSelectedState } from "../../usecasesToGetSelectedState";
         { "name": "myThirdSlice" }
     ] as const;
 
-    const { getSelectedState } = usecasesToGetSelectedState({
+    const { states } = usecasesToStates({
         usecasesArr,
         "store": {
             "getState": Reflect<() => any>()
@@ -27,39 +27,24 @@ import { usecasesToGetSelectedState } from "../../usecasesToGetSelectedState";
     });
 
     {
-        const got = getSelectedState({
-            "usecase": "myFirstUsecase",
-            "selector": "foo"
-        });
+        const got = states.myFirstUsecase.getFoo();
 
-        type Expected = {
-            foo: string;
-        };
+        type Expected = string;
 
         assert<Equals<typeof got, Expected>>();
     }
     {
-        const got = getSelectedState({
-            "usecase": "myFirstUsecase",
-            "selector": "bar"
-        });
+        const got = states.myFirstUsecase.getBar();
 
-        type Expected = {
-            bar: number;
-        };
+        type Expected = number;
 
         assert<Equals<typeof got, Expected>>();
     }
 
     {
-        const got = getSelectedState({
-            "usecase": "mySecondUsecase",
-            "selector": "baz"
-        });
+        const got = states.mySecondUsecase.getBaz();
 
-        type Expected = {
-            baz: boolean;
-        };
+        type Expected = boolean;
 
         assert<Equals<typeof got, Expected>>();
     }
