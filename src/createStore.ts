@@ -22,7 +22,7 @@ import type { NonPostableEvt } from "evt";
 export type UsecaseLike = UsecaseLike_reducer & UsecaseLike_evtMiddleware;
 
 export type GenericStore<
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
+    ContextWithoutEvtAction extends Record<string, unknown>,
     Usecase extends UsecaseLike
 > = {
     reducer: UsecasesToReducer<Usecase>;
@@ -31,7 +31,7 @@ export type GenericStore<
             ThunkMiddleware<
                 UsecasesToReducer<Usecase> extends ReducersMapObject<infer S, any> ? S : never,
                 AnyAction,
-                ThunksExtraArgumentWithoutEvtAction & {
+                ContextWithoutEvtAction & {
                     evtAction: NonPostableEvt<UsecaseToEvent<Usecase>>;
                 }
             >
@@ -44,25 +44,25 @@ export type GenericStore<
     : never;
 
 export function createStore<
-    ThunksExtraArgumentWithoutEvtAction extends Record<string, unknown>,
+    ContextWithoutEvtAction extends Record<string, unknown>,
     Usecase extends UsecaseLike
 >(params: {
-    thunksExtraArgument: ThunksExtraArgumentWithoutEvtAction;
+    context: ContextWithoutEvtAction;
     usecasesArr: readonly Usecase[];
-}): GenericStore<ThunksExtraArgumentWithoutEvtAction, Usecase> {
-    const { thunksExtraArgument, usecasesArr } = params;
+}): GenericStore<ContextWithoutEvtAction, Usecase> {
+    const { context, usecasesArr } = params;
 
     const { evtAction, middlewareEvtAction } = createMiddlewareEvtAction(usecasesArr);
 
     //NOTE: We want to let the user change the properties, sometimes all the port
     //can't be ready at inception.
-    Object.assign(thunksExtraArgument, { evtAction });
+    Object.assign(context, { evtAction });
 
     const store = configureStore({
         "reducer": usecasesToReducer(usecasesArr) as any,
         "middleware": getDefaultMiddleware =>
             getDefaultMiddleware({
-                "thunk": { "extraArgument": thunksExtraArgument },
+                "thunk": { "extraArgument": context },
                 "serializableCheck": false
             }).concat(middlewareEvtAction)
     });

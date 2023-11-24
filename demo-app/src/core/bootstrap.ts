@@ -34,7 +34,7 @@ export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
     };
 
     const { core, dispatch } = createCore({
-        "thunksExtraArgument": context,
+        context,
         usecases
     });
 

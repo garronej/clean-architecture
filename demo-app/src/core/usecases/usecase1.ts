@@ -33,8 +33,7 @@ export const thunks = {
         (params: { pX: string }) =>
         async (...args) => {
             const { pX } = params;
-            const [dispatch, getState, thunkExtraArgument] = args;
-            const { port2 } = thunkExtraArgument;
+            const [dispatch, getState, { port2 }] = args;
 
             if (getState().usecase1.isDoingSomething) {
                 return;

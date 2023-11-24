@@ -33,10 +33,10 @@ export const thunks = {
         (params: { pX: string }) =>
         async (...args) => {
             const { pX } = params;
-            const [dispatch, , extraArg] = args;
-            const { port2 } = extraArg;
+            const [dispatch, , rootContext] = args;
+            const { port2 } = rootContext;
 
-            const { n } = getContext(extraArg);
+            const { n } = getContext(rootContext);
 
             dispatch(actions.thunkXStarted());
 
