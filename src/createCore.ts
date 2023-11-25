@@ -65,7 +65,7 @@ export function createCore<
     Object.entries(usecases).forEach(([key, usecase]) => {
         assert(
             key === usecase.name,
-            `You should reconcile the name of the usecase (${usecase}) and the key it's assigned to in the usecases object (${key})`
+            `You should reconcile the name of the usecase (${usecase.name}) and the key it's assigned to in the usecases object (${key})`
         );
     });
 
