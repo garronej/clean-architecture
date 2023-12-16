@@ -59,6 +59,7 @@ export function createCore<
     core: GenericCore<Usecases, Context>;
     dispatch: GenericStore<Context, Usecases[keyof Usecases]>["dispatch"];
     getState: GenericStore<Context, Usecases[keyof Usecases]>["getState"];
+    evtAction: GenericStore<Context, Usecases[keyof Usecases]>["evtAction"];
 } {
     const { context, usecases } = params;
 
@@ -99,6 +100,7 @@ export function createCore<
     return {
         core,
         "dispatch": store.dispatch,
-        "getState": store.getState
+        "getState": store.getState,
+        "evtAction": store.evtAction
     };
 }
