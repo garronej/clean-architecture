@@ -78,11 +78,15 @@ export function createCore<
     const { evts } = usecasesToEvts({ usecasesArr, store });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
+    const evtStateUpdated = store.evtAction.pipe(() => [undefined]);
+
+    evtStateUpdated.setMaxHandlers(Infinity);
+
     const core: GenericCore<Usecases, Context> = {
         "subscribe": listener => {
             const ctx = Evt.newCtx();
 
-            store.evtAction.attach(ctx, () => listener());
+            evtStateUpdated.attach(ctx, () => listener());
 
             return {
                 "unsubscribe": () => ctx.done()
