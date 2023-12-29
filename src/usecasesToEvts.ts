@@ -2,6 +2,7 @@ import "minimal-polyfills/Object.fromEntries";
 import { capitalize } from "tsafe/capitalize";
 import type { NonPostableEvt } from "evt";
 import { exclude } from "tsafe/exclude";
+import { Evt, type ToPostableEvt } from "evt";
 
 const wordId = "evt";
 
@@ -50,10 +51,18 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
             .filter(exclude(undefined))
             .map(({ name, createEvt }) => [
                 `${wordId}${capitalize(name)}`,
-                createEvt({
-                    evtAction,
-                    getState
-                })
+                (() => {
+                    const evt = createEvt({
+                        evtAction,
+                        getState
+                    });
+
+                    const evtAsync: ToPostableEvt<typeof evt> = new Evt();
+
+                    evt.attach(data => Promise.resolve().then(() => evtAsync.post(data)));
+
+                    return evtAsync;
+                })()
             ])
     ) as any;
 
