@@ -22,6 +22,7 @@ type ReactApi<Core extends CoreLike, ParamsOfBootstrapCore> = {
     useCoreState: StatesToHook<Core["states"]>;
     createCoreProvider: (params: ParamsOfBootstrapCore) => {
         CoreProvider: (props: { fallback?: ReactNode; children: ReactNode }) => JSX.Element;
+        prCore: Promise<Core>;
     };
 };
 
