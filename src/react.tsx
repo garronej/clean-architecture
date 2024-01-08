@@ -73,7 +73,7 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
             return <coreContext.Provider value={core}>{children}</coreContext.Provider>;
         }
 
-        return { CoreProvider };
+        return { CoreProvider, prCore };
     }
 
     function useCoreState(usecaseName: string, selectorName: string) {
