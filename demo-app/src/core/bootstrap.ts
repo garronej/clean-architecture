@@ -2,7 +2,7 @@ import type { Port2Config } from "./adapters/createProt2";
 import type { Port1Config } from "./adapters/createPort1";
 import type { Port1 } from "./ports/Port1";
 import type { Port2 } from "./ports/Port2";
-import { createCore, type GenericCore } from "redux-clean-architecture";
+import { createCore, type GenericCore } from "clean-architecture";
 import { usecases } from "./usecases";
 
 type ParamsOfBootstrapCore = {

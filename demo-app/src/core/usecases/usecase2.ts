@@ -1,7 +1,7 @@
 import type { Thunks, CreateEvt } from "../bootstrap";
 import type { State as RootState } from "../bootstrap";
 import { id } from "tsafe/id";
-import { createUsecaseContextApi, createUsecaseActions, createSelector } from "redux-clean-architecture";
+import { createUsecaseContextApi, createUsecaseActions, createSelector } from "clean-architecture";
 
 export type State = {
     counter2: number;

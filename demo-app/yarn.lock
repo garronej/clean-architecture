@@ -7451,7 +7451,7 @@ recursive-readdir@^2.2.2:
   dependencies:
     minimatch "^3.0.5"
 
-"redux-clean-architecture@file:../dist":
+"clean-architecture@file:../dist":
   version "3.7.4"
   dependencies:
     "@reduxjs/toolkit" "^1.9.6"

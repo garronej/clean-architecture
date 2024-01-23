@@ -127,6 +127,6 @@ execYarnLink({ "cwd": pathJoin(projectRootDirPath, "dist") });
 testAppNames.forEach(testAppName =>
     execYarnLink({
         "cwd": getTestAppPath(testAppName),
-        "targetModuleName": "redux-clean-architecture"
+        "targetModuleName": "clean-architecture"
     })
 );

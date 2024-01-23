@@ -1,10 +1,10 @@
 {
-    "name": "redux-clean-architecture",
+    "name": "clean-architecture",
     "version": "4.3.2",
     "description": "Utilities for implementing clean architecture using Redux",
     "repository": {
         "type": "git",
-        "url": "git://github.com/garronej/redux-clean-architecture.git"
+        "url": "git://github.com/garronej/clean-architecture.git"
     },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -43,7 +43,7 @@
         "typescript",
         "react"
     ],
-    "homepage": "https://github.com/garronej/redux-clean-architecture",
+    "homepage": "https://github.com/garronej/clean-architecture",
     "peerDependencies": {
         "evt": "^2.5.3"
     },
