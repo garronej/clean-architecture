@@ -56,17 +56,32 @@ export function isObjectThatThrowIfAccessed(obj: object) {
     return (obj as any)[keyIsTrapped] === true;
 }
 
-export function createPropertyThatThrowIfAccessed<T extends object, PropertyName extends keyof T>(
-    propertyName: PropertyName,
-    debugMessage?: string
-): { [K in PropertyName]: T[K] } {
-    const getAndSet = () => {
-        throw new AccessError(`Cannot access ${String(propertyName)} yet ${debugMessage ?? ""}`);
-    };
+export const THROW_IF_ACCESSED = {
+    __brand: "THROW_IF_ACCESSED"
+};
 
-    return Object.defineProperty({} as any, propertyName, {
-        "get": getAndSet,
-        "set": getAndSet,
-        "enumerable": true
-    });
+export function createObjectWithSomePropertiesThatThrowIfAccessed<T extends Record<string, unknown>>(
+    obj: { [K in keyof T]: T[K] | typeof THROW_IF_ACCESSED },
+    debugMessage?: string
+): T {
+    return Object.defineProperties(
+        obj,
+        Object.fromEntries(
+            Object.entries(obj)
+                .filter(([, value]) => value === THROW_IF_ACCESSED)
+                .map(([key]) => {
+                    const getAndSet = () => {
+                        throw new AccessError(`Cannot access ${key} yet ${debugMessage ?? ""}`);
+                    };
+
+                    const pd = {
+                        "get": getAndSet,
+                        "set": getAndSet,
+                        "enumerable": true
+                    };
+
+                    return [key, pd];
+                })
+        )
+    ) as any;
 }
