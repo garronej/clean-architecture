@@ -16,18 +16,14 @@ export function createObjectThatThrowsIfAccessed<T extends object>(params?: {
     const get: NonNullable<ProxyHandler<T>["get"]> = (...args) => {
         const [, prop] = args;
 
-        if (isPropertyWhitelisted(prop)) {
+        if (isPropertyWhitelisted(prop) || prop === keyIsTrapped) {
             return Reflect.get(...args);
-        }
-
-        if (prop === keyIsTrapped) {
-            return true;
         }
 
         throw new AccessError(`Cannot access ${String(prop)} yet ${debugMessage}`);
     };
 
-    const trappedObject = new Proxy<T>({} as any, {
+    const trappedObject = new Proxy<T>({ [keyIsTrapped]: true } as any, {
         get,
         "set": get
     });
