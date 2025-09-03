@@ -1,6 +1,8 @@
 import { useContext, createContext, useState, useEffect, type ReactNode } from "react";
 import { capitalize } from "tsafe/capitalize";
 import { assert } from "tsafe/assert";
+import { Reflect } from "tsafe/Reflect";
+import { Deferred } from "evt/tools/Deferred";
 
 type StatesToHook<States extends Record<string, Record<string, any>>> = <
     UsecaseName extends keyof States,
@@ -18,11 +20,12 @@ type CoreLike = {
 };
 
 type ReactApi<Core extends CoreLike, ParamsOfBootstrapCore> = {
+    ofTypeCore: Core;
     useCore: () => Core;
+    getCore: () => Promise<Core>;
     useCoreState: StatesToHook<Core["states"]>;
     createCoreProvider: (params: ParamsOfBootstrapCore) => {
         CoreProvider: (props: { fallback?: ReactNode; children: ReactNode }) => JSX.Element;
-        prCore: Promise<Core>;
     };
 };
 
@@ -41,8 +44,10 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
         return core;
     }
 
+    const dCore = new Deferred<Core>();
+
     function createCoreProvider(params: ParamsOfBootstrapCore) {
-        const prCore = bootstrapCore(params).then(({ core }) => core);
+        bootstrapCore(params).then(({ core }) => dCore.resolve(core));
 
         function CoreProvider(props: { fallback?: React.ReactNode; children: React.ReactNode }) {
             const { fallback, children } = props;
@@ -53,7 +58,7 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
                 let isActive = true;
 
                 (async () => {
-                    const core = await prCore;
+                    const core = await dCore.pr;
 
                     if (!isActive) {
                         return;
@@ -74,7 +79,7 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
             return <coreContext.Provider value={core}>{children}</coreContext.Provider>;
         }
 
-        return { CoreProvider, prCore };
+        return { CoreProvider };
     }
 
     function useCoreState(usecaseName: string, selectorName: string) {
@@ -95,9 +100,15 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
         return selectedState;
     }
 
+    function getCore(): Promise<Core> {
+        return dCore.pr;
+    }
+
     return {
+        ofTypeCore: Reflect<Core>(),
         createCoreProvider,
         useCore,
-        "useCoreState": useCoreState as any
+        "useCoreState": useCoreState as any,
+        getCore
     };
 }
