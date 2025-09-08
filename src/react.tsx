@@ -92,6 +92,8 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
         useEffect(() => {
             const { unsubscribe } = core.subscribe(() => setSelectedState(getSelectedState()));
 
+            setSelectedState(getSelectedState());
+
             return () => {
                 unsubscribe();
             };
