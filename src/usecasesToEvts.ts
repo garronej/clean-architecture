@@ -3,6 +3,7 @@ import { capitalize } from "tsafe/capitalize";
 import type { NonPostableEvt } from "evt";
 import { exclude } from "tsafe/exclude";
 import { Evt, type ToPostableEvt } from "evt";
+import type { RootContextLike } from "./usecaseContext";
 
 const wordId = "evt";
 
@@ -14,6 +15,7 @@ export type StoreLike = {
 export type GenericCreateEvt<Store extends StoreLike> = (params: {
     evtAction: Store["evtAction"];
     getState: Store["getState"];
+    rootContext: RootContextLike;
 }) => NonPostableEvt<any>;
 
 export type UsecaseLike = {
@@ -38,10 +40,11 @@ export type CoreEvts<Usecase extends UsecaseLike> = {
 export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
     usecasesArr: readonly Usecase[];
     store: StoreLike;
+    rootContext: RootContextLike;
 }): {
     evts: CoreEvts<Usecase>;
 } {
-    const { store, usecasesArr } = params;
+    const { store, usecasesArr, rootContext } = params;
 
     const { getState, evtAction } = store;
 
@@ -54,7 +57,8 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
                 (() => {
                     const evt = createEvt({
                         evtAction,
-                        getState
+                        getState,
+                        rootContext
                     });
 
                     const evtAsync: ToPostableEvt<typeof evt> = new Evt();
