@@ -36,8 +36,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         "store": {
             "getState": Reflect<() => Record<string, unknown>>(),
             "evtAction": Reflect<NonPostableEvt<any>>()
-        },
-        "context": Reflect<Record<string, unknown>>()
+        }
     });
 
     const expected = Reflect<{
@@ -63,8 +62,7 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         "store": {
             "getState": Reflect<() => Record<string, unknown>>(),
             "evtAction": Reflect<NonPostableEvt<any>>()
-        },
-        "context": Reflect<Record<string, unknown>>()
+        }
     });
 
     const expected = Reflect<{}>();
