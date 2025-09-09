@@ -34,7 +34,7 @@ export type GenericCore<
     functions: CoreFunctions<Usecases[keyof Usecases]>;
     types: {
         State: ReturnType<GenericStore<Context, Usecases[keyof Usecases]>["getState"]>;
-        CreateEvt: GenericCreateEvt<GenericStore<Context, Usecases[keyof Usecases]>>;
+        CreateEvt: GenericCreateEvt<GenericStore<Context, Usecases[keyof Usecases]>, Context>;
         Thunks: Record<
             string,
             (params: any) => ThunkAction<
@@ -75,7 +75,7 @@ export function createCore<
     const store = createStore({ context, usecasesArr });
 
     const { states } = usecasesToStates({ usecasesArr, store });
-    const { evts } = usecasesToEvts({ usecasesArr, store });
+    const { evts } = usecasesToEvts({ usecasesArr, store, context });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
     const evtStateUpdated = store.evtAction.pipe(() => [undefined]);

@@ -11,14 +11,18 @@ export type StoreLike = {
     getState: () => any;
 };
 
-export type GenericCreateEvt<Store extends StoreLike> = (params: {
+export type GenericCreateEvt<
+    Store extends StoreLike,
+    Context extends Record<string, unknown>
+> = (params: {
     evtAction: Store["evtAction"];
     getState: Store["getState"];
+    context: Context;
 }) => NonPostableEvt<any>;
 
 export type UsecaseLike = {
     name: string;
-    createEvt?: GenericCreateEvt<StoreLike>;
+    createEvt?: GenericCreateEvt<StoreLike, Record<string, unknown>>;
 };
 
 export type CoreEvts<Usecase extends UsecaseLike> = {
@@ -35,13 +39,17 @@ export type CoreEvts<Usecase extends UsecaseLike> = {
     >;
 };
 
-export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
+export function usecasesToEvts<
+    Usecase extends UsecaseLike,
+    Context extends Record<string, unknown>
+>(params: {
+    context: Context;
     usecasesArr: readonly Usecase[];
     store: StoreLike;
 }): {
     evts: CoreEvts<Usecase>;
 } {
-    const { store, usecasesArr } = params;
+    const { context, store, usecasesArr } = params;
 
     const { getState, evtAction } = store;
 
@@ -54,7 +62,8 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
                 (() => {
                     const evt = createEvt({
                         evtAction,
-                        getState
+                        getState,
+                        context
                     });
 
                     const evtAsync: ToPostableEvt<typeof evt> = new Evt();
