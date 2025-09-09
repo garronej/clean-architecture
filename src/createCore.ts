@@ -21,7 +21,7 @@ import {
     type UsecaseLike as UsecaseLike_functions
 } from "./usecasesToFunctions";
 import type { ThunkAction, Action } from "@reduxjs/toolkit";
-import type { RootContextLike} from "./usecaseContext";
+import type { RootContextLike } from "./usecaseContext";
 
 type UsecaseLike = UsecaseLike_store & UsecaseLike_evts & UsecaseLike_selectors & UsecaseLike_functions;
 
