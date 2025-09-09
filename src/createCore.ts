@@ -1,6 +1,6 @@
 import { Evt } from "evt";
 import type { ReturnType } from "tsafe";
-import { assert } from "tsafe/assert";
+import { assert, is } from "tsafe/assert";
 
 import { createStore, type GenericStore, type UsecaseLike as UsecaseLike_store } from "./createStore";
 
@@ -21,6 +21,7 @@ import {
     type UsecaseLike as UsecaseLike_functions
 } from "./usecasesToFunctions";
 import type { ThunkAction, Action } from "@reduxjs/toolkit";
+import type { RootContextLike} from "./usecaseContext";
 
 type UsecaseLike = UsecaseLike_store & UsecaseLike_evts & UsecaseLike_selectors & UsecaseLike_functions;
 
@@ -73,9 +74,10 @@ export function createCore<
     const usecasesArr = Object.values(usecases) as Usecases[keyof Usecases][];
 
     const store = createStore({ context, usecasesArr });
+    assert(is<Context & RootContextLike>(context));
 
     const { states } = usecasesToStates({ usecasesArr, store });
-    const { evts } = usecasesToEvts({ usecasesArr, store });
+    const { evts } = usecasesToEvts({ usecasesArr, store, rootContext: context });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
     const evtStateUpdated = store.evtAction.pipe(() => [undefined]);
