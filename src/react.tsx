@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect } from "react";
 import { capitalize } from "tsafe/capitalize";
 import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
@@ -23,28 +23,32 @@ type ReactApi<Core extends CoreLike, ParamsOfBootstrapCore> = {
     ofTypeCore: Core;
     useCore: () => Core;
     getCore: () => Promise<Core>;
+    getCoreSync: () => Core;
     useCoreState: StatesToHook<Core["states"]>;
-    createCoreProvider: (params: ParamsOfBootstrapCore) => {
-        CoreProvider: (props: { fallback?: ReactNode; children: ReactNode }) => JSX.Element;
-    };
+    bootstrapCore: (params: ParamsOfBootstrapCore) => void;
 };
+
+const prReactApiByBootstrapCore = k;
 
 export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(params: {
     bootstrapCore: (params: ParamsOfBootstrapCore) => Promise<{ core: Core }>;
 }): ReactApi<Core, ParamsOfBootstrapCore> {
     const { bootstrapCore } = params;
 
-    const coreContext = createContext<Core | undefined>(undefined);
+    const dCore = new Deferred<Core>();
+    let core: Core | undefined = undefined;
 
-    function useCore() {
-        const core = useContext(coreContext);
+    dCore.pr.then(value => (core = value));
 
-        assert(core !== undefined, `Must wrap your app within a <CoreProvider />`);
+    function getCoreSync() {
+        if (core === undefined) {
+            throw dCore.pr;
+        }
 
         return core;
     }
 
-    const dCore = new Deferred<Core>();
+    let hasBootstrapCoreReactBeenCalled = function bootstrapCoreReact(params: ParamsOfBootstrapCore) {};
 
     function createCoreProvider(params: ParamsOfBootstrapCore) {
         bootstrapCore(params).then(({ core }) => dCore.resolve(core));
