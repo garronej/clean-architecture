@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { bootstrapCore } from "core";
+import { triggerCoreBootstrap } from "core";
 import { App } from "./App";
 import { assert } from "tsafe/assert";
 
-bootstrapCore({
+triggerCoreBootstrap({
     "port1Config": {
         "port1Config1": "foo"
     },

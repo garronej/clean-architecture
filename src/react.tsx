@@ -1,5 +1,3 @@
-// TODO: Once we've make sure it's good, move this into clean-architecture
-
 import { useState, useEffect } from "react";
 import { capitalize } from "tsafe/capitalize";
 import { Reflect } from "tsafe/Reflect";
@@ -25,13 +23,13 @@ type ReactApi<Core extends CoreLike, ParamsOfBootstrapCore> = {
     getCoreSync: () => Core;
     getCore: () => Promise<Core>;
     useCoreState: StatesToHook<Core["states"]>;
-    bootstrapCore: (params: ParamsOfBootstrapCore) => void;
+    triggerCoreBootstrap: (params: ParamsOfBootstrapCore) => void;
 };
 
 export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(params: {
     bootstrapCore: (params: ParamsOfBootstrapCore) => Promise<{ core: Core }>;
 }): ReactApi<Core, ParamsOfBootstrapCore> {
-    const { bootstrapCore: bootstrapCore_vanilla } = params;
+    const { bootstrapCore } = params;
 
     const dCore = new Deferred<Core>();
 
@@ -55,8 +53,8 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
         return dCore.pr;
     }
 
-    function bootstrapCore(params: ParamsOfBootstrapCore) {
-        bootstrapCore_vanilla(params).then(({ core }) => dCore.resolve(core));
+    function triggerCoreBootstrap(params: ParamsOfBootstrapCore) {
+        bootstrapCore(params).then(({ core }) => dCore.resolve(core));
     }
 
     function useCoreState(usecaseName: string, selectorName: string) {
@@ -83,7 +81,7 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
         ofTypeCore: Reflect<Core>(),
         getCoreSync,
         getCore,
-        bootstrapCore,
+        triggerCoreBootstrap,
         useCoreState: useCoreState as any
     };
 }
