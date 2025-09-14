@@ -1,6 +1,7 @@
-import { useContext, createContext, useState, useEffect, type ReactNode } from "react";
+// TODO: Once we've make sure it's good, move this into clean-architecture
+
+import { useState, useEffect } from "react";
 import { capitalize } from "tsafe/capitalize";
-import { assert } from "tsafe/assert";
 import { Reflect } from "tsafe/Reflect";
 import { Deferred } from "evt/tools/Deferred";
 
@@ -21,69 +22,45 @@ type CoreLike = {
 
 type ReactApi<Core extends CoreLike, ParamsOfBootstrapCore> = {
     ofTypeCore: Core;
-    useCore: () => Core;
+    getCoreSync: () => Core;
     getCore: () => Promise<Core>;
     useCoreState: StatesToHook<Core["states"]>;
-    createCoreProvider: (params: ParamsOfBootstrapCore) => {
-        CoreProvider: (props: { fallback?: ReactNode; children: ReactNode }) => JSX.Element;
-    };
+    bootstrapCore: (params: ParamsOfBootstrapCore) => void;
 };
 
 export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(params: {
     bootstrapCore: (params: ParamsOfBootstrapCore) => Promise<{ core: Core }>;
 }): ReactApi<Core, ParamsOfBootstrapCore> {
-    const { bootstrapCore } = params;
-
-    const coreContext = createContext<Core | undefined>(undefined);
-
-    function useCore() {
-        const core = useContext(coreContext);
-
-        assert(core !== undefined, `Must wrap your app within a <CoreProvider />`);
-
-        return core;
-    }
+    const { bootstrapCore: bootstrapCore_vanilla } = params;
 
     const dCore = new Deferred<Core>();
 
-    function createCoreProvider(params: ParamsOfBootstrapCore) {
-        bootstrapCore(params).then(({ core }) => dCore.resolve(core));
+    const { getCoreSync } = (() => {
+        let core: Core | undefined = undefined;
 
-        function CoreProvider(props: { fallback?: React.ReactNode; children: React.ReactNode }) {
-            const { fallback, children } = props;
+        dCore.pr.then(value => (core = value));
 
-            const [core, setCore] = useState<Core | undefined>(undefined);
-
-            useEffect(() => {
-                let isActive = true;
-
-                (async () => {
-                    const core = await dCore.pr;
-
-                    if (!isActive) {
-                        return;
-                    }
-
-                    setCore(core);
-                })();
-
-                return () => {
-                    isActive = false;
-                };
-            }, []);
-
+        function getCoreSync() {
             if (core === undefined) {
-                return <>{fallback ?? null}</>;
+                throw dCore.pr;
             }
 
-            return <coreContext.Provider value={core}>{children}</coreContext.Provider>;
+            return core;
         }
 
-        return { CoreProvider };
+        return { getCoreSync };
+    })();
+
+    function getCore() {
+        return dCore.pr;
+    }
+
+    function bootstrapCore(params: ParamsOfBootstrapCore) {
+        bootstrapCore_vanilla(params).then(({ core }) => dCore.resolve(core));
     }
 
     function useCoreState(usecaseName: string, selectorName: string) {
-        const core = useCore();
+        const core = getCoreSync();
 
         const getSelectedState = () => core.states[usecaseName][`get${capitalize(selectorName)}`]();
 
@@ -102,15 +79,11 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
         return selectedState;
     }
 
-    function getCore(): Promise<Core> {
-        return dCore.pr;
-    }
-
     return {
         ofTypeCore: Reflect<Core>(),
-        createCoreProvider,
-        useCore,
-        "useCoreState": useCoreState as any,
-        getCore
+        getCoreSync,
+        getCore,
+        bootstrapCore,
+        useCoreState: useCoreState as any
     };
 }

@@ -18,10 +18,7 @@ type Context = {
 
 type Core = GenericCore<typeof usecases, Context>;
 
-export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
-    core: Core;
-    context: Context;
-}> {
+export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{ core: Core }> {
     const [port1, port2] = await Promise.all([
         import("./adapters/createPort1").then(({ createPort1 }) => createPort1(params.port1Config)),
         import("./adapters/createProt2").then(({ createPort2 }) => createPort2(params.port2Config))
@@ -40,7 +37,7 @@ export async function bootstrapCore(params: ParamsOfBootstrapCore): Promise<{
 
     await dispatch(usecases.usecase2.privateThunks.initialize());
 
-    return { core, context };
+    return { core };
 }
 
 export type State = Core["types"]["State"];

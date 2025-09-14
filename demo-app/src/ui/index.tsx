@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createCoreProvider } from "core";
+import { bootstrapCore } from "core";
 import { App } from "./App";
 import { assert } from "tsafe/assert";
 
-const { CoreProvider } = createCoreProvider({
+bootstrapCore({
     "port1Config": {
         "port1Config1": "foo"
     },
@@ -24,8 +24,6 @@ createRoot(
     })()
 ).render(
     <StrictMode>
-        <CoreProvider fallback={<h1>Loading</h1>}>
-            <App />
-        </CoreProvider>
+        <App />
     </StrictMode>
 );
