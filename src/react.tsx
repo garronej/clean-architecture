@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { capitalize } from "tsafe/capitalize";
 import { Reflect } from "tsafe/Reflect";
 import { Deferred } from "evt/tools/Deferred";
+import { createForwardingProxy } from "./tools/createForwardingProxy";
 
 type StatesToHook<States extends Record<string, Record<string, any>>> = <
     UsecaseName extends keyof States,
@@ -25,6 +26,17 @@ type ReactApi<Core extends CoreLike, ParamsOfBootstrapCore> = {
     useCoreState: StatesToHook<Core["states"]>;
     triggerCoreBootstrap: (params: ParamsOfBootstrapCore) => void;
 };
+
+const fpGetCoreSync = createForwardingProxy<ReactApi<CoreLike, any>["getCoreSync"]>({
+    isFunction: true
+});
+const fpGetCore = createForwardingProxy<ReactApi<CoreLike, any>["getCore"]>({ isFunction: true });
+const fpTriggerCoreBootstrap = createForwardingProxy<ReactApi<CoreLike, any>["triggerCoreBootstrap"]>({
+    isFunction: true
+});
+const fpUseCoreState = createForwardingProxy<ReactApi<CoreLike, any>["useCoreState"]>({
+    isFunction: true
+});
 
 export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(params: {
     bootstrapCore: (params: ParamsOfBootstrapCore) => Promise<{ core: Core }>;
@@ -77,11 +89,16 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
         return selectedState;
     }
 
+    fpGetCoreSync.updateTarget(getCoreSync);
+    fpGetCore.updateTarget(getCore);
+    fpTriggerCoreBootstrap.updateTarget(triggerCoreBootstrap);
+    fpUseCoreState.updateTarget(useCoreState);
+
     return {
         ofTypeCore: Reflect<Core>(),
-        getCoreSync,
-        getCore,
-        triggerCoreBootstrap,
-        useCoreState: useCoreState as any
+        getCoreSync: fpGetCoreSync.proxy as any,
+        getCore: fpGetCore.proxy as any,
+        triggerCoreBootstrap: fpTriggerCoreBootstrap.proxy,
+        useCoreState: fpUseCoreState.proxy
     };
 }
