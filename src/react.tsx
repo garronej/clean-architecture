@@ -83,8 +83,11 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
                 }
 
                 handlers_internal.forEach(({ ctx, callback }) => {
-                    assert(ctx !== undefined);
-                    assert(callback !== undefined);
+                    assert(ctx !== undefined, "clean-architecture: 3902238");
+                    assert(callback !== undefined, "clean-architecture: 39322922");
+
+                    console.log("clean-architecture: HMR handler transferred!");
+
                     core_scope.evtStateUpdated.attach(ctx, callback);
                 });
             }
