@@ -1,6 +1,7 @@
-import { Evt } from "evt";
+import type { NonPostableEvt } from "evt";
 import type { ReturnType } from "tsafe";
 import { assert, is } from "tsafe/assert";
+import { id } from "tsafe/id";
 
 import { createStore, type GenericStore, type UsecaseLike as UsecaseLike_store } from "./createStore";
 
@@ -30,7 +31,7 @@ export type GenericCore<
     Context extends Record<string, unknown>
 > = {
     states: CoreStates<Usecases[keyof Usecases]>;
-    subscribe: (listener: () => void) => { unsubscribe: () => void };
+    evtStateUpdated: NonPostableEvt<void>;
     evts: CoreEvts<Usecases[keyof Usecases]>;
     functions: CoreFunctions<Usecases[keyof Usecases]>;
     types: {
@@ -80,20 +81,12 @@ export function createCore<
     const { evts } = usecasesToEvts({ usecasesArr, store, rootContext: context });
     const { functions } = usecasesToFunctions({ usecasesArr, store });
 
-    const evtStateUpdated = store.evtAction.pipe(() => [undefined]);
+    const evtStateUpdated = store.evtAction.pipe(() => [id<void>(undefined)]);
 
     evtStateUpdated.setMaxHandlers(Infinity);
 
     const core: GenericCore<Usecases, Context> = {
-        "subscribe": listener => {
-            const ctx = Evt.newCtx();
-
-            evtStateUpdated.attach(ctx, () => listener());
-
-            return {
-                "unsubscribe": () => ctx.done()
-            };
-        },
+        evtStateUpdated,
         states,
         evts,
         functions,
