@@ -28,9 +28,23 @@ type ReactApi<Core extends CoreLike, ParamsOfBootstrapCore> = {
     triggerCoreBootstrap: (params: ParamsOfBootstrapCore) => void;
 };
 
+let hasCreateApiBeenCalled = false;
+
 export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(params: {
     bootstrapCore: (params: ParamsOfBootstrapCore) => Promise<{ core: Core }>;
 }): ReactApi<Core, ParamsOfBootstrapCore> {
+    if (hasCreateApiBeenCalled) {
+        console.log(
+            [
+                "clean-architecture: createReactApi has been called again,",
+                "probably HMR, the core have changed, reloading the app"
+            ].join(" ")
+        );
+        window.location.reload();
+    }
+
+    hasCreateApiBeenCalled = true;
+
     const { bootstrapCore } = params;
 
     const dCore = new Deferred<Core>();
@@ -48,7 +62,15 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
         return dCore.pr;
     }
 
+    let hasBootstrapCoreBeenCalled = false;
+
     function triggerCoreBootstrap(params: ParamsOfBootstrapCore) {
+        if (hasBootstrapCoreBeenCalled) {
+            return;
+        }
+
+        hasBootstrapCoreBeenCalled = true;
+
         bootstrapCore(params).then(r => {
             core = r.core;
             dCore.resolve(core);
