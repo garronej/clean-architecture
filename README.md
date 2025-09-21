@@ -6,7 +6,7 @@
     <br>
     <br>
     <a href="https://github.com/garronej/clean-architecture/actions">
-      <img src="https://github.com/garronej/clean-architecture/workflows/ci/badge.svg?branch=main">
+      <img src="https://github.com/garronej/clean-architecture/actions/workflows/ci.yaml/badge.svg">
     </a>
     <a href="https://bundlephobia.com/package/clean-architecture">
       <img src="https://img.shields.io/bundlephobia/minzip/clean-architecture">
