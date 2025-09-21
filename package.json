@@ -1,6 +1,6 @@
 {
     "name": "clean-architecture",
-    "version": "6.0.0",
+    "version": "6.0.1",
     "description": "Utilities for implementing clean architecture using Redux",
     "repository": {
         "type": "git",
