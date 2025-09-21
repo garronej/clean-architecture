@@ -63,18 +63,16 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
             [usecaseName, selectorName]
         );
 
-        const [, reRenderIfSelectedStateChanged] = useState<any>(() => getSelectedState());
+        const [selectedState, setSelectedState] = useState(() => getSelectedState());
 
         useEvt(
             ctx => {
-                core.evtStateUpdated.attach(ctx, () =>
-                    reRenderIfSelectedStateChanged(getSelectedState())
-                );
+                core.evtStateUpdated.attach(ctx, () => setSelectedState(getSelectedState()));
             },
             [getSelectedState]
         );
 
-        return getSelectedState();
+        return selectedState;
     }
 
     return {
