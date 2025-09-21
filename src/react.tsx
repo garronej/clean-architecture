@@ -6,7 +6,7 @@ import { Deferred } from "evt/tools/Deferred";
 import { createForwardingProxy } from "./tools/createForwardingProxy";
 import { useEvt } from "evt/hooks/useEvt";
 import { arrPartition } from "evt/tools/reducers/partition";
-import { assert } from "tsafe/assert";
+import { assert, is } from "tsafe/assert";
 
 type StatesToHook<States extends Record<string, Record<string, any>>> = <
     UsecaseName extends keyof States,
@@ -85,8 +85,11 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
                 handlers_internal.forEach(({ ctx, callback }) => {
                     assert(ctx !== undefined, "clean-architecture: 3902238");
                     assert(callback !== undefined, "clean-architecture: 39322922");
+                    assert(is<() => void>(callback));
 
                     console.log("clean-architecture: HMR handler transferred!");
+
+                    callback();
 
                     core_scope.evtStateUpdated.attach(ctx, callback);
                 });
