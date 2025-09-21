@@ -64,6 +64,7 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
 
     function triggerCoreBootstrap(params: ParamsOfBootstrapCore) {
         bootstrapCore(params).then(({ core: core_scope }) => {
+            core = core_scope;
             transfer_handlers: {
                 if (core_previous === undefined) {
                     break transfer_handlers;
@@ -95,7 +96,6 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
                 });
             }
             core_previous = core_scope;
-            core = core_scope;
             dCore.resolve(core_scope);
         });
     }
