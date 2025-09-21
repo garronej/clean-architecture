@@ -74,7 +74,7 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
 
         const getSelectedState = () => core.states[usecaseName][`get${capitalize(selectorName)}`]();
 
-        const [selectedState, setSelectedState] = useState<any>(() => getSelectedState());
+        const [, setSelectedState] = useState<any>(() => getSelectedState());
 
         useEffect(() => {
             const { unsubscribe } = core.subscribe(() => setSelectedState(getSelectedState()));
@@ -86,7 +86,7 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
             };
         }, [core]);
 
-        return selectedState;
+        return getSelectedState();
     }
 
     fpGetCoreSync.updateTarget(getCoreSync);
