@@ -35,7 +35,8 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         usecasesArr,
         "store": {
             "getState": Reflect<() => Record<string, unknown>>(),
-            "evtAction": Reflect<NonPostableEvt<any>>()
+            "evtAction": Reflect<NonPostableEvt<any>>(),
+            "dispatch": Reflect<any>()
         },
         "rootContext": Reflect<{ evtAction: NonPostableEvt<any> }>()
     });
@@ -62,7 +63,8 @@ import { usecasesToEvts } from "../../usecasesToEvts";
         usecasesArr,
         "store": {
             "getState": Reflect<() => Record<string, unknown>>(),
-            "evtAction": Reflect<NonPostableEvt<any>>()
+            "evtAction": Reflect<NonPostableEvt<any>>(),
+            "dispatch": Reflect<any>()
         },
         "rootContext": Reflect<{ evtAction: NonPostableEvt<any> }>()
     });

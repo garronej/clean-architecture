@@ -4,17 +4,20 @@ import type { NonPostableEvt } from "evt";
 import { exclude } from "tsafe/exclude";
 import { Evt, type ToPostableEvt } from "evt";
 import type { RootContextLike } from "./usecaseContext";
+import type { ThunkDispatch, Action } from "@reduxjs/toolkit";
 
 const wordId = "evt";
 
 export type StoreLike = {
     evtAction: NonPostableEvt<any>;
     getState: () => any;
+    dispatch: ThunkDispatch<any, any, Action>;
 };
 
 export type GenericCreateEvt<Store extends StoreLike> = (params: {
     evtAction: Store["evtAction"];
     getState: Store["getState"];
+    dispatch: ThunkDispatch<any, any, Action>;
     rootContext: RootContextLike;
 }) => NonPostableEvt<any>;
 
@@ -46,7 +49,7 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
 } {
     const { store, usecasesArr, rootContext } = params;
 
-    const { getState, evtAction } = store;
+    const { getState, dispatch, evtAction } = store;
 
     const evts = Object.fromEntries(
         usecasesArr
@@ -58,6 +61,7 @@ export function usecasesToEvts<Usecase extends UsecaseLike>(params: {
                     const evt = createEvt({
                         evtAction,
                         getState,
+                        dispatch,
                         rootContext
                     });
 
