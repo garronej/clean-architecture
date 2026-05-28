@@ -89,7 +89,25 @@ export function createReactApi<Core extends CoreLike, ParamsOfBootstrapCore>(par
 
         useEvt(
             ctx => {
-                core.evtStateUpdated.attach(ctx, () => setSelectedState(getSelectedState()));
+                let isUpdateScheduled = false;
+
+                core.evtStateUpdated.attach(ctx, () => {
+                    if (isUpdateScheduled) {
+                        return;
+                    }
+
+                    isUpdateScheduled = true;
+
+                    requestAnimationFrame(() => {
+                        if (ctx.completionStatus !== undefined) {
+                            return;
+                        }
+
+                        isUpdateScheduled = false;
+
+                        setSelectedState(getSelectedState());
+                    });
+                });
             },
             [getSelectedState]
         );
