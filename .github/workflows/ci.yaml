@@ -96,7 +96,7 @@ jobs:
         ref: ${{ github.ref }}
     - uses: actions/setup-node@v5
       with:
-        node-version: '20'
+        node-version: '24'
         registry-url: https://registry.npmjs.org/
     - run: npm install -g npm@latest
     - run: yarn install --frozen-lockfile
