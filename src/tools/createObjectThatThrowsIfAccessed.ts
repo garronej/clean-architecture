@@ -73,7 +73,7 @@ export function createObjectWithSomePropertiesThatThrowIfAccessed<T extends Reco
                     const pd = {
                         "get": getAndSet,
                         "set": getAndSet,
-                        "enumerable": true
+                        "enumerable": false
                     };
 
                     return [key, pd];
