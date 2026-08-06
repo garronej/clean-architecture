@@ -3,7 +3,9 @@ export type { GenericCore } from "./createCore";
 export {
     createObjectThatThrowsIfAccessed,
     isObjectThatThrowIfAccessed,
-    AccessError
+    AccessError,
+    THROW_IF_ACCESSED,
+    createObjectWithSomePropertiesThatThrowIfAccessed
 } from "./createObjectThatThrowsIfAccessed";
 export { createUsecaseContextApi } from "./usecaseContext";
 export { createSlice as createUsecaseActions, createSelector } from "@reduxjs/toolkit";

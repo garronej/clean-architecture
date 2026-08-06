@@ -1,9 +1,15 @@
 import {
     createObjectThatThrowsIfAccessedFactory,
     isObjectThatThrowIfAccessed,
-    AccessError
+    AccessError,
+    THROW_IF_ACCESSED,
+    createObjectWithSomePropertiesThatThrowIfAccessed
 } from "./tools/createObjectThatThrowsIfAccessed";
-export { isObjectThatThrowIfAccessed };
+export {
+    isObjectThatThrowIfAccessed,
+    THROW_IF_ACCESSED,
+    createObjectWithSomePropertiesThatThrowIfAccessed
+};
 
 export { AccessError };
 

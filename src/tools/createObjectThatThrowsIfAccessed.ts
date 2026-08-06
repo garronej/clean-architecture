@@ -53,7 +53,7 @@ export function isObjectThatThrowIfAccessed(obj: object) {
 }
 
 export const THROW_IF_ACCESSED = {
-    __brand: "THROW_IF_ACCESSED"
+    __brand: "THROW_IF_ACCESSED" as const
 };
 
 export function createObjectWithSomePropertiesThatThrowIfAccessed<T extends Record<string, unknown>>(
